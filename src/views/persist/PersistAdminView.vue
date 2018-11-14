@@ -10,7 +10,7 @@
       <await init name="findAdminResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 
-          <div v-for="(schemaRow, field) in model.admin.$schema" :key="field">
+          <div v-for="(schemaRow, field) in model.admin.$schema" :key="field" class="mb-15 h-35">
             <resource-input v-model="model.admin" :field="field"/>
           </div>
 

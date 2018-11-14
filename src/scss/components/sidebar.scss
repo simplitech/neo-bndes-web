@@ -48,7 +48,11 @@
         margin: #{$padding-base / 4} $padding-base;
 
         a {
+          margin-top: 0;
+          margin-bottom: #{$padding-base * 2};
+
           &.btn {
+            line-height: 35px;
             text-align: left;
             &.router-link-active {
               @extend .pal-white-20.bg;
