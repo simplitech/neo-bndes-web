@@ -10,7 +10,7 @@
       <await init name="findAssetResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 
-          <div v-for="(field, i) in model.asset.fieldsToInput" :key="i">
+          <div v-for="(field, i) in model.asset.fieldsToInput" :key="i" class="mb-15">
             <resource-input v-model="model.asset" :field="field"/>
           </div>
 

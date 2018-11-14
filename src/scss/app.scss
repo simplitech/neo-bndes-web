@@ -25,7 +25,6 @@
 .form-group {
   display: flex;
   flex-flow: column nowrap;
-  margin-bottom: #{$padding-base * 2};
 
   &.required {
     .control-label:after, .multiselect-label:after {
