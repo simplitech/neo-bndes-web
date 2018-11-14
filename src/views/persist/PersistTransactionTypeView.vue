@@ -10,7 +10,7 @@
       <await init name="findTransactionTypeResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 
-          <div v-for="(schemaRow, field) in model.transactionType.$schema" :key="field">
+          <div v-for="(field, i) in model.transactionType.fieldsToInput" :key="i">
             <resource-input v-model="model.transactionType" :field="field"/>
           </div>
 

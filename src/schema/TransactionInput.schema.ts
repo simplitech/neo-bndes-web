@@ -50,12 +50,4 @@ export default (model: TransactionInput): Schema => ({
       maxlength: '255',
     },
   },
-
-  previousIdTransactionFk: {
-    content: model.previousIdTransactionFk,
-    inputType: InputType.NUMBER,
-    meta: {
-      step: '1',
-    },
-  },
 })

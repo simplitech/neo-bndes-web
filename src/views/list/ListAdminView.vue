@@ -52,13 +52,13 @@
               </thead>
 
               <tbody>
-              <tr v-for="(data, i) in collection.data" :key="i">
+              <tr v-for="(item, i) in collection.items" :key="i">
                 <td class="horiz nowrap">
-                  <a @click="pushByName('editAdmin', collection.items[i].$id)" class="icon icon-pencil"></a>
+                  <a @click="pushByName('editAdmin', item.$id)" class="icon icon-pencil"></a>
                 </td>
 
-                <td v-for="(value, key) in data" :key="key">
-                  <resource-render v-model="collection.items[i]" :field="key"/>
+                <td v-for="(field, j) in item.fieldsToRender" :key="j">
+                  <resource-render v-model="collection.items[i]" :field="field"/>
                 </td>
               </tr>
               </tbody>
