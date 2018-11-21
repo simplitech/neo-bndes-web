@@ -202,6 +202,10 @@ export default {
     dashboard: {
       title: 'Dashboard',
     },
+
+    myAccount: {
+      title: 'My Account',
+    },
   },
 
   persist: {

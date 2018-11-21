@@ -14,7 +14,7 @@ export default (model: Admin): Schema => ({
 
   email: {
     content: model.email,
-    inputType: InputType.EMAIL,
+    input: InputType.EMAIL,
     meta: {
       required: true,
     },
@@ -23,7 +23,7 @@ export default (model: Admin): Schema => ({
   password: {
     content: model.password,
     hidden: true,
-    inputType: InputType.PASSWORD,
+    input: InputType.PASSWORD,
     meta: {
       required: true,
     },

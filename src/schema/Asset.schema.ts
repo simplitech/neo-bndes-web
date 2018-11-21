@@ -14,7 +14,7 @@ export default (model: Asset): Schema => ({
 
   name: {
     content: model.name,
-    inputType: InputType.TEXT,
+    input: InputType.TEXT,
     meta: {
       maxlength: '255',
     },

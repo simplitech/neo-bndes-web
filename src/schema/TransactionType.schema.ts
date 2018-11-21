@@ -14,7 +14,7 @@ export default (model: TransactionType): Schema => ({
 
   name: {
     content: model.name,
-    inputType: InputType.TEXT,
+    input: InputType.TEXT,
     meta: {
       required: true,
       maxlength: '255',

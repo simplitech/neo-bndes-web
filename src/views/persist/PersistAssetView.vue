@@ -6,7 +6,7 @@
       </h1>
     </section>
 
-    <section class="container fluid">
+    <section class="container small">
       <await init name="findAssetResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 

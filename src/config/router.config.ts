@@ -10,6 +10,7 @@
 
 import DefaultPanelLayout from '@/views/layouts/DefaultPanelLayout.vue'
 import DashboardView from '@/views/DashboardView.vue'
+import MyAccountView from '@/views/MyAccountView.vue'
 import SignInView from '@/views/SignInView.vue'
 import ResetPasswordView from '@/views/ResetPasswordView.vue'
 import RecoverPasswordView from '@/views/RecoverPasswordView.vue'
@@ -58,6 +59,7 @@ export const router = {
           name: 'dashboard',
           component: DashboardView,
         },
+        {path: '/my-account', component: MyAccountView},
         {path: '/transaction-type/list', component: ListTransactionTypeView},
         {path: '/admin/list', component: ListAdminView},
         {path: '/transaction-input/list', component: ListTransactionInputView},
