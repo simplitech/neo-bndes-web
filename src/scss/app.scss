@@ -14,6 +14,7 @@
 @import "palette";
 
 @import "components/sidebar";
+@import "components/navbar";
 
 .header {
   padding: 10px 30px;
@@ -80,5 +81,84 @@
         padding: #{$padding-base};
       }
     }
+  }
+}
+
+.label {
+  @extend .pal-primary.bg;
+  //@extend .pal-white-30.border;
+
+  display: flex;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 3px;
+
+  &.primary {
+    @extend .pal-primary.bg;
+    @extend .pal-white-50.text;
+
+    .label-prefix, .label-postfix {
+      @extend .pal-primary.bg.lighten;
+    }
+  }
+
+  &.secondary {
+    @extend .pal-secondary.bg;
+    @extend .pal-black-50.text;
+
+    .label-prefix, .label-postfix {
+      @extend .pal-secondary.bg.lighten;
+    }
+  }
+
+  &.success {
+    @extend .pal-success.bg;
+
+    .label-prefix, .label-postfix {
+      @extend .pal-success.bg.lighten;
+      @extend .pal-black-50.text;
+    }
+  }
+
+  &.warning {
+    @extend .pal-warning.bg;
+    @extend .pal-black-50.text;
+    //@extend .pal-black-30.border;
+
+    .label-prefix, .label-postfix {
+      @extend .pal-warning.bg.lighten;
+      //@extend .pal-black-30.border;
+    }
+  }
+
+  &.danger {
+    @extend .pal-danger.bg;
+
+    .label-prefix, .label-postfix {
+      @extend .pal-danger.bg.lighten;
+      @extend .pal-black-50.text;
+    }
+  }
+
+  .label-prefix, .label-postfix {
+    @extend .pal-primary.bg.lighten;
+    //@extend .pal-white-30.border;
+
+    font-weight: bold;
+    padding: 4px 8px;
+  }
+
+  .label-prefix {
+    //@extend .pal-white-30.border.right;
+
+    border-radius: 4px 0 0 4px;
+    margin: -4px 8px -4px -8px;
+  }
+
+  .label-postfix {
+    @extend .pal-white-30.border.left;
+
+    border-radius: 0 4px 4px 0;
+    margin: -4px -8px -4px 8px;
   }
 }

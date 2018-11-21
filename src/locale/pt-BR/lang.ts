@@ -176,6 +176,15 @@ export default {
     505: 'Http Version Not Supported',
   },
 
+  navbar: {
+    brand: 'NEO BNDES',
+    operations: 'Operações',
+    track: 'Rastreio',
+    companies: 'Empresas',
+    authorities: 'Autoridades',
+    myWallet: 'Minha Carteira',
+  },
+
   view: {
     signIn: {
       title: 'Fazer Login',
@@ -205,6 +214,9 @@ export default {
 
     myAccount: {
       title: 'Minha Conta',
+      walletNotFound: 'Carteira não encontrada',
+      openWallet: 'Abrir carteira',
+      createWallet: 'Criar carteira',
     },
   },
 

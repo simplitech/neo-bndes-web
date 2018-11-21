@@ -1,0 +1,236 @@
+@import "../variables";
+
+nav {
+  @extend .pal-tertiary.bg;
+  @extend .pal-white-50.text;
+  @extend .pal-black-50.box-shadow.deep-20;
+
+  position: relative;
+  width: 100vw;
+
+  font-size: 16px;
+
+  height: 100px;
+  display: flex;
+  align-content: center;
+
+  button, a, .btn {
+    @extend .contrast.flat;
+  }
+
+  .btn {
+    padding: 10px 24px;
+  }
+
+  > .container {
+    display: flex;
+    flex-flow: column nowrap;
+
+    @media screen and (max-width: $display-medium) {
+      flex: 1;
+    }
+
+    .level-1 {
+      display: flex;
+      align-content: flex-end;
+      height: 40px;
+      padding: 5px 0;
+
+      @media screen and (max-width: $display-medium) {
+        display: none;
+      }
+    }
+
+    .level-2 {
+      display: flex;
+      height: 60px;
+
+      @media screen and (max-width: $display-medium) {
+        flex: 1;
+      }
+    }
+  }
+
+  .brand {
+    @extend .pal-white.text;
+    margin: 16px 24px 16px 0;
+    display: flex;
+    align-items: center;
+    user-select: none;
+
+    .btn {
+      //padding: 0;
+      //background: none;
+
+      &:hover, &:focus {
+        //background: none;
+        //box-shadow: none;
+      }
+
+      img {
+        width: 150px;
+      }
+    }
+
+    @media screen and (max-width: $display-large) {
+      flex: 1;
+    }
+  }
+
+  .slot-1 {
+    flex: 1;
+    margin: auto 16px;
+    text-align: right;
+
+    @media screen and (max-width: $display-large) {
+      display: none;
+    }
+  }
+
+  .slot-2 {
+    flex: 0 auto;
+    margin: auto 16px;
+
+    li {
+      margin: auto $padding-base;
+    }
+
+    @media screen and (max-width: $display-small) {
+      display: none;
+    }
+  }
+
+  .slot-3 {
+    flex: 0 auto;
+    margin: auto 0 auto 16px;
+
+    li {
+      margin: auto $padding-base;
+    }
+
+    @media screen and (max-width: $display-small) {
+      display: none;
+    }
+  }
+
+  .menu-icon {
+    flex: 0 auto;
+    margin: auto 16px;
+    display: none;
+
+    @media screen and (max-width: $display-large) {
+      display: block;
+    }
+  }
+
+  ul {
+    display: inline-flex;
+    align-items: center;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    text-transform: uppercase;
+
+    li {
+      margin: auto 4px;
+      height: 100%;
+
+      &.active {
+        button, .btn {
+          @extend .pal-white.text;
+        }
+      }
+    }
+  }
+
+  &.sidebar {
+    @extend .pal-tertiary.bg;
+    @extend .pal-black.box-shadow;
+
+    position: fixed;
+    padding: 10px 0;
+    height: auto;
+    min-height: 100vh;
+
+    top: 0;
+    right: 0;
+    z-index: 4;
+
+    width: 50%;
+    max-width: 350px;
+    min-width: 250px;
+
+    flex-direction: column;
+
+    button, a, .btn {
+      @extend .contrast.flat;
+    }
+
+    .brand {
+      flex: 0;
+      text-align: center;
+      margin: 16px 24px;
+
+      button, .btn {
+        @extend .fluid;
+        margin: 0;
+      }
+    }
+    .slot-1 {
+      display: flex;
+      align-items: center;
+
+      ul {
+        display: block;
+        width: 100%;
+        li {
+          margin: 0;
+
+          button, .btn {
+            @extend .fluid;
+            text-align: right;
+          }
+        }
+      }
+    }
+    .slot-2 {
+      display: flex;
+      justify-content: center;
+
+      ul {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+    .slot-3 {
+      display: flex;
+      justify-content: center;
+
+      ul {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+    .menu-icon {
+      display: block
+    }
+  }
+
+}
+
+aside {
+  position: relative;
+
+  .outbound {
+    @extend .pal-black-80.bg;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+  }
+}
