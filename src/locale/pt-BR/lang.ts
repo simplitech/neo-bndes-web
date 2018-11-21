@@ -202,12 +202,22 @@ export default {
     dashboard: {
       title: 'Dashboard',
     },
+
+    persistAccount: {
+      friendlyName: 'Nome amigável',
+      password: 'Senha',
+      selectTheFile: 'Selecione o arquivo',
+      fillThePassword: 'Preencha a senha',
+      selectCertification: 'Selecione o Certificado',
+      missingCertificationData: 'Conteúdo do Certificado não encontrado',
+    },
   },
 
   persist: {
     number: 'Numérico',
     datetime: 'Data e Hora',
     submit: 'Enviar',
+    proceed: 'Prosseguir',
   },
 
   classes: {
@@ -276,6 +286,12 @@ export default {
       columns: {
         idAssetPk: 'Id Asset Pk',
         name: 'Name',
+      },
+    },
+    Account: {
+      title: 'Account',
+      columns: {
+
       },
     },
   },

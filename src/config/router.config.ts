@@ -21,6 +21,7 @@ import ListTransactionView from '@/views/list/ListTransactionView.vue'
 import ListBlockView from '@/views/list/ListBlockView.vue'
 import ListAssetView from '@/views/list/ListAssetView.vue'
 
+import PersistAccountView from '@/views/persist/PersistAccountView.vue'
 import PersistAdminView from '@/views/persist/PersistAdminView.vue'
 import PersistTransactionInputView from '@/views/persist/PersistTransactionInputView.vue'
 import PersistTransactionTypeView from '@/views/persist/PersistTransactionTypeView.vue'
@@ -58,6 +59,9 @@ export const router = {
           name: 'dashboard',
           component: DashboardView,
         },
+
+        {path: '/account/new', component: PersistAccountView},
+
         {path: '/transaction-type/list', component: ListTransactionTypeView},
         {path: '/admin/list', component: ListAdminView},
         {path: '/transaction-input/list', component: ListTransactionInputView},
