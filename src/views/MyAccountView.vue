@@ -1,7 +1,7 @@
 <template>
   <div>
-    <section class="header mb-20">
-      <h1 class="m-0">
+    <section class="header mb-20 py-10">
+      <h1 class="container">
         {{$t('view.myAccount.title')}}
       </h1>
     </section>
@@ -20,9 +20,9 @@
                 <button>
                   {{$t('view.myAccount.openWallet')}}
                 </button>
-                <button class="success">
+                <router-link to="/account/new" class="btn success">
                   {{$t('view.myAccount.createWallet')}}
-                </button>
+                </router-link>
               </div>
 
             </div>

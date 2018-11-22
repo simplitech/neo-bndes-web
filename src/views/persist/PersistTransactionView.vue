@@ -1,7 +1,7 @@
 <template>
   <div class="verti">
-    <section class="header">
-      <h1 class="m-0">
+    <section class="header mb-20 py-10">
+      <h1 class="container">
         {{ $t('classes.Transaction.title') }}
       </h1>
     </section>

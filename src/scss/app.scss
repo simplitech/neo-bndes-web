@@ -17,11 +17,15 @@
 @import "components/navbar";
 
 .header {
-  padding: 10px 30px;
+  color: white;
 
-  background: white;
+  background: darken($tertiary-color, 5);
   box-shadow: 2px 4px 20px -4px rgba(0, 0, 0, .4);
   z-index: 1;
+
+  h1 {
+    color: white;
+  }
 }
 
 .form-group {
@@ -54,6 +58,8 @@
 
   border-radius: $radius-base;
   padding: 0;
+  border-left: 4px solid $primary-color;
+  border-right: 4px solid $primary-color;
 
   &.intense {
     @extend .pal-black-30.box-shadow.deep-15;

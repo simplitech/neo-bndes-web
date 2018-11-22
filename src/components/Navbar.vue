@@ -27,7 +27,7 @@
 
         <div class="level-2">
           <div class="brand">
-            <router-link to="/" class="btn">
+            <router-link to="/">
               {{$t('navbar.brand')}}
             </router-link>
           </div>

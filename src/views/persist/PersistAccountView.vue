@@ -1,14 +1,14 @@
 <template>
   <div class="verti">
-    <section class="header">
-      <h1 class="m-0">
+    <section class="header mb-20 py-10">
+      <h1 class="container">
         {{ $t('classes.Account.title') }}
       </h1>
     </section>
 
-    <section class="container fluid">
+    <section class="container">
 
-      <div class="verti elevated padded items-center-top">
+      <div class="verti elevated padded items-center-top mb-30">
 
         <form v-if="!friendlyNames" class="verti items-center-top" @submit.prevent="loadFileAndPassword">
 
@@ -43,7 +43,7 @@
         </div>
 
         <div v-if="altNames.length && !neoAccount" class="w-full horiz gutter-30">
-          <form class="verti weight-1" @submit.prevent="createAccount">
+          <form class="verti weight-1 min-w-300 mb-30" @submit.prevent="createAccount">
             <h2>{{ $t('view.persistAccount.newAccount') }}</h2>
 
             <input
@@ -67,7 +67,7 @@
             <button type="submit" class="self-center primary">{{ $t('persist.proceed') }}</button>
           </form>
 
-          <form class="verti weight-1" @submit.prevent="importWif">
+          <form class="verti weight-1 min-w-300" @submit.prevent="importWif">
             <h2>{{ $t('view.persistAccount.importPrivateKey') }}</h2>
 
             <input
