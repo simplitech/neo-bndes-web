@@ -5,6 +5,7 @@
 @import "~simple-line-icons/scss/simple-line-icons";
 @import "~linelay/build";
 @import "~simpli-web-sdk/scss/main";
+@import "~simpli-web-sdk/scss/utils";
 /********************************************************/
 
 @import "base";
@@ -13,6 +14,7 @@
 @import "palette";
 
 @import "components/sidebar";
+@import "components/navbar";
 
 .header {
   padding: 10px 30px;
@@ -43,113 +45,6 @@
 
   .multiselect-label {
     font-weight: bold;
-  }
-}
-
-.display {
-  @extend .pal-black.text;
-
-  font-size: 36px;
-  font-weight: 600;
-  letter-spacing: 1px;
-
-  &.contrast {
-    @extend .pal-white.text;
-  }
-
-  @media screen and (max-width: $display-large) {
-    font-size: 32px;
-  }
-
-  @media screen and (max-width: $display-medium) {
-    font-size: 28px;
-  }
-
-  @media screen and (max-width: $display-small) {
-    font-size: 4.5vw;
-  }
-
-  &.huge {
-    font-size: 48px;
-
-    @media screen and (max-width: $display-large) {
-      font-size: 42px;
-    }
-
-    @media screen and (max-width: $display-medium) {
-      font-size: 36px;
-    }
-
-    @media screen and (max-width: $display-small) {
-      font-size: 5.5vw;
-    }
-  }
-
-  &.big {
-    font-size: 42px;
-
-    @media screen and (max-width: $display-large) {
-      font-size: 37px;
-    }
-
-    @media screen and (max-width: $display-medium) {
-      font-size: 32px;
-    }
-
-    @media screen and (max-width: $display-small) {
-      font-size: 5vw;
-    }
-  }
-
-  &.small {
-    font-size: 30px;
-    font-weight: 300;
-
-    @media screen and (max-width: $display-large) {
-      font-size: 27px;
-    }
-
-    @media screen and (max-width: $display-medium) {
-      font-size: 24px;
-    }
-
-    @media screen and (max-width: $display-small) {
-      font-size: 21px;
-    }
-  }
-
-  &.tiny {
-    font-size: 24px;
-    font-weight: 300;
-
-    @media screen and (max-width: $display-large) {
-      font-size: 22px;
-    }
-
-    @media screen and (max-width: $display-medium) {
-      font-size: 20px;
-    }
-
-    @media screen and (max-width: $display-small) {
-      font-size: 18px;
-    }
-  }
-
-  &.mini {
-    font-size: 18px;
-    font-weight: 300;
-
-    @media screen and (max-width: $display-large) {
-      font-size: 17px;
-    }
-
-    @media screen and (max-width: $display-medium) {
-      font-size: 16px;
-    }
-
-    @media screen and (max-width: $display-small) {
-      font-size: 15px;
-    }
   }
 }
 
@@ -189,114 +84,81 @@
   }
 }
 
-.row {
-  max-width: calc(100% + #{2 * $padding-base});
-  margin: -$padding-base;
-  margin-bottom: $padding-base;
+.label {
+  @extend .pal-primary.bg;
+  //@extend .pal-white-30.border;
 
-  .col {
-    padding: $padding-base;
-    margin: 0;
+  display: flex;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 3px;
 
-    &.inline {
-      padding-top: 0;
-      padding-bottom: 0;
+  &.primary {
+    @extend .pal-primary.bg;
+    @extend .pal-white-50.text;
+
+    .label-prefix, .label-postfix {
+      @extend .pal-primary.bg.lighten;
     }
   }
 
-  &.wide {
-    max-width: calc(100% + #{$padding-base * 4});
-    margin: -#{$padding-base * 2};
-    margin-bottom: #{$padding-base * 2};
+  &.secondary {
+    @extend .pal-secondary.bg;
+    @extend .pal-black-50.text;
 
-    .col {
-      padding: #{$padding-base * 2};
-
-      &.inline {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+    .label-prefix, .label-postfix {
+      @extend .pal-secondary.bg.lighten;
     }
   }
 
-  &.compact {
-    max-width: calc(100% + #{$padding-base});
-    margin: -#{$padding-base / 2};
-    margin-bottom: #{$padding-base / 2};
+  &.success {
+    @extend .pal-success.bg;
 
-    .col {
-      padding: #{$padding-base / 2};
-
-      &.inline {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+    .label-prefix, .label-postfix {
+      @extend .pal-success.bg.lighten;
+      @extend .pal-black-50.text;
     }
   }
 
-  @media only screen and (max-width: $display-small) {
-    &, &.compact, &.wide {
-      max-width: calc(100% + #{$padding-base / 2});
-      margin: -#{$padding-base / 4};
-      margin-bottom: #{$padding-base / 4};
+  &.warning {
+    @extend .pal-warning.bg;
+    @extend .pal-black-50.text;
+    //@extend .pal-black-30.border;
 
-      .col {
-        padding: #{$padding-base / 4};
-
-        &.inline {
-          padding-top: 0;
-          padding-bottom: 0;
-        }
-      }
+    .label-prefix, .label-postfix {
+      @extend .pal-warning.bg.lighten;
+      //@extend .pal-black-30.border;
     }
   }
-}
 
-.container {
-  width: $container-large-desktop;
-  margin: auto;
+  &.danger {
+    @extend .pal-danger.bg;
 
-  @media screen and (max-width: $display-extra-large) {
-    width: $container-desktop;
+    .label-prefix, .label-postfix {
+      @extend .pal-danger.bg.lighten;
+      @extend .pal-black-50.text;
+    }
   }
 
-  @media screen and (max-width: $display-large) {
-    width: $container-tablet;
+  .label-prefix, .label-postfix {
+    @extend .pal-primary.bg.lighten;
+    //@extend .pal-white-30.border;
+
+    font-weight: bold;
+    padding: 4px 8px;
   }
 
-  @media screen and (max-width: $display-medium) {
-    width: auto;
-    margin: auto 10px;
+  .label-prefix {
+    //@extend .pal-white-30.border.right;
+
+    border-radius: 4px 0 0 4px;
+    margin: -4px 8px -4px -8px;
   }
 
-  &.fluid {
-    width: auto;
-    margin: auto 80px;
+  .label-postfix {
+    @extend .pal-white-30.border.left;
 
-    &.wide {
-      margin: auto 200px;
-    }
-
-    @media screen and (max-width: $display-large) {
-      &.center-mobile {
-        text-align: center;
-      }
-
-      margin: auto 40px;
-      &.wide {
-        margin: auto 100px;
-      }
-    }
-
-    @media screen and (max-width: $display-medium) {
-      &.center-mobile {
-        text-align: center;
-      }
-
-      margin: auto 10px;
-      &.wide {
-        margin: auto 20px;
-      }
-    }
+    border-radius: 0 4px 4px 0;
+    margin: -4px -8px -4px 8px;
   }
 }

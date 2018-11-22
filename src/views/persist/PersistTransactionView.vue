@@ -6,11 +6,11 @@
       </h1>
     </section>
 
-    <section class="container fluid">
+    <section class="container small">
       <await init name="findTransactionResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 
-          <div v-for="(schemaRow, field) in model.transaction.$schema" :key="field" class="mb-15">
+          <div v-for="(field, i) in model.transaction.fieldsToInput" :key="i" class="mb-15">
             <resource-input v-model="model.transaction" :field="field" :selectItems="resource[field]"/>
           </div>
 

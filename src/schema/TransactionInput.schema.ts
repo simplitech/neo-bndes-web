@@ -10,17 +10,17 @@ import TransactionInput from '@/model/resource/TransactionInput'
 export default (model: TransactionInput): Schema => ({
   asset: {
     content: model.asset && model.asset.$id,
-    inputType: InputType.SELECT,
+    input: InputType.SELECT,
   },
 
   transaction1: {
     content: model.transaction1 && model.transaction1.$id,
-    inputType: InputType.SELECT,
+    input: InputType.SELECT,
   },
 
   transaction2: {
     content: model.transaction2 && model.transaction2.$id,
-    inputType: InputType.SELECT,
+    input: InputType.SELECT,
   },
 
   idTransactionInputPk: {
@@ -30,7 +30,7 @@ export default (model: TransactionInput): Schema => ({
 
   amount: {
     content: model.amount,
-    inputType: InputType.NUMBER,
+    input: InputType.NUMBER,
     meta: {
       required: true,
       step: '1',
@@ -39,23 +39,15 @@ export default (model: TransactionInput): Schema => ({
 
   spent: {
     content: bool(model.spent),
-    inputType: InputType.CHECKBOX,
+    input: InputType.CHECKBOX,
   },
 
   to: {
     content: model.to,
-    inputType: InputType.TEXT,
+    input: InputType.TEXT,
     meta: {
       required: true,
       maxlength: '255',
-    },
-  },
-
-  previousIdTransactionFk: {
-    content: model.previousIdTransactionFk,
-    inputType: InputType.NUMBER,
-    meta: {
-      step: '1',
     },
   },
 })

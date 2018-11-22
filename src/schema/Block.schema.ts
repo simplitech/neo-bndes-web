@@ -14,7 +14,7 @@ export default (model: Block): Schema => ({
 
   height: {
     content: model.height,
-    inputType: InputType.NUMBER,
+    input: InputType.NUMBER,
     meta: {
       required: true,
       step: '1',
@@ -23,7 +23,7 @@ export default (model: Block): Schema => ({
 
   hash: {
     content: model.hash,
-    inputType: InputType.NUMBER,
+    input: InputType.NUMBER,
     meta: {
       required: true,
       step: '1',
@@ -32,7 +32,7 @@ export default (model: Block): Schema => ({
 
   creationDate: {
     content: model.creationDate,
-    inputType: InputType.NUMBER,
+    input: InputType.NUMBER,
     meta: {
       required: true,
       step: '1',
@@ -41,7 +41,7 @@ export default (model: Block): Schema => ({
 
   sizeInBytes: {
     content: model.sizeInBytes,
-    inputType: InputType.NUMBER,
+    input: InputType.NUMBER,
     meta: {
       required: true,
       step: '1',

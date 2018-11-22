@@ -176,6 +176,15 @@ export default {
     505: 'Http Version Not Supported',
   },
 
+  navbar: {
+    brand: 'NEO BNDES',
+    operations: 'Operations',
+    track: 'Track',
+    companies: 'Companies',
+    authorities: 'Authorities',
+    myWallet: 'My Wallet',
+  },
+
   view: {
     signIn: {
       title: 'Sign-in',
@@ -201,6 +210,13 @@ export default {
 
     dashboard: {
       title: 'Dashboard',
+      walletNotFound: 'Wallet not found',
+      openWallet: 'Open wallet',
+      createWallet: 'Create wallet',
+    },
+
+    myAccount: {
+      title: 'My Account',
     },
   },
 

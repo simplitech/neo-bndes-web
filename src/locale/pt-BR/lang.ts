@@ -176,6 +176,15 @@ export default {
     505: 'Http Version Not Supported',
   },
 
+  navbar: {
+    brand: 'NEO BNDES',
+    operations: 'Operações',
+    track: 'Rastreio',
+    companies: 'Empresas',
+    authorities: 'Autoridades',
+    myWallet: 'Minha Carteira',
+  },
+
   view: {
     signIn: {
       title: 'Fazer Login',
@@ -202,7 +211,6 @@ export default {
     dashboard: {
       title: 'Dashboard',
     },
-
     persistAccount: {
       selectDigitalCertificate: 'Selecione seu certificado digital',
       friendlyName: 'Nome amigável',
@@ -225,6 +233,12 @@ export default {
       passwordDoesntMatch: 'As duas senhas informadas não são identicas',
       requestApproval: 'Solicitar aprovação',
       fillPrivateKey: 'Preencha a chave privada',
+    },
+    myAccount: {
+      title: 'Minha Conta',
+      walletNotFound: 'Carteira não encontrada',
+      openWallet: 'Abrir carteira',
+      createWallet: 'Criar carteira',
     },
   },
 

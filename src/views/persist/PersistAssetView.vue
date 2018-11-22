@@ -6,11 +6,11 @@
       </h1>
     </section>
 
-    <section class="container fluid">
+    <section class="container small">
       <await init name="findAssetResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 
-          <div v-for="(schemaRow, field) in model.asset.$schema" :key="field" class="mb-15">
+          <div v-for="(field, i) in model.asset.fieldsToInput" :key="i" class="mb-15">
             <resource-input v-model="model.asset" :field="field"/>
           </div>
 

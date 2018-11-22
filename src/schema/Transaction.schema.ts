@@ -9,12 +9,12 @@ import Transaction from '@/model/resource/Transaction'
 export default (model: Transaction): Schema => ({
   block: {
     content: model.block && model.block.$id,
-    inputType: InputType.SELECT,
+    input: InputType.SELECT,
   },
 
   transactionType: {
     content: model.transactionType && model.transactionType.$id,
-    inputType: InputType.SELECT,
+    input: InputType.SELECT,
   },
 
   idTransactionPk: {
@@ -24,7 +24,7 @@ export default (model: Transaction): Schema => ({
 
   hash: {
     content: model.hash,
-    inputType: InputType.TEXT,
+    input: InputType.TEXT,
     meta: {
       required: true,
       maxlength: '255',
@@ -33,7 +33,7 @@ export default (model: Transaction): Schema => ({
 
   from: {
     content: model.from,
-    inputType: InputType.TEXT,
+    input: InputType.TEXT,
     meta: {
       required: true,
       maxlength: '255',

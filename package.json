@@ -8,18 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@cityofzion/neon-js": "^4.2.0",
-    "@types/node-forge": "^0.7.8",
     "chart.js": "2.7.2",
     "chartkick": "3.0.1",
     "font-awesome": "4.7.0",
-    "jsrsasign": "^8.0.12",
     "linelay": "1.1.0",
-    "node-forge": "^0.7.6",
     "normalize-scss": "7.0.1",
     "register-service-worker": "1.5.2",
     "simple-line-icons": "2.4.1",
-    "simpli-web-sdk": "1.0.0",
+    "simpli-web-sdk": "^1.1.0",
     "vue": "^2.5.17",
     "vue-chartjs": "3.4.0",
     "vue-chartkick": "0.5.0",
@@ -32,7 +28,7 @@
     "vuex-class": "0.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.6",
+    "@babel/core": "^7.1.2",
     "@cypress/webpack-preprocessor": "^3.0.0",
     "@simpli/cli-scaffold": "1.5.1",
     "@vue/cli-plugin-babel": "^3.0.5",
@@ -41,7 +37,7 @@
     "@vue/cli-service": "^3.0.5",
     "babel-core": "7.0.0-bridge.0",
     "lint-staged": "^7.2.2",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "typescript": "^3.0.0",
     "vue-template-compiler": "^2.5.17"

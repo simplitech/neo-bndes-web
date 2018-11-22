@@ -20,7 +20,7 @@ body {
 main {
   @extend .pal-light-background.bg;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   min-height: 100vh;
 
   @media screen and (max-width: $display-small) {
@@ -30,7 +30,7 @@ main {
 
 header {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 h1, h2 ,h3, h4, h5, h6, p {
@@ -334,6 +334,7 @@ button, input[type=submit], .btn {
   letter-spacing: 1px;
   border: none;
   border-radius: 20px;
+  height: 35px;
   min-width: 90px;
   outline: none;
   cursor: pointer;
