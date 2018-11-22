@@ -8,9 +8,11 @@
 
     <section class="container fluid">
 
-      <div class="elevated padded items-center-top">
+      <div class="verti elevated padded items-center-top">
 
         <form v-if="!friendlyNames" class="verti items-center-top" @submit.prevent="loadFileAndPassword">
+
+          <h2>{{ $t('view.persistAccount.selectDigitalCertificate') }}</h2>
 
           <input
               type="file"
@@ -31,14 +33,99 @@
         </form>
 
         <select v-if="friendlyNames && !selectedFriendlyName" v-model="selectedFriendlyName">
-          <option :value="null">{{ $t('view.persistAccount.selectCertification') }}</option>
+          <option :value="null">{{ $t('view.persistAccount.selectCertificate') }}</option>
           <option v-for="opt in friendlyNames" :value="opt">{{ opt }}</option>
         </select>
 
-        <div class="verti">
+        <div v-if="altNames.length" class="verti mb-50">
+          <h2>{{ $t('view.persistAccount.certificateData') }}</h2>
           <div v-for="an in altNames">{{ an }}</div>
         </div>
 
+        <div v-if="altNames.length && !neoAccount" class="w-full horiz gutter-30">
+          <form class="verti weight-1" @submit.prevent="createAccount">
+            <h2>{{ $t('view.persistAccount.newAccount') }}</h2>
+
+            <input
+                type="text"
+                v-model="accountName"
+                class="w-full mb-15"
+                :placeholder="$t('view.persistAccount.newAccountName')"/>
+
+            <input
+                type="password"
+                v-model="accountPassword"
+                class="w-full mb-15"
+                :placeholder="$t('view.persistAccount.password')"/>
+
+            <input
+                type="password"
+                v-model="repeatAccountPassword"
+                class="w-full mb-15"
+                :placeholder="$t('view.persistAccount.repeatPassword')"/>
+
+            <button type="submit" class="self-center primary">{{ $t('persist.proceed') }}</button>
+          </form>
+
+          <form class="verti weight-1" @submit.prevent="importWif">
+            <h2>{{ $t('view.persistAccount.importPrivateKey') }}</h2>
+
+            <input
+              type="text"
+              v-model="accountName"
+              class="w-full mb-15"
+              :placeholder="$t('view.persistAccount.newAccountName')"/>
+
+            <input
+                type="password"
+                v-model="wif"
+                class="w-full mb-15"
+                :placeholder="$t('view.persistAccount.privateKey')"/>
+
+            <input
+                type="password"
+                v-model="accountPassword"
+                class="w-full mb-15"
+                :placeholder="$t('view.persistAccount.password')"/>
+
+            <input
+                type="password"
+                v-model="repeatAccountPassword"
+                class="w-full mb-15"
+                :placeholder="$t('view.persistAccount.repeatPassword')"/>
+
+            <button type="submit" class="self-center primary">{{ $t('persist.proceed') }}</button>
+          </form>
+        </div>
+
+        <div v-if="neoAccount" class="verti">
+          <h2>{{ $t('view.persistAccount.newAccountName') }}</h2>
+          <div class="text-center mb-50">{{ accountName }}</div>
+
+          <h2>{{ $t('view.persistAccount.blockchainInfo') }}</h2>
+          <div class="horiz">
+            <b class="w-100">{{ $t('view.persistAccount.publicKey') }}</b>
+            <span>{{ neoAccount.publicKey }}</span>
+          </div>
+          <div class="horiz">
+            <b class="w-100">{{ $t('view.persistAccount.encryptedWif') }}</b>
+            <span>{{ encryptedWif }}</span>
+          </div>
+          <div class="horiz">
+            <b class="w-100">{{ $t('view.persistAccount.privateKey') }}</b>
+            <span>{{ neoAccount.privateKey }}</span>
+          </div>
+          <div class="horiz">
+            <b class="w-100">{{ $t('view.persistAccount.address') }}</b>
+            <span>{{ neoAccount.address }}</span>
+          </div>
+          <div class="horiz mb-50">
+            <b class="w-100">{{ $t('view.persistAccount.scriptHash') }}</b>
+            <span>{{ neoAccount.scriptHash }}</span>
+          </div>
+
+          <button class="primary">{{ $t('view.persistAccount.requestApproval') }}</button>
+        </div>
       </div>
 
     </section>
@@ -49,6 +136,7 @@
   import forge from 'node-forge'
   import { RSAKey } from 'jsrsasign'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
+  import { wallet } from '@cityofzion/neon-js'
   import {$, successAndPush, error } from '@/simpli'
   import Account from '@/model/Account'
 
@@ -74,6 +162,14 @@
     selectedFriendlyName: string | null = null
 
     altNames: string[] = []
+
+    accountName: string | null = null
+    accountPassword: string | null = null
+    repeatAccountPassword: string | null = null
+
+    wif: string | null = null
+    neoAccount: any | null = null
+    encryptedWif: string | null = null
 
     onInputFileChange(e: HTMLInputEvent) {
       if (!e || !e.target || !e.target.files) return
@@ -136,7 +232,7 @@
       if (this.selectedFriendlyName && this.content) {
         const keyContainer = this.content.getBags({friendlyName: this.selectedFriendlyName}).friendlyName
         if (!keyContainer) {
-          error('view.persistAccount.missingCertificationData')
+          error('view.persistAccount.missingCertificateData')
           return
         }
 
@@ -160,6 +256,31 @@
           this.altNames.push(an.value)
         }
       })
+    }
+
+    async createAccount() {
+      this.wif = wallet.generatePrivateKey()
+      await this.importWif()
+    }
+
+    async importWif() {
+      if (!this.wif || !this.wif.length) {
+        error('view.persistAccount.fillPrivateKey')
+        return
+      }
+
+      if (!this.accountPassword || !this.accountPassword.length) {
+        error('view.persistAccount.fillThePassword')
+        return
+      }
+
+      if (this.accountPassword !== this.repeatAccountPassword) {
+        error('view.persistAccount.passwordDoesntMatch')
+        return
+      }
+
+      this.neoAccount = new wallet.Account(this.wif)
+      this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword)
     }
 
     async persist() {
