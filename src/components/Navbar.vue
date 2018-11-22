@@ -61,6 +61,7 @@
             <ul>
               <li>
                 <router-link class="btn" to="/my-account">
+                  <i class="icon icon-wallet"></i>
                   {{$t('navbar.myWallet')}}
                 </router-link>
               </li>

@@ -211,6 +211,7 @@ export default {
     dashboard: {
       title: 'Dashboard',
     },
+
     persistAccount: {
       selectDigitalCertificate: 'Selecione seu certificado digital',
       friendlyName: 'Nome amigável',
@@ -234,11 +235,20 @@ export default {
       requestApproval: 'Solicitar aprovação',
       fillPrivateKey: 'Preencha a chave privada',
     },
+
     myAccount: {
       title: 'Minha Conta',
       walletNotFound: 'Carteira não encontrada',
       openWallet: 'Abrir carteira',
       createWallet: 'Criar carteira',
+    },
+
+    myWallet: {
+      title: 'Minha Carteira',
+      createNewAccount: 'Cadastrar nova conta',
+      import: 'Cadastrar nova conta',
+      closeWallet: 'Fechar carteira',
+      withdraw: 'Resgatar',
     },
   },
 
@@ -320,7 +330,20 @@ export default {
     Account: {
       title: 'Account',
       columns: {
-
+        password: 'Senha',
+        pkcs12Der: 'Pkcs12Der',
+        content: 'Conteúdo',
+        selectedFriendlyName: 'Nome amigável',
+        altNames: 'Nome alternativo',
+        accountName: 'Nome da Conta',
+        accountPassword: 'Senha',
+        repeatAccountPassword: 'Repetir Senha',
+        wif: 'WIF',
+        neoAccount: 'Conta NEO',
+        encryptedWif: 'WIF criptografado',
+        blockchainAddress: 'Endereço Blockchain',
+        certificateInfo: 'Informações do Certificado',
+        amount: 'Saldo',
       },
     },
   },

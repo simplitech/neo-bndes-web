@@ -31,6 +31,7 @@
 .form-group {
   display: flex;
   flex-flow: column nowrap;
+  margin-bottom: #{$padding-base * 2};
 
   &.required {
     .control-label:after, .multiselect-label:after {
@@ -95,13 +96,35 @@
   //@extend .pal-white-30.border;
 
   display: flex;
+  align-items: center;
   border-radius: 4px;
   padding: 4px 8px;
   margin: 0 3px;
 
+  font-size: 16px;
+
+  &.input {
+    margin-top: 18px;
+    margin-bottom: #{$padding-base * 2};
+  }
+
+  &.big {
+    height: 41px;
+
+    .label-prefix {
+      height: 41px;
+      line-height: 32px;
+    }
+
+    .label-postfix {
+      height: 35px;
+      line-height: 26px;
+    }
+  }
+
   &.primary {
     @extend .pal-primary.bg;
-    @extend .pal-white-50.text;
+    @extend .pal-black-50.text;
 
     .label-prefix, .label-postfix {
       @extend .pal-primary.bg.lighten;
@@ -119,6 +142,7 @@
 
   &.success {
     @extend .pal-success.bg;
+    @extend .pal-white-50.text;
 
     .label-prefix, .label-postfix {
       @extend .pal-success.bg.lighten;
@@ -139,6 +163,7 @@
 
   &.danger {
     @extend .pal-danger.bg;
+    @extend .pal-white-50.text;
 
     .label-prefix, .label-postfix {
       @extend .pal-danger.bg.lighten;

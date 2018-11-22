@@ -2,7 +2,7 @@ import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import * as types from '@/store/mutation-types'
 import {AuthState, RootState} from '@/types/store'
 import {$, push, successAndPush, errorAndPush, infoAndPush} from '@/simpli'
-import LoginSerialized from '@/model/LoginSerialized'
+import LoginSerialized from '@/model/request/LoginSerialized'
 import LoginResp from '@/model/response/LoginResp'
 import Admin from '@/model/resource/Admin'
 

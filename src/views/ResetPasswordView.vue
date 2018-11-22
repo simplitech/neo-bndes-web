@@ -25,7 +25,7 @@
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator'
   import { State, Action, Getter } from 'vuex-class'
-  import LoginSerialized from '@/model/LoginSerialized'
+  import LoginSerialized from '@/model/request/LoginSerialized'
 
   @Component
   export default class ResetPasswordView extends Vue {

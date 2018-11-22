@@ -2,13 +2,13 @@
  * LoginSerialized
  * @author Simpli© CLI generator
  */
-import {$, Model, encrypt, sleep} from '@/simpli'
+import {$, Model, encrypt, sleep} from '../../simpli'
 import {
   ResponseHidden,
   ValidationEmail,
   ValidationMaxLength,
   ValidationPasswordLength,
-} from '@/simpli'
+} from '../../simpli'
 
 /* TODO: review generated class */
 export default class LoginSerialized extends Model {
