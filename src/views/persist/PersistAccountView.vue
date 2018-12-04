@@ -184,8 +184,8 @@
         abort('view.persistAccount.fillThePassword')
       }
 
-      const pkcs12Asn1 = forge.asn1.fromDer(this.account.pkcs12Der)
-      this.account.content = forge.pkcs12.pkcs12FromAsn1(pkcs12Asn1, false, this.account.password)
+      const pkcs12Asn1 = forge.asn1.fromDer(this.account.pkcs12Der || '')
+      this.account.content = forge.pkcs12.pkcs12FromAsn1(pkcs12Asn1, false, this.account.password || '')
 
       const preFriendlyNames = this.account.content.safeContents.reduce((arr: string[], sc) => [
         ...arr,
@@ -214,7 +214,7 @@
           abort('view.persistAccount.missingCertificateData')
         }
 
-        keyContainer.forEach((kc) => {
+        keyContainer!!.forEach((kc) => {
           if (kc.cert) {
             const extension: any = kc.cert.getExtension('subjectAltName')
 
@@ -254,8 +254,8 @@
         abort('view.persistAccount.passwordDoesntMatch')
       }
 
-      this.account.neoAccount = new wallet.Account(this.account.wif)
-      this.account.encryptedWif = await wallet.encrypt(this.account.wif, this.account.accountPassword)
+      this.account.neoAccount = new wallet.Account(this.account.wif || '')
+      this.account.encryptedWif = await wallet.encrypt(this.account.wif || '', this.account.accountPassword || '')
     }
 
     async persistAccount() {
