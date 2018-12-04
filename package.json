@@ -10,6 +10,8 @@
   "dependencies": {
     "@cityofzion/neon-js": "^4.2.0",
     "@types/node-forge": "^0.7.8",
+    "jsrsasign": "^8.0.12",
+    "node-forge": "^0.7.6",
     "chart.js": "2.7.2",
     "chartkick": "3.0.1",
     "font-awesome": "4.7.0",

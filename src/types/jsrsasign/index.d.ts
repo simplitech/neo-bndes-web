@@ -1,5 +1,6 @@
 declare module 'jsrsasign' {
-  interface RSAKey {
-    readPrivateKeyFromPEMString(pem: string): string
+  class RSAKey {
+    readPrivateKeyFromPEMString: (pem: string | null) => void
+    sign: (subject: string, encode: string) => any
   }
 }

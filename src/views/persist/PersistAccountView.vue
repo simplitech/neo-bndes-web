@@ -119,9 +119,13 @@
             <b class="w-100">{{ $t('view.persistAccount.address') }}</b>
             <span>{{ neoAccount.address }}</span>
           </div>
-          <div class="horiz mb-50">
+          <div class="horiz">
             <b class="w-100">{{ $t('view.persistAccount.scriptHash') }}</b>
             <span>{{ neoAccount.scriptHash }}</span>
+          </div>
+          <div class="horiz mb-50">
+            <b class="w-100">Signature</b>
+            <span style="word-wrap:break-word" class="max-w-300">{{ signature }}</span>
           </div>
 
           <button class="primary">{{ $t('view.persistAccount.requestApproval') }}</button>
@@ -134,10 +138,10 @@
 
 <script lang="ts">
   import forge from 'node-forge'
-  import { RSAKey } from 'jsrsasign'
+  import {RSAKey} from 'jsrsasign'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-  import { wallet } from '@cityofzion/neon-js'
-  import {$, successAndPush, error } from '@/simpli'
+  import {wallet} from '@cityofzion/neon-js'
+  import {$, successAndPush, error} from '@/simpli'
   import Account from '@/model/Account'
 
   interface HTMLInputEvent extends Event {
@@ -161,6 +165,9 @@
 
     selectedFriendlyName: string | null = null
 
+    key: any | null = null
+    cert: any | null = null
+    privatePem: string | null = null
     altNames: string[] = []
 
     accountName: string | null = null
@@ -170,6 +177,8 @@
     wif: string | null = null
     neoAccount: any | null = null
     encryptedWif: string | null = null
+
+    signature: any | null = null
 
     onInputFileChange(e: HTMLInputEvent) {
       if (!e || !e.target || !e.target.files) return
@@ -237,7 +246,13 @@
         }
 
         keyContainer.forEach((kc) => {
+          if (kc.key && !this.privatePem) {
+            this.key = kc.key
+            this.privatePem = forge.pki.privateKeyToPem(kc.key)
+          }
+
           if (kc.cert) {
+            this.cert = kc.cert
             const extension: any = kc.cert.getExtension('subjectAltName')
 
             if (extension) {
@@ -281,6 +296,56 @@
 
       this.neoAccount = new wallet.Account(this.wif)
       this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword)
+
+      this.signature = this.signPkcs7(this.cert, this.key, this.neoAccount.scriptHash)
+    }
+
+    signRsa(pem: any, content: any) {
+      const rsa = new RSAKey()
+      rsa.readPrivateKeyFromPEMString(pem || '')
+      return rsa.sign(content, 'sha256')
+    }
+
+    signCAdES(certPEM: any, pkcs8PrvKeyPEM: any, content: any) {
+//      const sd = KJUR.asn1.cms.CMSUtil.newSignedData({
+//        content,
+//        certs: [certPEM],
+//        signerInfos: [{
+//          hashAlg: 'sha256',
+//          sAttr: {SigningCertificateV2: {array: [certPEM]}},
+//          signerCert: certPEM,
+//          sigAlg: 'SHA256withRSA',
+//          signerPrvKey: pkcs8PrvKeyPEM,
+//        }],
+//      })
+//
+//      const signedDataHex = sd.getContentInfoEncodedHex()
+//      return signedDataHex
+    }
+
+    signPkcs7(certOrCertPem: any, privateKeyAssociatedWithCert: any, content: any) {
+      const p7 = forge.pkcs7.createSignedData()
+      p7.content = forge.util.createBuffer(content, 'utf8')
+      p7.addCertificate(certOrCertPem)
+      p7.addSigner({
+        key: privateKeyAssociatedWithCert,
+        certificate: certOrCertPem,
+        digestAlgorithm: forge.pki.oids.sha256,
+        authenticatedAttributes: [{
+          type: forge.pki.oids.contentType,
+          value: forge.pki.oids.data,
+        }, {
+          type: forge.pki.oids.messageDigest,
+          // value will be auto-populated at signing time
+        }, {
+          type: forge.pki.oids.signingTime,
+          // value can also be auto-populated at signing time
+          value: new Date().toString(),
+        }],
+      })
+      p7.sign({ detached: true })
+//      const pem = forge.pkcs7.messageToPem(p7)
+      return null
     }
 
     async persist() {
