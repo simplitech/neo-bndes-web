@@ -33,6 +33,10 @@ header {
   z-index: 2;
 }
 
+hr {
+  margin: #{$padding-base * 3} 0;
+}
+
 h1, h2 ,h3, h4, h5, h6, p {
   @extend .pal-black-70.text;
   @extend .f-600;
@@ -730,6 +734,10 @@ button, input[type=submit], .btn {
       @extend .pal-secondary.box-shadow.highlight;
     }
   }
+}
+
+textarea {
+  height: 100%;
 }
 
 .transition {

@@ -1,5 +1,5 @@
 import {store} from '@/store'
-import LoginSerialized from '@/model/LoginSerialized'
+import LoginSerialized from '@/model/request/LoginSerialized'
 
 export const isLogged = () => store.getters['auth/isLogged']
 export const getToken = () => store.getters['auth/token']
