@@ -128,7 +128,7 @@
             <span style="word-wrap:break-word" class="max-w-300">{{ signature }}</span>
           </div>
 
-          <button class="primary">{{ $t('view.persistAccount.requestApproval') }}</button>
+          <button @click="requestApproval" class="primary" :disabled="!signature">{{ $t('view.persistAccount.requestApproval') }}</button>
         </div>
       </div>
 
@@ -139,6 +139,7 @@
 <script lang="ts">
   import forge from 'node-forge'
   import {RSAKey} from 'jsrsasign'
+  import * as asn1js from 'asn1js'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
   import {wallet} from '@cityofzion/neon-js'
   import {$, successAndPush, error} from '@/simpli'
@@ -165,8 +166,8 @@
 
     selectedFriendlyName: string | null = null
 
-    key: any | null = null
-    cert: any | null = null
+    key: forge.pki.PrivateKey | null = null
+    cert: forge.pki.Certificate | null = null
     privatePem: string | null = null
     altNames: string[] = []
 
@@ -239,7 +240,9 @@
     @Watch('selectedFriendlyName')
     loadCert() {
       if (this.selectedFriendlyName && this.content) {
-        const keyContainer = this.content.getBags({friendlyName: this.selectedFriendlyName}).friendlyName
+        const keyContainer: forge.pkcs12.Bag[] | undefined = this.content
+          .getBags({friendlyName: this.selectedFriendlyName}).friendlyName
+
         if (!keyContainer) {
           error('view.persistAccount.missingCertificateData')
           return
@@ -297,7 +300,9 @@
       this.neoAccount = new wallet.Account(this.wif)
       this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword)
 
-      this.signature = this.signPkcs7(this.cert, this.key, this.neoAccount.scriptHash)
+      if (this.cert && this.key) {
+        this.signature = this.signPkcs7(this.cert, this.key, this.neoAccount.scriptHash)
+      }
     }
 
     signRsa(pem: any, content: any) {
@@ -306,7 +311,7 @@
       return rsa.sign(content, 'sha256')
     }
 
-    signCAdES(certPEM: any, pkcs8PrvKeyPEM: any, content: any) {
+//    signCAdES(certPEM: any, pkcs8PrvKeyPEM: any, content: any) {
 //      const sd = KJUR.asn1.cms.CMSUtil.newSignedData({
 //        content,
 //        certs: [certPEM],
@@ -321,9 +326,33 @@
 //
 //      const signedDataHex = sd.getContentInfoEncodedHex()
 //      return signedDataHex
-    }
+//    }
+//
+//    signCAdES2(buffer, certificate, privateKey) {
+//      const cmsSigned = new SignedData({
+//        encapContentInfo: new EncapsulatedContentInfo({
+//          eContentType: '1.2.840.113549.1.7.1', // "data" content type
+//          eContent: new asn1js.OctetString({ valueHex: buffer }),
+//        }),
+//        signerInfos: [
+//          new SignerInfo({
+//            sid: new IssuerAndSerialNumber({
+//              issuer: certificate.issuer,
+//              serialNumber: certificate.serialNumber,
+//            }),
+//          }),
+//        ],
+//        certificates: [certificate],
+//      })
+//
+//      return cmsSigned.sign(privateKey, 0, 'sha-256')
+//    }
+//
+    signPkcs7(
+      certOrCertPem: forge.pki.Certificate,
+      privateKeyAssociatedWithCert: forge.pki.PrivateKey,
+      content: string) {
 
-    signPkcs7(certOrCertPem: any, privateKeyAssociatedWithCert: any, content: any) {
       const p7 = forge.pkcs7.createSignedData()
       p7.content = forge.util.createBuffer(content, 'utf8')
       p7.addCertificate(certOrCertPem)
@@ -336,22 +365,18 @@
           value: forge.pki.oids.data,
         }, {
           type: forge.pki.oids.messageDigest,
-          // value will be auto-populated at signing time
         }, {
           type: forge.pki.oids.signingTime,
-          // value can also be auto-populated at signing time
-          value: new Date().toString(),
         }],
       })
       p7.sign({ detached: true })
-//      const pem = forge.pkcs7.messageToPem(p7)
-      return null
+      const pem = forge.pkcs7.messageToPem(p7)
+      return pem
     }
 
-    async persist() {
-      await this.model.validate()
-      await this.model.save()
-      successAndPush('system.success.persist', '/admin/list')
+    requestApproval() {
+      // TODO
     }
+
   }
 </script>
