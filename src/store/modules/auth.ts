@@ -1,17 +1,13 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
-import * as types from '@/store/mutation-types'
 import {AuthState, RootState} from '@/types/store'
-import {$, push, successAndPush, errorAndPush, infoAndPush} from '@/simpli'
-import LoginSerialized from '@/model/request/LoginSerialized'
-import LoginResp from '@/model/response/LoginResp'
-import Admin from '@/model/resource/Admin'
+import {$, abort, push, errorAndPush, infoAndPush} from '@/simpli'
+import AuthRequest from '@/model/request/AuthRequest'
+import {wallet} from '@cityofzion/neon-js'
 
 // initial state
 const state: AuthState = {
-  token: undefined,
-  id: undefined,
-  admin: new Admin(),
-  unauthenticatedPath: undefined,
+  wif: null,
+  userWallet: null,
   eventListener: {
     signIn: [],
     auth: [],
@@ -21,41 +17,37 @@ const state: AuthState = {
 
 // getters
 const getters: GetterTree<AuthState, RootState> = {
-  isLogged: ({id, token}) => !!id && !!token,
-  token: ({token}) => token,
-  id: ({id}) => id,
-  admin: ({admin}) => admin,
-  unauthenticatedPath: ({unauthenticatedPath}) => unauthenticatedPath,
+  isLogged: ({wif}) => !!wif,
+  wif: ({wif}) => wif,
+  userWallet: ({userWallet}) => userWallet,
 }
 
 // actions
 const actions: ActionTree<AuthState, RootState> = {
   /**
    * Sign in account
-   * @param state
-   * @param commit
    * @param getters
-   * @param model format => model: { account, password } (non-encrypted)
+   * @param dispatch
+   * @param request
    */
-  signIn: async ({state, commit, getters}, model: LoginSerialized) => {
-    const loginResp = new LoginResp()
+  signIn: async ({getters, commit}, request: AuthRequest) => {
+    await request.validate()
 
-    await loginResp.signIn(model, 'signIn', 1000)
+    const encryptedWIF = request.encryptedWIF || ''
+    const passphrase = request.passphrase || ''
 
-    if (loginResp.token) localStorage.setItem('token', loginResp.token)
-    if (loginResp.id) localStorage.setItem('id', loginResp.id as string)
-    if (loginResp.admin) localStorage.setItem('admin', JSON.stringify(loginResp.admin))
-
-    commit(types.POPULATE)
-
-    if (getters!.unauthenticatedPath && $.route.name !== 'signIn') {
-      infoAndPush('system.info.welcome', getters!.unauthenticatedPath)
-    } else {
-      infoAndPush('system.info.welcome', '/dashboard')
+    if (!wallet.isNEP2(encryptedWIF || '')) {
+      abort('system.error.invalidEncryptedWif')
     }
-    commit(types.SET_UNAUTHENTICATED_PATH, undefined)
 
-    state.eventListener.signIn.forEach((item) => item(loginResp))
+    const wif = await wallet.decrypt(encryptedWIF, passphrase)
+    if (wif) localStorage.setItem('wif', wif)
+
+    commit('POPULATE')
+
+    infoAndPush('system.info.welcome', '/dashboard')
+
+    state.eventListener.signIn.forEach((item) => item(getters.userWallet))
   },
 
   /**
@@ -66,17 +58,11 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param getters
    */
   auth: async ({dispatch, commit, getters}) => {
-    commit(types.POPULATE)
+    commit('POPULATE')
 
     if (getters.isLogged) {
-      const loginResp = new LoginResp()
-
-      await loginResp.auth()
-
-      dispatch('refresh', loginResp)
-      state.eventListener.auth.forEach((item) => item(loginResp))
+      state.eventListener.auth.forEach((item) => item(getters.userWallet))
     } else {
-      commit(types.SET_UNAUTHENTICATED_PATH, $.route.path)
       dispatch('signOut', true)
     }
   },
@@ -91,41 +77,8 @@ const actions: ActionTree<AuthState, RootState> = {
     if (showError) errorAndPush('system.error.unauthorized', '/signIn')
     else push('/signIn')
 
-    commit(types.FORGET)
+    commit('FORGET')
     state.eventListener.signOut.forEach((item) => item())
-  },
-
-  /**
-   * Reset password
-   * @param context
-   * @param model
-   */
-  resetPassword: async (context, model: LoginSerialized) => {
-    await new LoginResp(Number).resetPassword(model)
-    successAndPush('system.success.resetPassword', '/signIn')
-  },
-
-  /**
-   * Recover password
-   * @param context
-   * @param model
-   */
-  recoverPassword: async (context, model: LoginSerialized) => {
-    await new LoginResp(String).recoverPassword(model)
-    successAndPush('system.success.recoverPassword', '/signIn')
-  },
-
-  /**
-   * Refresh user info
-   * @param commit
-   * @param data
-   */
-  refresh: ({commit}, data: LoginResp) => {
-    if (data.token) localStorage.setItem('token', data.token)
-    if (data.id) localStorage.setItem('id', data.id as string)
-    if (data.admin) localStorage.setItem('admin', JSON.stringify(data.admin))
-
-    commit(types.POPULATE)
   },
 
   /**
@@ -154,48 +107,43 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param commit
    * @param payload {name, callback}
    */
-  addEventListener: ({commit}, payload) => commit(types.ADD_EVENT_LISTENER, payload),
+  addEventListener: ({commit}, payload) => commit('ADD_EVENT_LISTENER', payload),
 
   /**
    * Remove event listener
    * @param commit
    * @param payload
    */
-  removeEventListener: ({commit}, payload) => commit(types.REMOVE_EVENT_LISTENER, payload),
+  removeEventListener: ({commit}, payload) => commit('REMOVE_EVENT_LISTENER', payload),
 }
 
 // mutations
 const mutations: MutationTree<AuthState> = {
   // Populate mutation
-  [types.POPULATE](state) {
-    const token = localStorage.getItem('token')!
-    const id = localStorage.getItem('id')!
-    const admin = JSON.parse(localStorage.getItem('admin')!)
+  POPULATE(state) {
+    const wif = localStorage.getItem('wif') || null
 
-    state.token = token
-    state.id = id
-    state.admin = admin
+    const userWallet = wif ? new wallet.Account(wif) : null
+
+    state.wif = wif
+    state.userWallet = userWallet
   },
+
   // Forget mutation
-  [types.FORGET](state) {
-    state.token = undefined
-    state.id = undefined
-    state.admin = new Admin()
+  FORGET(state) {
+    state.wif = null
+    state.userWallet = null
 
-    localStorage.removeItem('token')
-    localStorage.removeItem('id')
-    localStorage.removeItem('admin')
+    localStorage.removeItem('wif')
   },
-  // Set UnauthenticatedPath mutation
-  [types.SET_UNAUTHENTICATED_PATH](state, val) {
-    state.unauthenticatedPath = val
-  },
+
   // Add Event Listener mutation
-  [types.ADD_EVENT_LISTENER](state, {name, callback}) {
+  ADD_EVENT_LISTENER(state, {name, callback}) {
     state.eventListener[name].push(callback)
   },
+
   // Remove Event Listener mutation
-  [types.REMOVE_EVENT_LISTENER](state, {name, callback}) {
+  REMOVE_EVENT_LISTENER(state, {name, callback}) {
     if (callback) {
       const index = state.eventListener[name].findIndex((item) => item === callback)
       state.eventListener[name].splice(index, 1)

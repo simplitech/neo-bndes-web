@@ -56,6 +56,7 @@ export default {
       persist: 'Persisted Successfully!',
     },
     error: {
+      invalidEncryptedWif: 'Invalid Encrypted Key',
       unauthorized: 'Restricted Access',
       noServer: 'Could not connect to server',
       validation: 'Validation error',
@@ -188,8 +189,8 @@ export default {
   view: {
     signIn: {
       title: 'Sign-in',
-      account: 'Account',
-      password: 'Password',
+      passphrase: 'Passphrase',
+      encryptedWIF: 'Encrypted WIF',
       signin: 'Sign in',
       forgotPassword: 'Forgot password',
     },
@@ -311,6 +312,13 @@ export default {
         hash: 'Hash',
         creationDate: 'Creation Date',
         sizeInBytes: 'Size In Bytes',
+      },
+    },
+    AuthRequest: {
+      title: 'Auth Request',
+      columns: {
+        passphrase: 'Passphrase',
+        encryptedWIF: 'Encrypted WIF',
       },
     },
     LoginSerialized: {

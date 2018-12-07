@@ -87,12 +87,16 @@
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
-  import {hexstring2str, successAndPush, testInvoke} from '@/simpli'
-  import Account from '@/model/Account'
+  import {Action, Getter} from 'vuex-class'
+  import {doInvoke, hexstring2str, reverseHex, str2hexstring, successAndPush, testInvoke} from '@/simpli'
+  import { Account } from '@cityofzion/neon-core/lib/wallet'
+  // import Account from '@/model/Account'
 
   @Component
   export default class MyWalletView extends Vue {
-    account = new Account()
+    @Getter('auth/userWallet') userWallet!: Account
+
+    account = {}
 
     amount = 1000
     blockchainAddress = 'WtXh3ryloPmU0WhfwWDIHm0mF4oM4EMF'
@@ -109,20 +113,22 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
 `
 
     async persistAccount() {
-      await this.account.persist()
+      // await this.account.persist()
       successAndPush('system.success.persist', '/admin/list')
     }
 
     async mounted() {
+      const {userWallet} = this
+
       const simplipay = {
-        symbol: await testInvoke('symbol'),
-        name: await testInvoke('name'),
-        decimals: await testInvoke('decimals'),
-        // account: await testInvoke('getAccount'),
+        // symbol: await testInvoke('symbol'),
+        // name: await testInvoke('name'),
+        // decimals: await testInvoke('decimals'),
+        // account: await testInvoke('getAccount', str2hexstring(userWallet.scriptHash)),
         // accountStatus: await testInvoke('getAccountStatus'),
         // registerRegularAccount: await testInvoke('registerRegularAccount'),
         // approveRegularAccount: await testInvoke('approveRegularAccount'),
-        // registerMasterAccount: await testInvoke('registerMasterAccount'),
+        registerMasterAccount: await doInvoke('registerMasterAccount'),
         // removeMasterAccount: await testInvoke('removeMasterAccount'),
         // masterAccountStatus: await testInvoke('masterAccountStatus'),
         // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
@@ -131,13 +137,10 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
         // transfer: await testInvoke('transfer'),
       }
 
-      const symbol = hexstring2str(simplipay.symbol.result)
-      const name = hexstring2str(simplipay.name.result)
-      const decimals = simplipay.decimals.result
+      // const symbol = hexstring2str(simplipay.symbol.result)
+      // const account = simplipay.account
 
-      console.log(symbol)
-      console.log(name)
-      console.log(decimals)
+      // console.log(account)
     }
   }
 </script>
