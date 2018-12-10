@@ -82,7 +82,7 @@ nav {
     margin: auto 16px;
     text-align: right;
 
-    @media screen and (max-width: $display-large) {
+    @media screen and (max-width: $display-extra-large) {
       display: none;
     }
   }
@@ -108,7 +108,7 @@ nav {
       margin: auto $padding-base;
     }
 
-    @media screen and (max-width: $display-small) {
+    @media screen and (max-width: $display-extra-large) {
       display: none;
     }
   }

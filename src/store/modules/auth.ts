@@ -40,8 +40,12 @@ const actions: ActionTree<AuthState, RootState> = {
       abort('system.error.invalidEncryptedWif')
     }
 
-    const wif = await wallet.decrypt(encryptedWIF, passphrase)
-    if (wif) localStorage.setItem('wif', wif)
+    const fetch = async () => {
+      const wif = await wallet.decrypt(encryptedWIF, passphrase)
+      if (wif) localStorage.setItem('wif', wif)
+    }
+
+    await $.await.run(fetch, 'signIn')
 
     commit('POPULATE')
 

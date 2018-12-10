@@ -87,6 +87,7 @@ export default {
     logout: 'Sair',
     menu: 'Menu',
     add: 'Cadastrar',
+    register: 'Registrar',
     export: 'Exportar',
     select: 'Selecione',
     remove: 'Remover',
@@ -179,6 +180,7 @@ export default {
 
   navbar: {
     brand: 'NEO BNDES',
+    registerMasterAccount: 'Registrar Conta Master',
     operations: 'Operações',
     track: 'Rastreio',
     companies: 'Empresas',
@@ -352,6 +354,16 @@ export default {
         blockchainAddress: 'Endereço Blockchain',
         certificateInfo: 'Informações do Certificado',
         amount: 'Saldo',
+      },
+    },
+    RegisterMasterAccountRequest: {
+      title: 'Registrar Conta Master',
+      columns: {
+        newAccount: 'Nova Conta',
+        entityName: 'Nome da entidade',
+        entityAddress: 'Endereço da entidade',
+        entityPhone: 'Telefone da entidade',
+        entityEmail: 'E-Mail da entidade',
       },
     },
   },

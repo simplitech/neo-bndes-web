@@ -9,7 +9,6 @@ import {
   ValidationMaxLength,
 } from '../../simpli'
 
-/* TODO: review generated class */
 export default class AuthRequest extends Model {
   @ResponseHidden()
   @ValidationRequired()

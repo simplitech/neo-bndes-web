@@ -87,6 +87,7 @@ export default {
     logout: 'Logout',
     menu: 'Menu',
     add: 'Add',
+    register: 'Register',
     export: 'Export',
     select: 'Select',
     remove: 'Remove',
@@ -179,6 +180,7 @@ export default {
 
   navbar: {
     brand: 'NEO BNDES',
+    registerMasterAccount: 'Register Master Account',
     operations: 'Operations',
     track: 'Track',
     companies: 'Companies',
@@ -350,6 +352,16 @@ export default {
         wif: 'WIF',
         neoAccount: 'NEO Account',
         encryptedWif: 'Encrypted WIF',
+      },
+    },
+    RegisterMasterAccountRequest: {
+      title: 'Register Master Account',
+      columns: {
+        newAccount: 'New Account',
+        entityName: 'Entity Name',
+        entityAddress: 'Entity Address',
+        entityPhone: 'Entity Phone',
+        entityEmail: 'Entity E-Mail',
       },
     },
   },

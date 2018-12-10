@@ -9,7 +9,7 @@
  */
 
 import VueResource from 'vue-resource'
-import {$, getToken, getVersion, getLanguage, isLogged, signOut, HttpStatus, error} from '@/simpli'
+import {$, getVersion, getLanguage, isLogged, signOut, HttpStatus, error} from '@/simpli'
 
 /**
  * Base URL of the server API
@@ -30,7 +30,7 @@ export const httpInterceptor = (request: VueResource.HttpOptions, next: any) => 
     request.headers.set('Accept-Language', getLanguage())
     request.headers.set('X-Client-Version', `w${getVersion()}`) // w = web
 
-    if (isLogged()) request.headers.set('Authorization', `Bearer ${getToken()}`)
+    if (isLogged()) request.headers.set('Authorization', `Bearer`)
   }
 
   next((resp: VueResource.HttpResponse) => {

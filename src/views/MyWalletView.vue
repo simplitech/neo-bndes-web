@@ -128,7 +128,7 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
         // accountStatus: await testInvoke('getAccountStatus'),
         // registerRegularAccount: await testInvoke('registerRegularAccount'),
         // approveRegularAccount: await testInvoke('approveRegularAccount'),
-        registerMasterAccount: await doInvoke('registerMasterAccount'),
+        // registerMasterAccount: await doInvoke('registerMasterAccount'),
         // removeMasterAccount: await testInvoke('removeMasterAccount'),
         // masterAccountStatus: await testInvoke('masterAccountStatus'),
         // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
