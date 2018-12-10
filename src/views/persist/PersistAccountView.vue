@@ -142,7 +142,7 @@
   import * as asn1js from 'asn1js'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
   import {wallet} from '@cityofzion/neon-js'
-  import {$, successAndPush, error} from '@/simpli'
+  import {$, successAndPush, error, doInvokeWithAccount, str2hexstring, hexstring2str} from '@/simpli'
   import Account from '@/model/Account'
 
   interface HTMLInputEvent extends Event {
@@ -166,9 +166,10 @@
 
     selectedFriendlyName: string | null = null
 
-    key: forge.pki.PrivateKey | null = null
+    key: forge.pki.rsa.PrivateKey | null = null
     cert: forge.pki.Certificate | null = null
     privatePem: string | null = null
+    publicKey: string | null = null
     altNames: string[] = []
 
     accountName: string | null = null
@@ -250,8 +251,12 @@
 
         keyContainer.forEach((kc) => {
           if (kc.key && !this.privatePem) {
-            this.key = kc.key
+            this.key = kc.key as forge.pki.rsa.PrivateKey
             this.privatePem = forge.pki.privateKeyToPem(kc.key)
+
+            const publicKeyData = forge.pki.setRsaPublicKey(this.key.n, this.key.e)
+            const publicPem = forge.pki.publicKeyToPem(publicKeyData)
+            this.publicKey = publicPem.replace(/\r\n/g, '\n')
           }
 
           if (kc.cert) {
@@ -263,6 +268,7 @@
             }
           }
         })
+
       }
     }
 
@@ -305,12 +311,12 @@
       }
     }
 
-    signRsa(pem: any, content: any) {
-      const rsa = new RSAKey()
-      rsa.readPrivateKeyFromPEMString(pem || '')
-      return rsa.sign(content, 'sha256')
-    }
-
+//    signRsa(pem: any, content: any) {
+//      const rsa = new RSAKey()
+//      rsa.readPrivateKeyFromPEMString(pem || '')
+//      return rsa.sign(content, 'sha256')
+//    }
+//
 //    signCAdES(certPEM: any, pkcs8PrvKeyPEM: any, content: any) {
 //      const sd = KJUR.asn1.cms.CMSUtil.newSignedData({
 //        content,
@@ -374,8 +380,13 @@
       return pem
     }
 
-    requestApproval() {
-      // TODO
+    async requestApproval() {
+      if (!this.publicKey || !this.signature) {
+        return
+      }
+
+      await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
+        this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
     }
 
   }

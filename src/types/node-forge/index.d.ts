@@ -70,6 +70,7 @@ declare module 'node-forge' {
     function certificateFromPem(pem: PEM, computeHash?: boolean, strict?: boolean): Certificate
     function createCaStore(): CAStore
     function verifyCertificateChain(caStore: CAStore, chain: Certificate[], customVerifyCallback?: (verified: boolean | string, depth: number, chain: Certificate[]) => boolean): boolean
+    function setRsaPublicKey(n: jsbn.BigInteger, e: jsbn.BigInteger): PublicKey
 
     interface oids {
       [key: string]: string
