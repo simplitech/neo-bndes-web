@@ -52,11 +52,15 @@ export const doInvoke = async (operation: string, ...args: any[]) => {
 export const doInvokeWithAccount = async (account: Account, operation: string, ...args: any[]) => {
   const resp = await testInvoke(operation, ...args)
 
-  const transactionOutput = new TransactionOutput({
-    assetId: Neon.CONST.ASSET_ID.GAS,
-    value: resp.gasConsumed,
-    scriptHash,
-  })
+  const intents = []
+
+  if (parseFloat(resp.gasConsumed) >= 10) {
+    intents.push(new TransactionOutput({
+      assetId: Neon.CONST.ASSET_ID.GAS,
+      value: resp.gasConsumed,
+      scriptHash,
+    }))
+  }
 
   const privateNetNeoscan = new api.neoscan.instance('PrivateNet')
   console.log(privateNetNeoscan)
@@ -67,7 +71,7 @@ export const doInvokeWithAccount = async (account: Account, operation: string, .
     privateKey: account.privateKey,
     address: account.address,
     account,
-    intents: [transactionOutput],
+    intents,
     script: { scriptHash, operation, args },
     gas: 0,
   })
