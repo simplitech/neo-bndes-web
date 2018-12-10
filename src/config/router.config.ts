@@ -13,8 +13,6 @@ import DashboardView from '@/views/DashboardView.vue'
 import MyAccountView from '@/views/MyAccountView.vue'
 import MyWalletView from '@/views/MyWalletView.vue'
 import SignInView from '@/views/SignInView.vue'
-import ResetPasswordView from '@/views/ResetPasswordView.vue'
-import RecoverPasswordView from '@/views/RecoverPasswordView.vue'
 
 import ListTransactionTypeView from '@/views/list/ListTransactionTypeView.vue'
 import ListAdminView from '@/views/list/ListAdminView.vue'
@@ -40,17 +38,6 @@ export const router = {
       path: '/signIn',
       name: 'signIn',
       component: SignInView,
-    },
-    {
-      path: '/password/reset',
-      name: 'resetPassword',
-      component: ResetPasswordView,
-    },
-    {
-      path: '/password/recover/:hash',
-      name: 'recoverPassword',
-      component: RecoverPasswordView,
-      props: true,
     },
     {
       path: '/dashboard',
