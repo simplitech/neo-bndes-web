@@ -179,6 +179,7 @@ export default {
 
   navbar: {
     brand: 'NEO BNDES',
+    registerMasterAccount: 'Register Master Account',
     operations: 'Operations',
     track: 'Track',
     companies: 'Companies',

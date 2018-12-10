@@ -25,11 +25,20 @@
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator'
   import {State, Action, Getter} from 'vuex-class'
+  import {$} from '@/simpli'
   import AuthRequest from '@/model/request/AuthRequest'
 
   @Component
   export default class SignInView extends Vue {
-    @Action('auth/signIn') signIn?: Function
+    @Getter('auth/isLogged') isLogged!: Boolean
+    @Action('auth/signIn') signIn!: Function
+
     request = new AuthRequest()
+
+    created() {
+      if (this.isLogged) {
+        $.router.push({path: '/dashboard'})
+      }
+    }
   }
 </script>

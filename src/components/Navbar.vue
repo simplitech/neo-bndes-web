@@ -35,6 +35,11 @@
           <div class="slot-1">
             <ul>
               <li>
+                <router-link tag="button" to="/register-master-account">
+                  {{$t('navbar.registerMasterAccount')}}
+                </router-link>
+              </li>
+              <li>
                 <button>
                   {{$t('navbar.operations')}}
                 </button>
@@ -68,6 +73,17 @@
             </ul>
           </div>
 
+          <div class="slot-3">
+            <ul>
+              <li>
+                <button @click="signOut()">
+                  <i class="icon icon-logout"></i>
+                  {{$t('app.logout')}}
+                </button>
+              </li>
+            </ul>
+          </div>
+
           <div class="menu-icon">
             <button class="icon flat" @click="showSidebar">
               <img src="@/assets/img/menu.svg" alt="menu">
@@ -93,6 +109,11 @@
 
           <div class="slot-1">
             <ul>
+              <li>
+                <router-link tag="button" to="/register-master-account">
+                  {{$t('navbar.registerMasterAccount')}}
+                </router-link>
+              </li>
               <li>
                 <button>
                   {{$t('navbar.operations')}}
@@ -126,6 +147,17 @@
               </li>
             </ul>
           </div>
+
+          <div class="slot-3">
+            <ul>
+              <li>
+                <button @click="signOut()">
+                  <i class="icon icon-logout"></i>
+                  {{$t('app.logout')}}
+                </button>
+              </li>
+            </ul>
+          </div>
         </nav>
       </transition>
     </aside>
@@ -139,6 +171,8 @@
 
   @Component
   export default class Navbar extends Vue {
+    @Action('auth/signOut') signOut!: Function
+
     sidebar = false
 
     hideSidebar() {
