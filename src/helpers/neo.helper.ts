@@ -8,7 +8,7 @@ export const neoscan = 'http://52.14.134.207:4000/api/main_net'
 export const scriptHash = '7bf2fdd890bdc8aef2c822dd0236aa22e7e32793'
 
 export const privateNet = new rpc.Network({
-  name: process.env.VUE_PRIVATE_NET_NAME as string,
+  name: 'PrivateNet',
   extra: {neoscan},
 })
 
@@ -46,6 +46,10 @@ export const testInvoke = async (operation: string, ...args: any[]) => {
 
 export const doInvoke = async (operation: string, ...args: any[]) => {
   const userWallet = getUserWallet()
+  return doInvokeWithAccount(userWallet, operation, args)
+}
+
+export const doInvokeWithAccount = async (account: Account, operation: string, ...args: any[]) => {
   const resp = await testInvoke(operation, ...args)
 
   const transactionOutput = new TransactionOutput({
@@ -54,11 +58,15 @@ export const doInvoke = async (operation: string, ...args: any[]) => {
     scriptHash,
   })
 
+  const privateNetNeoscan = new api.neoscan.instance('PrivateNet')
+  console.log(privateNetNeoscan)
+
   const opResult = await api.doInvoke({
     api: new api.neoscan.instance('PrivateNet'),
     // @ts-ignore
-    privateKey: userWallet.privateKey,
-    address: userWallet.address,
+    privateKey: account.privateKey,
+    address: account.address,
+    account,
     intents: [transactionOutput],
     script: { scriptHash, operation, args },
     gas: 0,

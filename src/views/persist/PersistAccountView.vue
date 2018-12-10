@@ -142,7 +142,7 @@
   import * as asn1js from 'asn1js'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
   import {wallet} from '@cityofzion/neon-js'
-  import {$, successAndPush, error, doInvoke, str2hexstring, hexstring2str} from '@/simpli'
+  import {$, successAndPush, error, doInvokeWithAccount, str2hexstring, hexstring2str} from '@/simpli'
   import Account from '@/model/Account'
 
   interface HTMLInputEvent extends Event {
@@ -385,7 +385,7 @@
         return
       }
 
-      await doInvoke(this.neoAccount, 'registerRegularAccount',
+      await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
         this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
     }
 
