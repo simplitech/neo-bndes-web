@@ -142,8 +142,7 @@
   import * as asn1js from 'asn1js'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
   import {wallet} from '@cityofzion/neon-js'
-  import {$, successAndPush, error, doInvokeWithAccount, str2hexstring, hexstring2str} from '@/simpli'
-  import Account from '@/model/Account'
+  import {$, successAndPush, error, doInvokeWithAccount, str2hexstring } from '@/simpli'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -155,9 +154,6 @@
 
   @Component
   export default class PersistAccountView extends Vue {
-    @Prop({type: [String, Number]}) id?: string
-    model = new Account()
-
     password: string | null = null
     pkcs12Der: string | null = null
     content: forge.pkcs12.Pkcs12Pfx | null = null

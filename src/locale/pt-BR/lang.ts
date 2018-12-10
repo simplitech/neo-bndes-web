@@ -186,6 +186,7 @@ export default {
     companies: 'Empresas',
     authorities: 'Autoridades',
     myWallet: 'Minha Carteira',
+    transfer: 'Transferir',
   },
 
   view: {
@@ -237,6 +238,17 @@ export default {
       passwordDoesntMatch: 'As duas senhas informadas não são identicas',
       requestApproval: 'Solicitar aprovação',
       fillPrivateKey: 'Preencha a chave privada',
+    },
+
+    persistTransaction: {
+      destinationAddress: 'Endereço da conta de destino',
+      transactionValue: 'Valor',
+      comments: 'Comentários',
+      destinationInfo: 'Informações do destinatário',
+      name: 'Nome:',
+      type: 'Tipo:',
+      document: 'Documento:',
+      publicKey: 'Chave pública:',
     },
 
     myAccount: {
@@ -294,7 +306,7 @@ export default {
       },
     },
     Transaction: {
-      title: 'Transaction',
+      title: 'Transferir',
       columns: {
         block: 'Block',
         transactionType: 'Transaction Type',

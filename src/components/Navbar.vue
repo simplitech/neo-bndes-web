@@ -40,6 +40,11 @@
                 </router-link>
               </li>
               <li>
+                <router-link tag="button" to="/transaction/new">
+                  {{$t('navbar.transfer')}}
+                </router-link>
+              </li>
+              <li>
                 <button>
                   {{$t('navbar.operations')}}
                 </button>

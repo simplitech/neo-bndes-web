@@ -17,6 +17,7 @@ import RegisterMasterAccountView from '@/views/RegisterMasterAccountView.vue'
 import SignInView from '@/views/SignInView.vue'
 
 import PersistAccountView from '@/views/persist/PersistAccountView.vue'
+import PersistTransactionView from '@/views/persist/PersistTransactionView.vue'
 
 /**
  * VUE Router Configuration
@@ -39,6 +40,7 @@ export const router = {
         },
 
         {path: '/account/new', component: PersistAccountView},
+        {path: '/transaction/new', component: PersistTransactionView},
         {path: '/my-account', component: MyAccountView},
         {path: '/my-wallet', component: MyWalletView},
         {path: '/register-master-account', component: RegisterMasterAccountView},

@@ -186,6 +186,7 @@ export default {
     companies: 'Companies',
     authorities: 'Authorities',
     myWallet: 'My Wallet',
+    transfer: 'Transfer',
   },
 
   view: {
@@ -242,6 +243,17 @@ export default {
       fillPrivateKey: 'Fill private key',
     },
 
+    persistTransaction: {
+      destinationAddress: 'Destination account address',
+      transactionValue: 'Value',
+      comments: 'Comments',
+      destinationInfo: 'Destination info',
+      name: 'Name:',
+      type: 'Type:',
+      document: 'Document:',
+      publicKey: 'Public key:',
+    },
+
     myAccount: {
       title: 'My Account',
       walletNotFound: 'Wallet not found',
@@ -295,7 +307,7 @@ export default {
       },
     },
     Transaction: {
-      title: 'Transaction',
+      title: 'Transfer',
       columns: {
         block: 'Block',
         transactionType: 'Transaction Type',
