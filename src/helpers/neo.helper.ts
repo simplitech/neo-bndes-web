@@ -34,8 +34,7 @@ export const testInvoke = async (operation: string, ...args: any[]) => {
 
   const resp = await rpc.Query.invokeScript(script).execute(contractPath)
 
-  const result = resp.result.stack
-  && resp.result.stack.length
+  const result = resp.result.stack && resp.result.stack.length
     ? resp.result.stack[resp.result.stack.length - 1].value
     : null
 
@@ -57,9 +56,6 @@ export const doInvokeWithAccount = async (account: Account, operation: string, .
     value: resp.gasConsumed,
     scriptHash,
   })
-
-  const privateNetNeoscan = new api.neoscan.instance('PrivateNet')
-  console.log(privateNetNeoscan)
 
   const opResult = await api.doInvoke({
     api: new api.neoscan.instance('PrivateNet'),

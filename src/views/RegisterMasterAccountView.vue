@@ -3,7 +3,7 @@
     <section class="header mb-20 py-10">
       <div class="container horiz gutter-10 items-center">
         <h1 class="weight-1 m-0">
-          Registrar Conta Master
+          {{$t('classes.RegisterMasterAccountRequest.title')}}
         </h1>
       </div>
     </section>
@@ -15,22 +15,22 @@
             <div class="container fluid">
 
               <div class="horiz gutter-10">
-                <input-text label="Nova Conta" v-model="request.newAccount" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.newAccount')" v-model="request.newAccount" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text label="Nome da entidade" v-model="request.entityName" class="weight-1"/>
-                <input-text label="Endereço da entidade" v-model="request.entityAddress" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityName')" v-model="request.entityName" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityAddress')" v-model="request.entityAddress" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text type="phone" label="Telefone da entidade" v-model="request.entityPhone" class="weight-1"/>
-                <input-text type="email" label="E-Mail da entidade" v-model="request.entityEmail" class="weight-1"/>
+                <input-text type="phone" :label="$t('classes.RegisterMasterAccountRequest.columns.entityPhone')" v-model="request.entityPhone" class="weight-1"/>
+                <input-text type="email" :label="$t('classes.RegisterMasterAccountRequest.columns.entityEmail')" v-model="request.entityEmail" class="weight-1"/>
               </div>
 
               <await :name="request.$operation" class="text-center">
                 <button class="secondary" @click="request.doInvoke()">
-                  Registrar
+                  {{$t('app.register')}}
                 </button>
               </await>
 

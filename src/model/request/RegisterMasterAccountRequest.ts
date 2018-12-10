@@ -4,6 +4,8 @@
  */
 import {$, str2hexstring} from '@/simpli'
 import {
+  ValidationPhone,
+  ValidationEmail,
   ValidationRequired,
   ValidationLength,
 } from '@/simpli'
@@ -11,9 +13,18 @@ import {SmartContract} from '@/model/SmartContract'
 
 export default class RegisterMasterAccountRequest extends SmartContract {
   $operation: string = 'registerMasterAccount'
+  get $params() {
+    return [
+      this.newAccount,
+      this.entityName,
+      this.entityAddress,
+      this.entityPhone,
+      this.entityEmail,
+    ]
+  }
 
   @ValidationRequired()
-  @ValidationLength(20)
+  @ValidationLength(20, 20)
   newAccount = ''
 
   @ValidationRequired()
@@ -23,22 +34,11 @@ export default class RegisterMasterAccountRequest extends SmartContract {
   entityAddress = ''
 
   @ValidationRequired()
+  @ValidationPhone()
   entityPhone = ''
 
   @ValidationRequired()
+  @ValidationEmail()
   entityEmail = ''
 
-  async doInvoke() {
-    const {newAccount, entityName, entityAddress, entityPhone, entityEmail} = this
-
-    const params: string[] = [
-      str2hexstring(newAccount),
-      str2hexstring(entityName),
-      str2hexstring(entityAddress),
-      str2hexstring(entityPhone),
-      str2hexstring(entityEmail),
-    ]
-
-    await super.doInvoke(params)
-  }
 }
