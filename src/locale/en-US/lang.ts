@@ -56,6 +56,7 @@ export default {
       persist: 'Persisted Successfully!',
     },
     error: {
+      unexpected: 'Unexpected Error. Please try again later',
       invalidEncryptedWif: 'Invalid Encrypted Key',
       unauthorized: 'Restricted Access',
       noServer: 'Could not connect to server',
@@ -98,6 +99,7 @@ export default {
     totalLines: '{total} total lines',
     version: 'Version',
     onlyIfWantChangePassword: 'Fill this field only if you want to change the password',
+    wait: 'Wait...',
   },
 
   dateFormat: {

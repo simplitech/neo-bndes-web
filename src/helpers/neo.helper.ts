@@ -72,7 +72,7 @@ export const doInvokeWithAccount = async (account: Account, operation: string, .
     gas: 0,
   })
 
-  if (opResult.response.result) return resp.result
-
-  throw Error('There is no result')
+  return Object.assign(opResult, {
+    testResp: resp,
+  })
 }

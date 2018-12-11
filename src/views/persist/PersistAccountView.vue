@@ -128,7 +128,12 @@
             <span style="word-wrap:break-word" class="max-w-300">{{ signature }}</span>
           </div>
 
-          <button @click="requestApproval" class="primary" :disabled="!signature">{{ $t('view.persistAccount.requestApproval') }}</button>
+          <button @click="$await.run(requestApproval, 'requestApproval')" class="primary" v-if="signature">
+            <await name="requestApproval">
+              {{ $t('view.persistAccount.requestApproval') }}
+            </await>
+          </button>
+          <div v-if="!signature">{{ $t('app.wait') }}</div>
         </div>
       </div>
 
@@ -381,8 +386,14 @@
         return
       }
 
-      await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
+      const resp = await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
         this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
+
+      if (resp.response.result) {
+        successAndPush('system.success.persist', '/')
+      } else {
+        error('error.unexpected')
+      }
     }
 
   }

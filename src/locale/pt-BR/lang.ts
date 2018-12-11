@@ -56,6 +56,7 @@ export default {
       persist: 'Salvo com Sucesso!',
     },
     error: {
+      unexpected: 'Ocorreu um erro inesperado, tente novamente mais tarde',
       invalidEncryptedWif: 'Encrypted Key Inválido',
       unauthorized: 'Acesso Restrito',
       noServer: 'Não foi possível conectar ao servidor',
@@ -98,6 +99,7 @@ export default {
     totalLines: '{total} entradas no total',
     version: 'Versão',
     onlyIfWantChangePassword: 'Preencha este campo somente se quiser alterar a senha',
+    wait: 'Aguarde...',
   },
 
   dateFormat: {
