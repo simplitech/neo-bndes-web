@@ -2,12 +2,13 @@
  * AuthRequest
  * @author ftgibran
  */
-import {$, str2hexstring} from '@/simpli'
+import {$, addressToScriptHash, str2hexstring} from '@/simpli'
 import {
   ValidationPhone,
   ValidationEmail,
   ValidationRequired,
   ValidationLength,
+  getUserWallet,
 } from '@/simpli'
 import {SmartContract} from '@/model/SmartContract'
 
@@ -17,11 +18,11 @@ export default class RegisterMasterAccountRequest extends SmartContract {
 
   get $params() {
     return [
-      this.newAccount,
-      this.entityName,
-      this.entityAddress,
-      this.entityPhone,
-      this.entityEmail,
+      addressToScriptHash(this.newAccount),
+      str2hexstring(this.entityName),
+      str2hexstring(this.entityAddress),
+      str2hexstring(this.entityPhone),
+      str2hexstring(this.entityEmail),
     ]
   }
 

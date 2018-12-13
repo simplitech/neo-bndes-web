@@ -2,22 +2,18 @@
  * SmartContract
  * @author ftgibran
  */
-import {$, Model, testInvoke, doInvoke, str2hexstring} from '@/simpli'
+import {$, Model, testInvoke, doInvoke} from '@/simpli'
 
 export abstract class SmartContract extends Model {
   abstract $operation: string
   abstract get $params(): string[]
 
-  get resolvedParams() {
-    return this.$params.map((arg: string) => str2hexstring(arg))
-  }
-
   async testInvoke() {
-    return await this.fetch(() => testInvoke(this.$operation, this.resolvedParams))
+    return await this.fetch(() => testInvoke(this.$operation, this.$params))
   }
 
   async doInvoke() {
-    return await this.fetch(() => doInvoke(this.$operation, this.resolvedParams))
+    return await this.fetch(() => doInvoke(this.$operation, this.$params))
   }
 
   async fetch(func: () => Promise<any>) {

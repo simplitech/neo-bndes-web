@@ -15,17 +15,22 @@
             <div class="container fluid">
 
               <div class="horiz gutter-10">
-                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.newAccount')" v-model="request.newAccount" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.newAccount')"
+                            v-model="request.newAccount" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityName')" v-model="request.entityName" class="weight-1"/>
-                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityAddress')" v-model="request.entityAddress" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityName')"
+                            v-model="request.entityName" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityAddress')"
+                            v-model="request.entityAddress" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text type="phone" :label="$t('classes.RegisterMasterAccountRequest.columns.entityPhone')" v-model="request.entityPhone" class="weight-1"/>
-                <input-text type="email" :label="$t('classes.RegisterMasterAccountRequest.columns.entityEmail')" v-model="request.entityEmail" class="weight-1"/>
+                <input-text type="phone" :label="$t('classes.RegisterMasterAccountRequest.columns.entityPhone')"
+                            v-model="request.entityPhone" class="weight-1"/>
+                <input-text type="email" :label="$t('classes.RegisterMasterAccountRequest.columns.entityEmail')"
+                            v-model="request.entityEmail" class="weight-1"/>
               </div>
 
               <await :name="request.$operation" class="text-center">
@@ -45,8 +50,8 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
   import {Action, Getter} from 'vuex-class'
-  import { success } from '@/simpli'
-  import { Account } from '@cityofzion/neon-core/lib/wallet'
+  import {success, testInvoke, doInvoke} from '@/simpli'
+  import {Account} from '@cityofzion/neon-core/lib/wallet'
   import RegisterMasterAccountRequest from '@/model/request/RegisterMasterAccountRequest'
 
   @Component

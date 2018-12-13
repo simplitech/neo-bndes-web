@@ -5,7 +5,7 @@ import { getUserWallet } from '@/simpli'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = '7bf2fdd890bdc8aef2c822dd0236aa22e7e32793'
+export const scriptHash = '2f9980538742aae610180a894d4e9071e0863393'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
@@ -44,8 +44,8 @@ export const testInvoke = async (operation: string, ...args: any[]) => {
 }
 
 export const doInvoke = async (operation: string, ...args: any[]) => {
-  const userWallet = getUserWallet()
-  return doInvokeWithAccount(userWallet, operation, args)
+  const account = getUserWallet().accounts[0]
+  return doInvokeWithAccount(account, operation, args)
 }
 
 export const doInvokeWithAccount = async (account: Account, operation: string, ...args: any[]) => {
