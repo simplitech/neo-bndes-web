@@ -12,7 +12,9 @@ import {
 import {SmartContract} from '@/model/SmartContract'
 
 export default class RegisterMasterAccountRequest extends SmartContract {
+
   $operation: string = 'registerMasterAccount'
+
   get $params() {
     return [
       this.newAccount,
@@ -24,7 +26,6 @@ export default class RegisterMasterAccountRequest extends SmartContract {
   }
 
   @ValidationRequired()
-  @ValidationLength(20, 20)
   newAccount = ''
 
   @ValidationRequired()

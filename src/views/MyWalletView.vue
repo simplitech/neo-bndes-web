@@ -129,18 +129,19 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
         // registerRegularAccount: await testInvoke('registerRegularAccount'),
         // approveRegularAccount: await testInvoke('approveRegularAccount'),
         // registerMasterAccount: await doInvoke('registerMasterAccount'),
+        // masterAccounts: await testInvoke('masterAccounts'),
         // removeMasterAccount: await testInvoke('removeMasterAccount'),
         // masterAccountStatus: await testInvoke('masterAccountStatus'),
         // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
         // mintTokens: await testInvoke('mintTokens'),
-        // getBalance: await testInvoke('getBalance'),
+        // getBalance: await doInvoke('getBalance'),
         // transfer: await testInvoke('transfer'),
       }
 
       // const symbol = hexstring2str(simplipay.symbol.result)
-      // const account = simplipay.account
+      // const resp = simplipay.masterAccounts
 
-      // console.log(account)
+      // console.log(resp)
     }
   }
 </script>

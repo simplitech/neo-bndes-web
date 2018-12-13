@@ -29,7 +29,7 @@
               </div>
 
               <await :name="request.$operation" class="text-center">
-                <button class="secondary" @click="request.doInvoke()">
+                <button class="secondary" @click="submit">
                   {{$t('app.register')}}
                 </button>
               </await>
@@ -44,10 +44,21 @@
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
+  import {Action, Getter} from 'vuex-class'
+  import { success } from '@/simpli'
+  import { Account } from '@cityofzion/neon-core/lib/wallet'
   import RegisterMasterAccountRequest from '@/model/request/RegisterMasterAccountRequest'
 
   @Component
   export default class RegisterMasterAccountView extends Vue {
+    @Getter('auth/userWallet') userWallet!: Account
+
     request = new RegisterMasterAccountRequest()
+
+    async submit() {
+      const resp = await this.request.doInvoke()
+      console.log(resp)
+      success('system.success.persist')
+    }
   }
 </script>

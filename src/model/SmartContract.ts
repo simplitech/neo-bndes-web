@@ -13,18 +13,18 @@ export abstract class SmartContract extends Model {
   }
 
   async testInvoke() {
-    await this.fetch(() => testInvoke(this.$operation, this.resolvedParams))
+    return await this.fetch(() => testInvoke(this.$operation, this.resolvedParams))
   }
 
   async doInvoke() {
-    await this.fetch(() => doInvoke(this.$operation, this.resolvedParams))
+    return await this.fetch(() => doInvoke(this.$operation, this.resolvedParams))
   }
 
   async fetch(func: () => Promise<any>) {
     await this.validate()
 
     try {
-      await $.await.run(func, this.$operation)
+      return await $.await.run(func, this.$operation)
     } catch (e) {
       $.snotify.error(e.message)
       throw e
