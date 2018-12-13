@@ -1,15 +1,13 @@
 <template>
-  <await name="auth" spinner="FadeLoader">
-    <main>
-      <!--Header-->
-      <navbar/>
-      
-      <!--Auth View-->
-      <transition name="fade-down" mode="out-in">
-        <router-view v-if="authorized"/>
-      </transition>
-    </main>
-  </await>
+  <main>
+    <!--Header-->
+    <navbar/>
+
+    <!--Auth View-->
+    <transition name="fade-down" mode="out-in">
+      <router-view/>
+    </transition>
+  </main>
 </template>
 
 <script lang="ts">
@@ -21,13 +19,5 @@ import Navbar from '@/components/Navbar.vue'
   components: { Navbar },
 })
 export default class DefaultPanelLayout extends Vue {
-  @Action('auth/auth') auth!: Function
-
-  authorized = false
-
-  async mounted() {
-    await this.auth()
-    this.authorized = true
-  }
 }
 </script>

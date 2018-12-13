@@ -9,12 +9,10 @@
  */
 
 import DefaultPanelLayout from '@/views/layouts/DefaultPanelLayout.vue'
-import DashboardView from '@/views/DashboardView.vue'
 
-import MyAccountView from '@/views/MyAccountView.vue'
+import SignInToWalletView from '@/views/SignInToWalletView.vue'
 import MyWalletView from '@/views/MyWalletView.vue'
 import RegisterMasterAccountView from '@/views/RegisterMasterAccountView.vue'
-import SignInView from '@/views/SignInView.vue'
 
 import PersistAccountView from '@/views/persist/PersistAccountView.vue'
 import PersistTransactionView from '@/views/persist/PersistTransactionView.vue'
@@ -25,28 +23,17 @@ import PersistTransactionView from '@/views/persist/PersistTransactionView.vue'
 export const router = {
   routes: [
     {
-      path: '/signIn',
-      name: 'signIn',
-      component: SignInView,
-    },
-    {
-      path: '/dashboard',
+      path: '/my-wallet',
       component: DefaultPanelLayout,
       children: [
-        {
-          path: '/dashboard',
-          name: 'dashboard',
-          component: DashboardView,
-        },
+        {path: '/my-wallet', name: 'my-wallet', component: MyWalletView},
 
+        {path: '/my-wallet/signin', component: SignInToWalletView},
         {path: '/account/new', component: PersistAccountView},
         {path: '/transaction/new', component: PersistTransactionView},
-        {path: '/my-account', component: MyAccountView},
-        {path: '/my-wallet', component: MyWalletView},
         {path: '/register-master-account', component: RegisterMasterAccountView},
       ],
     },
-    {path: '/', redirect: '/signIn'},
-    {path: '*', redirect: '/dashboard'},
+    {path: '*', redirect: '/my-wallet'},
   ],
 }

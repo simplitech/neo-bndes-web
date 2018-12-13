@@ -339,7 +339,6 @@ button, input[type=submit], .btn {
   border: none;
   border-radius: 20px;
   height: 35px;
-  min-width: 90px;
   outline: none;
   cursor: pointer;
   padding: 10px 24px;
@@ -383,10 +382,6 @@ button, input[type=submit], .btn {
   &:hover {
     @extend .pal-black-30.bg;
     @extend .pal-black-70.text;
-  }
-
-  &:focus {
-    @extend .pal-primary.box-shadow.highlight;
   }
 
   &.flat {

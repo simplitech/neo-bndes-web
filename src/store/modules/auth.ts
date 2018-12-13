@@ -1,12 +1,12 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {AuthState, RootState} from '@/types/store'
-import {$, abort, push, errorAndPush, infoAndPush} from '@/simpli'
+import {$, abort, push, errorAndPush, infoAndPush, info} from '@/simpli'
 import AuthRequest from '@/model/request/AuthRequest'
 import {wallet} from '@cityofzion/neon-js'
+import { Wallet } from '@cityofzion/neon-core/lib/wallet'
 
 // initial state
 const state: AuthState = {
-  wif: null,
   userWallet: null,
   eventListener: {
     signIn: [],
@@ -17,8 +17,7 @@ const state: AuthState = {
 
 // getters
 const getters: GetterTree<AuthState, RootState> = {
-  isLogged: ({wif}) => !!wif,
-  wif: ({wif}) => wif,
+  isLogged: ({userWallet}) => userWallet != null,
   userWallet: ({userWallet}) => userWallet,
 }
 
@@ -30,7 +29,7 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param dispatch
    * @param request
    */
-  signIn: async ({getters, commit}, request: AuthRequest) => {
+  addAccount: async ({getters, commit}, request: AuthRequest) => {
     await request.validate()
 
     const encryptedWIF = request.encryptedWIF || ''
@@ -42,16 +41,24 @@ const actions: ActionTree<AuthState, RootState> = {
 
     const fetch = async () => {
       const wif = await wallet.decrypt(encryptedWIF, passphrase)
-      if (wif) localStorage.setItem('wif', wif)
+      if (wif) {
+        const w = getters.userWallet || new Wallet()
+        w.addAccount(new wallet.Account(wif))
+        commit('SAVE', w)
+
+        state.eventListener.signIn.forEach((item) => item(getters.userWallet))
+        infoAndPush('system.info.welcome', '/my-wallet')
+      }
     }
 
     await $.await.run(fetch, 'signIn')
+  },
 
-    commit('POPULATE')
-
-    infoAndPush('system.info.welcome', '/dashboard')
+  saveWallet: async ({getters, commit}, wallet: Wallet) => {
+    commit('SAVE', wallet)
 
     state.eventListener.signIn.forEach((item) => item(getters.userWallet))
+    infoAndPush('system.info.welcome', '/my-wallet')
   },
 
   /**
@@ -62,8 +69,6 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param getters
    */
   auth: async ({dispatch, commit, getters}) => {
-    commit('POPULATE')
-
     if (getters.isLogged) {
       state.eventListener.auth.forEach((item) => item(getters.userWallet))
     } else {
@@ -78,8 +83,8 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param showError
    */
   signOut: ({state, commit}, showError: boolean = false) => {
-    if (showError) errorAndPush('system.error.unauthorized', '/signIn')
-    else push('/signIn')
+    if (showError) errorAndPush('system.error.unauthorized', '/my-account/signin')
+    else push('/my-account/signin')
 
     commit('FORGET')
     state.eventListener.signOut.forEach((item) => item())
@@ -123,22 +128,12 @@ const actions: ActionTree<AuthState, RootState> = {
 
 // mutations
 const mutations: MutationTree<AuthState> = {
-  // Populate mutation
-  POPULATE(state) {
-    const wif = localStorage.getItem('wif') || null
-
-    const userWallet = wif ? new wallet.Account(wif) : null
-
-    state.wif = wif
+  SAVE(state, userWallet) {
     state.userWallet = userWallet
   },
-
   // Forget mutation
   FORGET(state) {
-    state.wif = null
     state.userWallet = null
-
-    localStorage.removeItem('wif')
   },
 
   // Add Event Listener mutation

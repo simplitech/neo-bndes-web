@@ -14,7 +14,6 @@ export interface RootState {
  * Auth Module
  */
 export interface AuthState {
-  wif: string | null
   userWallet: Account | null
   eventListener: AuthEventListener
 }

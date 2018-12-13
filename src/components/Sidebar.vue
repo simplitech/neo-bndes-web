@@ -23,13 +23,6 @@
         <ul>
 
           <li>
-            <router-link to="/dashboard" @click.native="menuOff" class="btn fluid flat contrast">
-              <i class="icon icon-home"></i>
-              {{ $t('view.dashboard.title') }}
-            </router-link>
-          </li>
-
-          <li>
             <router-link to="/transaction-type/list" @click.native="menuOff" class="btn fluid flat contrast">
               {{ $t('classes.TransactionType.title') }}
             </router-link>

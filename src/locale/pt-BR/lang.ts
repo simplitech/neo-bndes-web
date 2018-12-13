@@ -214,10 +214,6 @@ export default {
       submit: 'Enviar',
     },
 
-    dashboard: {
-      title: 'Dashboard',
-    },
-
     persistAccount: {
       selectDigitalCertificate: 'Selecione seu certificado digital',
       friendlyName: 'Nome amigável',
@@ -253,10 +249,10 @@ export default {
       publicKey: 'Chave pública:',
     },
 
-    myAccount: {
+    signinToWallet: {
       title: 'Minha Conta',
       walletNotFound: 'Carteira não encontrada',
-      openWallet: 'Abrir carteira',
+      importWalletFile: 'Importar JSON',
       createWallet: 'Criar carteira',
     },
 
@@ -264,7 +260,8 @@ export default {
       title: 'Minha Carteira',
       createNewAccount: 'Cadastrar nova conta',
       import: 'Cadastrar nova conta',
-      closeWallet: 'Fechar carteira',
+      export: 'Exportar JSON',
+      password: 'Preencha uma senha',
       withdraw: 'Resgatar',
     },
   },

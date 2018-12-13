@@ -70,7 +70,7 @@
           <div class="slot-2">
             <ul>
               <li>
-                <router-link class="btn" to="/my-account">
+                <router-link class="btn" to="/my-wallet">
                   <i class="icon icon-wallet"></i>
                   {{$t('navbar.myWallet')}}
                 </router-link>
@@ -78,7 +78,7 @@
             </ul>
           </div>
 
-          <div class="slot-3">
+          <div class="slot-3" v-if="isLogged">
             <ul>
               <li>
                 <button @click="signOut()">
@@ -153,7 +153,7 @@
             </ul>
           </div>
 
-          <div class="slot-3">
+          <div class="slot-3" v-if="isLogged">
             <ul>
               <li>
                 <button @click="signOut()">
@@ -177,6 +177,7 @@
   @Component
   export default class Navbar extends Vue {
     @Action('auth/signOut') signOut!: Function
+    @Getter('auth/isLogged') isLogged!: boolean
 
     sidebar = false
 

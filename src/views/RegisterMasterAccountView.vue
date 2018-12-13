@@ -55,6 +55,33 @@
 
     request = new RegisterMasterAccountRequest()
 
+    async mounted() {
+      const {userWallet} = this
+
+      const simplipay = {
+        // symbol: await testInvoke('symbol'),
+        // name: await testInvoke('name'),
+        // decimals: await testInvoke('decimals'),
+        // account: await testInvoke('getAccount', str2hexstring(userWallet.scriptHash)),
+        // accountStatus: await testInvoke('getAccountStatus'),
+        // registerRegularAccount: await testInvoke('registerRegularAccount'),
+        // approveRegularAccount: await testInvoke('approveRegularAccount'),
+        // registerMasterAccount: await doInvoke('registerMasterAccount'),
+        // masterAccounts: await testInvoke('masterAccounts'),
+        // removeMasterAccount: await testInvoke('removeMasterAccount'),
+        // masterAccountStatus: await testInvoke('masterAccountStatus'),
+        // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
+        // mintTokens: await testInvoke('mintTokens'),
+        // getBalance: await doInvoke('getBalance'),
+        // transfer: await testInvoke('transfer'),
+      }
+
+      // const symbol = hexstring2str(simplipay.symbol.result)
+      // const resp = simplipay.masterAccounts
+
+      // console.log(resp)
+    }
+
     async submit() {
       const resp = await this.request.doInvoke()
       console.log(resp)

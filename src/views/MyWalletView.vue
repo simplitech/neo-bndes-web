@@ -5,10 +5,6 @@
         <h1 class="weight-1 m-0">
           {{$t('view.myWallet.title')}}
         </h1>
-
-        <button class="contrast">
-          Salvar Carteira
-        </button>
       </div>
     </section>
 
@@ -18,15 +14,14 @@
           <div class="py-10">
             <div class="container fluid">
 
-              <div class="horiz gutter-10">
-                <button class="weight-1 mb-5">
+              <div class="horiz mb-5">
+                <button class="weight-1 h-40 mr-15">
                   {{$t('view.myWallet.createNewAccount')}}
                 </button>
-                <button class="weight-1 mb-5">
-                  {{$t('view.myWallet.import')}}
-                </button>
-                <button class="weight-1 mb-5">
-                  {{$t('view.myWallet.closeWallet')}}
+                <button class="weight-1 h-40" @click="$await.run(exportJson, 'exportJson')">
+                  <await name="exportJson">
+                    {{$t('view.myWallet.export')}}
+                  </await>
                 </button>
               </div>
 
@@ -89,11 +84,11 @@
   import {Component, Vue} from 'vue-property-decorator'
   import {Action, Getter} from 'vuex-class'
   import {doInvoke, hexstring2str, reverseHex, str2hexstring, successAndPush, testInvoke} from '@/simpli'
-  import { Account } from '@cityofzion/neon-core/lib/wallet'
-  // import Account from '@/model/Account'
+  import { Account, Wallet } from '@cityofzion/neon-core/lib/wallet'
 
   @Component
   export default class MyWalletView extends Vue {
+    @Getter('auth/isLogged') isLogged!: Boolean
     @Getter('auth/userWallet') userWallet!: Account
 
     account = {}
@@ -112,36 +107,38 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
 -----END PUBLIC KEY-----
 `
 
+    mounted() {
+      if (!this.isLogged) {
+        this.$router.push({path: '/my-wallet/signin'})
+      }
+    }
+
     async persistAccount() {
       // await this.account.persist()
       successAndPush('system.success.persist', '/admin/list')
     }
 
-    async mounted() {
-      const {userWallet} = this
+    async exportJson() {
+      this.downloadJson(JSON.stringify(this.userWallet.export()), 'wallet.json')
+    }
 
-      const simplipay = {
-        // symbol: await testInvoke('symbol'),
-        // name: await testInvoke('name'),
-        // decimals: await testInvoke('decimals'),
-        // account: await testInvoke('getAccount', str2hexstring(userWallet.scriptHash)),
-        // accountStatus: await testInvoke('getAccountStatus'),
-        // registerRegularAccount: await testInvoke('registerRegularAccount'),
-        // approveRegularAccount: await testInvoke('approveRegularAccount'),
-        // registerMasterAccount: await doInvoke('registerMasterAccount'),
-        // masterAccounts: await testInvoke('masterAccounts'),
-        // removeMasterAccount: await testInvoke('removeMasterAccount'),
-        // masterAccountStatus: await testInvoke('masterAccountStatus'),
-        // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
-        // mintTokens: await testInvoke('mintTokens'),
-        // getBalance: await doInvoke('getBalance'),
-        // transfer: await testInvoke('transfer'),
+    downloadJson(content: string, filename: string) {
+      const blob = new Blob([content], { type: 'text/json;charset=utf-8;' })
+      if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, filename)
+      } else {
+        const link = document.createElement('a')
+        if (link.download !== undefined) { // feature detection
+          // Browsers that support HTML5 download attribute
+          const url = URL.createObjectURL(blob)
+          link.setAttribute('href', url)
+          link.setAttribute('download', filename)
+          link.style.visibility = 'hidden'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        }
       }
-
-      // const symbol = hexstring2str(simplipay.symbol.result)
-      // const resp = simplipay.masterAccounts
-
-      // console.log(resp)
     }
   }
 </script>

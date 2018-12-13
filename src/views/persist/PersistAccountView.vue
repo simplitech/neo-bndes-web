@@ -18,8 +18,7 @@
               type="file"
               ref="inputFile"
               class="w-300 mb-15"
-              @change="onInputFileChange"
-              multiple="multiple"/>
+              @change="onInputFileChange"/>
           <input
               type="password"
               v-model="password"
@@ -146,8 +145,10 @@
   import {RSAKey} from 'jsrsasign'
   import * as asn1js from 'asn1js'
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
+  import {Action} from 'vuex-class'
   import {wallet} from '@cityofzion/neon-js'
-  import {$, successAndPush, error, doInvokeWithAccount, str2hexstring } from '@/simpli'
+  import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring } from '@/simpli'
+  import AuthRequest from '@/model/request/AuthRequest'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -159,6 +160,8 @@
 
   @Component
   export default class PersistAccountView extends Vue {
+    @Action('auth/addAccount') addAccount!: Function
+
     password: string | null = null
     pkcs12Der: string | null = null
     content: forge.pkcs12.Pkcs12Pfx | null = null
@@ -390,7 +393,12 @@
         this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
 
       if (resp.response.result) {
-        successAndPush('system.success.persist', '/')
+        const authRequest = new AuthRequest()
+        authRequest.encryptedWIF = this.encryptedWif
+        authRequest.passphrase = this.accountPassword
+        this.addAccount(authRequest)
+
+        success('system.success.persist', '/')
       } else {
         error('error.unexpected')
       }
