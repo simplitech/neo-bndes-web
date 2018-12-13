@@ -18,17 +18,11 @@
                 <button class="weight-1 h-40 mr-15">
                   {{$t('view.myWallet.createNewAccount')}}
                 </button>
-                <button class="weight-1 h-40" @click="exporting = true" v-if="!exporting">
-                  {{$t('view.myWallet.export')}}
-                </button>
-                <form @submit.prevent="$await.run(exportJson, 'exportJson')" class="weight-1" v-if="exporting">
-                  <await name="exportJson" class="horiz">
-                    <input type="password" class="weight-1 force-h-40 mr-5" v-model="exportPassword" :placeholder="$t('view.myWallet.password')"/>
-                    <button type="submit" class="primary h-40">
-                      {{$t('view.myWallet.export')}}
-                    </button>
+                <button class="weight-1 h-40" @click="$await.run(exportJson, 'exportJson')">
+                  <await name="exportJson">
+                    {{$t('view.myWallet.export')}}
                   </await>
-                </form>
+                </button>
               </div>
 
               <hr>
@@ -97,9 +91,6 @@
     @Getter('auth/isLogged') isLogged!: Boolean
     @Getter('auth/userWallet') userWallet!: Account
 
-    exporting = false
-    exportPassword: string | null = null
-
     account = {}
 
     amount = 1000
@@ -128,12 +119,7 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
     }
 
     async exportJson() {
-      if (this.exportPassword) {
-        const w = new Wallet()
-        w.addAccount(this.userWallet)
-        this.downloadJson(JSON.stringify(w.export()), 'wallet.json')
-        this.exporting = false
-      }
+      this.downloadJson(JSON.stringify(this.userWallet.export()), 'wallet.json')
     }
 
     downloadJson(content: string, filename: string) {
