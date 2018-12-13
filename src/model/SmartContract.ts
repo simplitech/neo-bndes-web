@@ -9,11 +9,11 @@ export abstract class SmartContract extends Model {
   abstract get $params(): string[]
 
   async testInvoke() {
-    return await this.fetch(() => testInvoke(this.$operation, this.$params))
+    return await this.fetch(() => testInvoke(this.$operation, ...this.$params))
   }
 
   async doInvoke() {
-    return await this.fetch(() => doInvoke(this.$operation, this.$params))
+    return await this.fetch(() => doInvoke(this.$operation, ...this.$params))
   }
 
   async fetch(func: () => Promise<any>) {

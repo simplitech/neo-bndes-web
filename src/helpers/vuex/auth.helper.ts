@@ -1,10 +1,10 @@
 import {store} from '@/store'
 import AuthRequest from '@/model/request/AuthRequest'
-import { Account } from '@cityofzion/neon-core/lib/wallet'
+import { Wallet, Account } from '@cityofzion/neon-core/lib/wallet'
 
 export const isLogged = () => store.getters['auth/isLogged'] as boolean
-export const getWif = () => store.getters['auth/wif'] as string
-export const getUserWallet = () => store.getters['auth/userWallet'] as Account
+export const getUserWallet = () => store.getters['auth/userWallet'] as Wallet
+export const getAuthAccount = () => store.getters['auth/authAccount'] as Account
 
 export const auth = () => store.dispatch('auth/auth')
 export const signIn = (request: AuthRequest) => store.dispatch('auth/addAccount', request)

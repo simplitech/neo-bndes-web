@@ -72,7 +72,7 @@
         // registerRegularAccount: await testInvoke('registerRegularAccount'),
         // approveRegularAccount: await testInvoke('approveRegularAccount'),
         // registerMasterAccount: await doInvoke('registerMasterAccount'),
-        // masterAccounts: await testInvoke('masterAccounts'),
+         masterAccounts: await testInvoke('masterAccounts'),
         // removeMasterAccount: await testInvoke('removeMasterAccount'),
         // masterAccountStatus: await testInvoke('masterAccountStatus'),
         // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
@@ -82,9 +82,9 @@
       }
 
       // const symbol = hexstring2str(simplipay.symbol.result)
-      // const resp = simplipay.masterAccounts
+      const resp = simplipay.masterAccounts
 
-      // console.log(resp)
+      console.log(resp)
     }
 
     async submit() {

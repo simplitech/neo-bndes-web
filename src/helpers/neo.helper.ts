@@ -2,10 +2,11 @@ import Neon, { wallet, rpc, api } from '@cityofzion/neon-js'
 import { Account } from '@cityofzion/neon-core/lib/wallet'
 import { TransactionOutput } from '@cityofzion/neon-core/lib/tx'
 import { getUserWallet } from '@/simpli'
+import {getAuthAccount} from '@/helpers/vuex/auth.helper'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = '2f9980538742aae610180a894d4e9071e0863393'
+export const scriptHash = 'ff03a96ee5ccc2f18d6327e657f9be8fa62d1a94'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
@@ -44,8 +45,8 @@ export const testInvoke = async (operation: string, ...args: any[]) => {
 }
 
 export const doInvoke = async (operation: string, ...args: any[]) => {
-  const account = getUserWallet().accounts[0]
-  return doInvokeWithAccount(account, operation, args)
+  const account = getAuthAccount()
+  return doInvokeWithAccount(account, operation, ...args)
 }
 
 export const doInvokeWithAccount = async (account: Account, operation: string, ...args: any[]) => {
@@ -60,6 +61,8 @@ export const doInvokeWithAccount = async (account: Account, operation: string, .
       scriptHash,
     }))
   }
+
+  console.log(args)
 
   const opResult = await api.doInvoke({
     api: new api.neoscan.instance('PrivateNet'),

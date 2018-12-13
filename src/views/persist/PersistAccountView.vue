@@ -307,7 +307,9 @@
         return
       }
 
+      console.log(this.wif)
       this.neoAccount = new wallet.Account(this.wif)
+      console.log(this.neoAccount)
       this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword)
 
       if (this.cert && this.key) {
@@ -391,6 +393,7 @@
 
       const resp = await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
         this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
+      console.log(this.neoAccount.scriptHash)
 
       if (resp.response.result) {
         const authRequest = new AuthRequest()
@@ -398,7 +401,7 @@
         authRequest.passphrase = this.accountPassword
         this.addAccount(authRequest)
 
-        success('system.success.persist', '/')
+        success('system.success.persist')
       } else {
         error('error.unexpected')
       }

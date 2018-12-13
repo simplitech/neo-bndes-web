@@ -8,6 +8,7 @@ import { Wallet } from '@cityofzion/neon-core/lib/wallet'
 // initial state
 const state: AuthState = {
   userWallet: null,
+  authAccount: null,
   eventListener: {
     signIn: [],
     auth: [],
@@ -17,8 +18,9 @@ const state: AuthState = {
 
 // getters
 const getters: GetterTree<AuthState, RootState> = {
-  isLogged: ({userWallet}) => userWallet != null,
+  isLogged: ({authAccount}) => authAccount != null,
   userWallet: ({userWallet}) => userWallet,
+  authAccount: ({authAccount}) => authAccount,
 }
 
 // actions
@@ -42,9 +44,10 @@ const actions: ActionTree<AuthState, RootState> = {
     const fetch = async () => {
       const wif = await wallet.decrypt(encryptedWIF, passphrase)
       if (wif) {
-        const w = getters.userWallet || new Wallet()
-        w.addAccount(new wallet.Account(wif))
-        commit('SAVE', w)
+        const userWallet = getters.userWallet || new Wallet()
+        const authAccount = new wallet.Account(wif)
+        userWallet.addAccount(authAccount)
+        commit('SAVE', { userWallet, authAccount })
 
         state.eventListener.signIn.forEach((item) => item(getters.userWallet))
         infoAndPush('system.info.welcome', '/my-wallet')
@@ -54,8 +57,8 @@ const actions: ActionTree<AuthState, RootState> = {
     await $.await.run(fetch, 'signIn')
   },
 
-  saveWallet: async ({getters, commit}, wallet: Wallet) => {
-    commit('SAVE', wallet)
+  saveWallet: async ({getters, commit}, userWallet: Wallet) => {
+    commit('SAVE', { userWallet })
 
     state.eventListener.signIn.forEach((item) => item(getters.userWallet))
     infoAndPush('system.info.welcome', '/my-wallet')
@@ -128,8 +131,9 @@ const actions: ActionTree<AuthState, RootState> = {
 
 // mutations
 const mutations: MutationTree<AuthState> = {
-  SAVE(state, userWallet) {
+  SAVE(state, { userWallet, authAccount }) {
     state.userWallet = userWallet
+    state.authAccount = authAccount
   },
   // Forget mutation
   FORGET(state) {

@@ -1,4 +1,4 @@
-import { Account } from '@cityofzion/neon-core/lib/wallet'
+import { Wallet, Account } from '@cityofzion/neon-core/lib/wallet'
 import {ID, Currency, Lang} from '@/simpli'
 
 /**
@@ -14,7 +14,8 @@ export interface RootState {
  * Auth Module
  */
 export interface AuthState {
-  userWallet: Account | null
+  userWallet: Wallet | null
+  authAccount: Account | null,
   eventListener: AuthEventListener
 }
 
