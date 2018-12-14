@@ -66,8 +66,8 @@
             <button type="submit" class="self-center primary">{{ $t('persist.proceed') }}</button>
           </form>
 
-          <form class="verti weight-1 min-w-300" @submit.prevent="importWif">
-            <h2>{{ $t('view.persistAccount.importPrivateKey') }}</h2>
+          <form class="verti weight-1 min-w-300" @submit.prevent="$await.run(importEncryptedWif, 'importEncryptedWif')">
+            <h2>{{ $t('view.persistAccount.importEncryptedWif') }}</h2>
 
             <input
               type="text"
@@ -77,7 +77,7 @@
 
             <input
                 type="password"
-                v-model="wif"
+                v-model="encryptedWif"
                 class="w-full mb-15"
                 :placeholder="$t('view.persistAccount.privateKey')"/>
 
@@ -87,13 +87,11 @@
                 class="w-full mb-15"
                 :placeholder="$t('view.persistAccount.password')"/>
 
-            <input
-                type="password"
-                v-model="repeatAccountPassword"
-                class="w-full mb-15"
-                :placeholder="$t('view.persistAccount.repeatPassword')"/>
-
-            <button type="submit" class="self-center primary">{{ $t('persist.proceed') }}</button>
+            <div class="self-center">
+              <await name="importEncryptedWif">
+                <button type="submit" class="primary">{{ $t('persist.proceed') }}</button>
+              </await>
+            </div>
           </form>
         </div>
 
@@ -148,7 +146,6 @@
   import {Action} from 'vuex-class'
   import {wallet} from '@cityofzion/neon-js'
   import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring } from '../../simpli'
-  import AuthRequest from '../../model/request/AuthRequest'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -161,6 +158,7 @@
   @Component
   export default class PersistAccountView extends Vue {
     @Action('auth/addAccount') addAccount!: Function
+    @Action('auth/exportJson') exportJson!: Function
 
     password: string | null = null
     pkcs12Der: string | null = null
@@ -180,9 +178,9 @@
     accountPassword: string | null = null
     repeatAccountPassword: string | null = null
 
+    encryptedWif: string | null = null
     wif: string | null = null
     neoAccount: any | null = null
-    encryptedWif: string | null = null
 
     signature: any | null = null
 
@@ -288,14 +286,6 @@
 
     async createAccount() {
       this.wif = wallet.generatePrivateKey()
-      await this.importWif()
-    }
-
-    async importWif() {
-      if (!this.wif || !this.wif.length) {
-        error('view.persistAccount.fillPrivateKey')
-        return
-      }
 
       if (!this.accountPassword || !this.accountPassword.length) {
         error('view.persistAccount.fillThePassword')
@@ -307,57 +297,52 @@
         return
       }
 
+      await this.importWif()
+    }
+
+    async importEncryptedWif() {
+      if (!this.encryptedWif || !this.encryptedWif.length) {
+        error('view.persistAccount.fillPrivateKey')
+        return
+      }
+
+      if (!wallet.isNEP2(this.encryptedWif)) {
+        error('system.error.invalidEncryptedWif')
+        return
+      }
+
+      if (!this.accountPassword || !this.accountPassword.length) {
+        error('view.persistAccount.fillThePassword')
+        return
+      }
+
+      try {
+        this.wif = await wallet.decrypt(this.encryptedWif, this.accountPassword)
+      } catch (e) {
+        error(e.message, '', false)
+        return
+      }
+      await this.importWif()
+    }
+
+    async importWif() {
+      if (!this.wif || !this.wif.length) {
+        error('view.persistAccount.fillPrivateKey')
+        return
+      }
+
       this.neoAccount = new wallet.Account(this.wif)
-      this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword)
+      this.neoAccount.label = this.accountName
+
+      if (!this.encryptedWif) {
+        this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword || '')
+      }
 
       if (this.cert && this.key) {
         this.signature = this.signPkcs7(this.cert, this.key, this.neoAccount.scriptHash)
       }
     }
 
-//    signRsa(pem: any, content: any) {
-//      const rsa = new RSAKey()
-//      rsa.readPrivateKeyFromPEMString(pem || '')
-//      return rsa.sign(content, 'sha256')
-//    }
-//
-//    signCAdES(certPEM: any, pkcs8PrvKeyPEM: any, content: any) {
-//      const sd = KJUR.asn1.cms.CMSUtil.newSignedData({
-//        content,
-//        certs: [certPEM],
-//        signerInfos: [{
-//          hashAlg: 'sha256',
-//          sAttr: {SigningCertificateV2: {array: [certPEM]}},
-//          signerCert: certPEM,
-//          sigAlg: 'SHA256withRSA',
-//          signerPrvKey: pkcs8PrvKeyPEM,
-//        }],
-//      })
-//
-//      const signedDataHex = sd.getContentInfoEncodedHex()
-//      return signedDataHex
-//    }
-//
-//    signCAdES2(buffer, certificate, privateKey) {
-//      const cmsSigned = new SignedData({
-//        encapContentInfo: new EncapsulatedContentInfo({
-//          eContentType: '1.2.840.113549.1.7.1', // "data" content type
-//          eContent: new asn1js.OctetString({ valueHex: buffer }),
-//        }),
-//        signerInfos: [
-//          new SignerInfo({
-//            sid: new IssuerAndSerialNumber({
-//              issuer: certificate.issuer,
-//              serialNumber: certificate.serialNumber,
-//            }),
-//          }),
-//        ],
-//        certificates: [certificate],
-//      })
-//
-//      return cmsSigned.sign(privateKey, 0, 'sha-256')
-//    }
-//
     signPkcs7(
       certOrCertPem: forge.pki.Certificate,
       privateKeyAssociatedWithCert: forge.pki.PrivateKey,
@@ -393,12 +378,8 @@
         this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
 
       if (resp.response && resp.response.result) {
-        const authRequest = new AuthRequest()
-        authRequest.encryptedWIF = this.encryptedWif
-        authRequest.passphrase = this.accountPassword
-        this.addAccount(authRequest)
-
-        success('system.success.persist')
+        this.addAccount(this.neoAccount)
+        this.exportJson()
       } else {
         error('error.unexpected')
       }

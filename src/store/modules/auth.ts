@@ -1,14 +1,12 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {AuthState, RootState} from '@/types/store'
 import {$, abort, push, errorAndPush, infoAndPush, info} from '@/simpli'
-import AuthRequest from '@/model/request/AuthRequest'
 import {wallet} from '@cityofzion/neon-js'
 import { Wallet } from '@cityofzion/neon-core/lib/wallet'
 
 // initial state
 const state: AuthState = {
   userWallet: null,
-  authAccount: null,
   eventListener: {
     signIn: [],
     auth: [],
@@ -18,9 +16,8 @@ const state: AuthState = {
 
 // getters
 const getters: GetterTree<AuthState, RootState> = {
-  isLogged: ({authAccount}) => authAccount != null,
+  isLogged: ({userWallet}) => userWallet != null,
   userWallet: ({userWallet}) => userWallet,
-  authAccount: ({authAccount}) => authAccount,
 }
 
 // actions
@@ -31,30 +28,13 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param dispatch
    * @param request
    */
-  addAccount: async ({getters, commit}, request: AuthRequest) => {
-    await request.validate()
+  addAccount: async ({getters, commit}, account: Account) => {
+    const userWallet = getters.userWallet || new Wallet()
+    userWallet.addAccount(account)
+    commit('SAVE', userWallet)
 
-    const encryptedWIF = request.encryptedWIF || ''
-    const passphrase = request.passphrase || ''
-
-    if (!wallet.isNEP2(encryptedWIF || '')) {
-      abort('system.error.invalidEncryptedWif')
-    }
-
-    const fetch = async () => {
-      const wif = await wallet.decrypt(encryptedWIF, passphrase)
-      if (wif) {
-        const userWallet = getters.userWallet || new Wallet()
-        const authAccount = new wallet.Account(wif)
-        userWallet.addAccount(authAccount)
-        commit('SAVE', { userWallet, authAccount })
-
-        state.eventListener.signIn.forEach((item) => item(getters.userWallet))
-        infoAndPush('system.info.welcome', '/my-wallet')
-      }
-    }
-
-    await $.await.run(fetch, 'signIn')
+    state.eventListener.signIn.forEach((item) => item(getters.userWallet))
+    infoAndPush('system.info.welcome', '/my-wallet')
   },
 
   saveWallet: async ({getters, commit}, userWallet: Wallet) => {
@@ -64,18 +44,25 @@ const actions: ActionTree<AuthState, RootState> = {
     infoAndPush('system.info.welcome', '/my-wallet')
   },
 
-  /**
-   * Verifies authorization and refresh user info.
-   * Note: If it is not logged then dispatches signOut
-   * @param dispatch
-   * @param commit
-   * @param getters
-   */
-  auth: async ({dispatch, commit, getters}) => {
-    if (getters.isLogged) {
-      state.eventListener.auth.forEach((item) => item(getters.userWallet))
+  exportJson: async ({getters}) => {
+    const content = JSON.stringify(getters.userWallet.export())
+    const filename = 'wallet.json'
+
+    const blob = new Blob([content], { type: 'text/json;charset=utf-8;' })
+    if (navigator.msSaveBlob) { // IE 10+
+      navigator.msSaveBlob(blob, filename)
     } else {
-      dispatch('signOut', true)
+      const link = document.createElement('a')
+      if (link.download !== undefined) { // feature detection
+        // Browsers that support HTML5 download attribute
+        const url = URL.createObjectURL(blob)
+        link.setAttribute('href', url)
+        link.setAttribute('download', filename)
+        link.style.visibility = 'hidden'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
     }
   },
 
@@ -131,9 +118,8 @@ const actions: ActionTree<AuthState, RootState> = {
 
 // mutations
 const mutations: MutationTree<AuthState> = {
-  SAVE(state, { userWallet, authAccount }) {
+  SAVE(state, userWallet) {
     state.userWallet = userWallet
-    state.authAccount = authAccount
   },
   // Forget mutation
   FORGET(state) {

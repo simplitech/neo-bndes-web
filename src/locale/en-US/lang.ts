@@ -225,7 +225,7 @@ export default {
       missingCertificateData: 'Missing certificate data',
       certificateData: 'Certificate data',
       newAccount: 'New account',
-      importPrivateKey: 'Import private key',
+      importEncryptedWif: 'Import encrypted private key',
       newAccountName: 'New account name',
       blockchainInfo: 'Blockchain info',
       publicKey: 'Public key',
@@ -253,6 +253,7 @@ export default {
       title: 'My Account',
       walletNotFound: 'Wallet not found',
       importWalletFile: 'Import JSON',
+      openWallet: 'Open Wallet',
       createWallet: 'Create Wallet',
     },
 

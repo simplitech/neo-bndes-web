@@ -15,7 +15,6 @@ export interface RootState {
  */
 export interface AuthState {
   userWallet: Wallet | null
-  authAccount: Account | null,
   eventListener: AuthEventListener
 }
 

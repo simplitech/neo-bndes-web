@@ -225,7 +225,7 @@ export default {
       missingCertificateData: 'Conteúdo do certificado não encontrado',
       certificateData: 'Dados do certificado',
       newAccount: 'Nova conta',
-      importPrivateKey: 'Importar chave privada',
+      importEncryptedWif: 'Importar chave privada criptografada',
       newAccountName: 'Nome da nova conta',
       blockchainInfo: 'Informações da blockchain',
       publicKey: 'Chave pública',
@@ -252,7 +252,7 @@ export default {
     signinToWallet: {
       title: 'Minha Conta',
       walletNotFound: 'Carteira não encontrada',
-      importWalletFile: 'Importar JSON',
+      openWallet: 'Abrir carteira',
       createWallet: 'Criar carteira',
     },
 

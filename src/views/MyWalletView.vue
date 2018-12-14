@@ -14,11 +14,12 @@
           <div class="py-10">
             <div class="container fluid">
 
-              <div class="horiz mb-5">
-                <button class="weight-1 h-40 mr-15">
+              <div class="horiz">
+                <router-link to="/account/new" class="weight-1 btn mr-15">
                   {{$t('view.myWallet.createNewAccount')}}
-                </button>
-                <button class="weight-1 h-40" @click="$await.run(exportJson, 'exportJson')">
+                </router-link>
+
+                <button class="weight-1" @click="$await.run(exportJson, 'exportJson')">
                   <await name="exportJson">
                     {{$t('view.myWallet.export')}}
                   </await>
@@ -90,6 +91,7 @@
   export default class MyWalletView extends Vue {
     @Getter('auth/isLogged') isLogged!: Boolean
     @Getter('auth/userWallet') userWallet!: Account
+    @Action('auth/exportJson') exportJson!: Function
 
     account = {}
 
@@ -110,34 +112,6 @@ ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
     mounted() {
       if (!this.isLogged) {
         this.$router.push({path: '/my-wallet/signin'})
-      }
-    }
-
-    async persistAccount() {
-      // await this.account.persist()
-      successAndPush('system.success.persist', '/admin/list')
-    }
-
-    async exportJson() {
-      this.downloadJson(JSON.stringify(this.userWallet.export()), 'wallet.json')
-    }
-
-    downloadJson(content: string, filename: string) {
-      const blob = new Blob([content], { type: 'text/json;charset=utf-8;' })
-      if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(blob, filename)
-      } else {
-        const link = document.createElement('a')
-        if (link.download !== undefined) { // feature detection
-          // Browsers that support HTML5 download attribute
-          const url = URL.createObjectURL(blob)
-          link.setAttribute('href', url)
-          link.setAttribute('download', filename)
-          link.style.visibility = 'hidden'
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-        }
       }
     }
   }
