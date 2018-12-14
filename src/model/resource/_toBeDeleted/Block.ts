@@ -2,11 +2,11 @@
  * Block
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource} from '@/simpli'
+import {$, ID, Resource} from '../../../simpli'
 import {
   ValidationRequired,
-} from '@/simpli'
-import BlockSchema from '@/schema/Block.schema'
+} from '../../../simpli'
+import BlockSchema from '../../../schema/Block.schema'
 
 /* TODO: review generated class */
 export default class Block extends Resource {

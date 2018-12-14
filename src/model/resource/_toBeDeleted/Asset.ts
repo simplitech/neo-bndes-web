@@ -2,11 +2,11 @@
  * Asset
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource, TAG} from '@/simpli'
+import {$, ID, Resource, TAG} from '../../../simpli'
 import {
   ValidationMaxLength,
-} from '@/simpli'
-import AssetSchema from '@/schema/Asset.schema'
+} from '../../../simpli'
+import AssetSchema from '../../../schema/Asset.schema'
 
 /* TODO: review generated class */
 export default class Asset extends Resource {

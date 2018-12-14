@@ -3,7 +3,7 @@
  * @author Simpli© CLI generator
  */
 import {InputType, Schema} from '@/simpli'
-import Block from '@/model/resource/Block'
+import Block from '@/model/resource/_toBeDeleted/Block'
 
 /* TODO: review generated schema */
 export default (model: Block): Schema => ({

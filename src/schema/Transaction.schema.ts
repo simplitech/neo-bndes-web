@@ -3,7 +3,7 @@
  * @author Simpli© CLI generator
  */
 import {InputType, Schema} from '@/simpli'
-import Transaction from '@/model/resource/Transaction'
+import Transaction from '@/model/resource/_toBeDeleted/Transaction'
 
 /* TODO: review generated schema */
 export default (model: Transaction): Schema => ({

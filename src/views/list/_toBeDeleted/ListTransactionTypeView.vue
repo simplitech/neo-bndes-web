@@ -74,9 +74,9 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Mixins, Vue} from 'vue-property-decorator'
-  import TransactionType from '@/model/resource/TransactionType'
-  import PagedResp from '@/model/collection/PagedResp'
-  import {$, MixinQueryRouter, pushByName} from '@/simpli'
+  import TransactionType from '../../../model/resource/_toBeDeleted/TransactionType'
+  import PagedResp from '../../../model/collection/_toBeDeleted/PagedResp'
+  import {$, MixinQueryRouter, pushByName} from '../../../simpli'
 
   @Component({
     mixins: [MixinQueryRouter],

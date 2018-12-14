@@ -2,11 +2,11 @@
  * AssetResp
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource, TAG} from '@/simpli'
+import {$, ID, Resource, TAG} from '../../../../simpli'
 import {
   ResponseSerialize,
-} from '@/simpli'
-import Asset from '@/model/resource/Asset'
+} from '../../../../simpli'
+import Asset from '../Asset'
 
 /* TODO: review generated class */
 export default class AssetResp extends Resource {

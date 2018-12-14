@@ -2,13 +2,13 @@
  * TransactionInputResp
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource, TAG} from '@/simpli'
+import {$, ID, Resource, TAG} from '../../../../simpli'
 import {
   ResponseSerialize,
-} from '@/simpli'
-import TransactionInput from '@/model/resource/TransactionInput'
-import Asset from '@/model/resource/Asset'
-import Transaction from '@/model/resource/Transaction'
+} from '../../../../simpli'
+import TransactionInput from '../TransactionInput'
+import Asset from '../Asset'
+import Transaction from '../Transaction'
 
 /* TODO: review generated class */
 export default class TransactionInputResp extends Resource {

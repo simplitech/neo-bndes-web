@@ -3,20 +3,21 @@
  * @author ftgibran
  */
 import {$, Model, testInvoke, doInvoke} from '@/simpli'
+import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export abstract class SmartContract extends Model {
   abstract $operation: string
   abstract get $params(): string[]
 
-  async testInvoke() {
+  async testInvoke(): Promise<TestInvokeResp> {
     return await this.fetch(() => testInvoke(this.$operation, ...this.$params))
   }
 
-  async doInvoke() {
+  async doInvoke(): Promise<DoInvokeResp> {
     return await this.fetch(() => doInvoke(this.$operation, ...this.$params))
   }
 
-  async fetch(func: () => Promise<any>) {
+  async fetch(func: () => Promise<TestInvokeResp | DoInvokeResp>) {
     await this.validate()
 
     try {

@@ -2,16 +2,16 @@
   <div class="verti">
     <section class="header mb-20 py-10">
       <h1 class="container">
-        {{ $t('classes.TransactionType.title') }}
+        {{ $t('classes.Admin.title') }}
       </h1>
     </section>
 
     <section class="container small">
-      <await init name="findTransactionTypeResp" class="my-20">
+      <await init name="findAdminResp" class="my-20">
         <form class="elevated padded" @submit.prevent="$await.run(persist, 'persist')">
 
-          <div v-for="(field, i) in model.transactionType.fieldsToInput" :key="i" class="mb-15">
-            <resource-input v-model="model.transactionType" :field="field"/>
+          <div v-for="(field, i) in model.admin.fieldsToInput" :key="i" class="mb-15 h-35">
+            <resource-input v-model="model.admin" :field="field"/>
           </div>
 
           <hr>
@@ -28,22 +28,22 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-  import TransactionTypeResp from '@/model/resource/response/TransactionTypeResp'
-  import {$, successAndPush} from '@/simpli'
+  import AdminResp from '../../../model/resource/_toBeDeleted/response/AdminResp'
+  import {$, successAndPush} from '../../../simpli'
 
   @Component
-  export default class PersistTransactionTypeView extends Vue {
+  export default class PersistAdminView extends Vue {
     @Prop({type: [String, Number]}) id?: string
-    model = new TransactionTypeResp()
+    model = new AdminResp()
 
     async mounted() {
       await this.model.find(this.id || 0)
     }
 
     async persist() {
-      await this.model.transactionType.validate()
-      await this.model.transactionType.save()
-      successAndPush('system.success.persist', '/transaction-type/list')
+      await this.model.admin.validate()
+      await this.model.admin.save()
+      successAndPush('system.success.persist', '/admin/list')
     }
   }
 </script>

@@ -182,7 +182,7 @@ export default {
 
   navbar: {
     brand: 'NEO BNDES',
-    registerMasterAccount: 'Register Master Account',
+    masterAccounts: 'Master Accounts',
     operations: 'Operations',
     track: 'Track',
     companies: 'Companies',
@@ -362,10 +362,15 @@ export default {
         encryptedWif: 'Encrypted WIF',
       },
     },
+    ListMasterAccount: {
+      title: 'List of master accounts',
+      columns: {
+      },
+    },
     RegisterMasterAccountRequest: {
       title: 'Register Master Account',
       columns: {
-        newAccount: 'New Account',
+        newAccount: 'Public Address',
         entityName: 'Entity Name',
         entityAddress: 'Entity Address',
         entityPhone: 'Entity Phone',

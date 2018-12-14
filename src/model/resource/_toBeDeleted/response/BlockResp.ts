@@ -2,11 +2,11 @@
  * BlockResp
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource, TAG} from '@/simpli'
+import {$, ID, Resource, TAG} from '../../../../simpli'
 import {
   ResponseSerialize,
-} from '@/simpli'
-import Block from '@/model/resource/Block'
+} from '../../../../simpli'
+import Block from '../Block'
 
 /* TODO: review generated class */
 export default class BlockResp extends Resource {

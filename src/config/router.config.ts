@@ -12,8 +12,10 @@ import DefaultPanelLayout from '@/views/layouts/DefaultPanelLayout.vue'
 
 import SignInToWalletView from '@/views/SignInToWalletView.vue'
 import MyWalletView from '@/views/MyWalletView.vue'
-import RegisterMasterAccountView from '@/views/RegisterMasterAccountView.vue'
 
+import ListMasterAccountView from '@/views/list/ListMasterAccountView.vue'
+
+import PersistMasterAccountView from '@/views/persist/PersistMasterAccountView.vue'
 import PersistAccountView from '@/views/persist/PersistAccountView.vue'
 import PersistTransactionView from '@/views/persist/PersistTransactionView.vue'
 
@@ -26,12 +28,15 @@ export const router = {
       path: '/my-wallet',
       component: DefaultPanelLayout,
       children: [
-        {path: '/my-wallet', name: 'my-wallet', component: MyWalletView},
-
+        {path: '/my-wallet', component: MyWalletView},
         {path: '/my-wallet/signin', component: SignInToWalletView},
+
+        {path: '/master-account', component: ListMasterAccountView},
+        {path: '/master-account/new', component: PersistMasterAccountView},
+
         {path: '/account/new', component: PersistAccountView},
+
         {path: '/transaction/new', component: PersistTransactionView},
-        {path: '/register-master-account', component: RegisterMasterAccountView},
       ],
     },
     {path: '*', redirect: '/my-wallet'},

@@ -3,7 +3,7 @@
     <section class="header">
       <div class="horiz items-center gutter-10">
         <h1 class="m-0">
-          {{$t('classes.Admin.title')}}
+          {{$t('classes.Transaction.title')}}
         </h1>
 
         <adap-searchfield :collection="collection" :placeholder="$t('app.search')"/>
@@ -22,7 +22,7 @@
           </button>
         </await>
 
-        <router-link to="/admin/new" class="btn primary">
+        <router-link to="/transaction/new" class="btn primary">
           {{ $t('app.add') }}
         </router-link>
       </div>
@@ -54,7 +54,7 @@
               <tbody>
               <tr v-for="(item, i) in collection.items" :key="i">
                 <td class="horiz nowrap">
-                  <a @click="pushByName('editAdmin', item.$id)" class="icon icon-pencil"></a>
+                  <a @click="pushByName('editTransaction', item.$id)" class="icon icon-pencil"></a>
                 </td>
 
                 <td v-for="(field, j) in item.fieldsToRender" :key="j">
@@ -74,19 +74,19 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Mixins, Vue} from 'vue-property-decorator'
-  import Admin from '@/model/resource/Admin'
-  import PagedResp from '@/model/collection/PagedResp'
-  import {$, MixinQueryRouter, pushByName} from '@/simpli'
+  import Transaction from '../../../model/resource/_toBeDeleted/Transaction'
+  import PagedResp from '../../../model/collection/_toBeDeleted/PagedResp'
+  import {$, MixinQueryRouter, pushByName} from '../../../simpli'
 
   @Component({
     mixins: [MixinQueryRouter],
   })
-  export default class ListAdminView extends Mixins<MixinQueryRouter>() {
-    collection = new PagedResp(Admin)
+  export default class ListTransactionView extends Mixins<MixinQueryRouter>() {
+    collection = new PagedResp(Transaction)
     pushByName = pushByName
 
     async downloadCsv() {
-      const csv = new PagedResp(Admin, {}, null, null)
+      const csv = new PagedResp(Transaction, {}, null, null)
 
       const fetch = async () => await csv.search()
       await $.await.run(fetch, 'downloadCsv')

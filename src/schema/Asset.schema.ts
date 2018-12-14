@@ -3,7 +3,7 @@
  * @author Simpli© CLI generator
  */
 import {InputType, Schema} from '@/simpli'
-import Asset from '@/model/resource/Asset'
+import Asset from '@/model/resource/_toBeDeleted/Asset'
 
 /* TODO: review generated schema */
 export default (model: Asset): Schema => ({

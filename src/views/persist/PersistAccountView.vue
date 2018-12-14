@@ -147,8 +147,8 @@
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
   import {Action} from 'vuex-class'
   import {wallet} from '@cityofzion/neon-js'
-  import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring } from '@/simpli'
-  import AuthRequest from '@/model/request/AuthRequest'
+  import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring } from '../../simpli'
+  import AuthRequest from '../../model/request/AuthRequest'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -307,9 +307,7 @@
         return
       }
 
-      console.log(this.wif)
       this.neoAccount = new wallet.Account(this.wif)
-      console.log(this.neoAccount)
       this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword)
 
       if (this.cert && this.key) {
@@ -393,9 +391,8 @@
 
       const resp = await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
         this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
-      console.log(this.neoAccount.scriptHash)
 
-      if (resp.response.result) {
+      if (resp.response && resp.response.result) {
         const authRequest = new AuthRequest()
         authRequest.encryptedWIF = this.encryptedWif
         authRequest.passphrase = this.accountPassword

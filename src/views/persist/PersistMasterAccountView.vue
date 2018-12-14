@@ -50,12 +50,12 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
   import {Action, Getter} from 'vuex-class'
-  import {success, testInvoke, doInvoke} from '@/simpli'
+  import {successAndPush, testInvoke, doInvoke} from '../../simpli'
   import {Account} from '@cityofzion/neon-core/lib/wallet'
-  import RegisterMasterAccountRequest from '@/model/request/RegisterMasterAccountRequest'
+  import RegisterMasterAccountRequest from '../../model/request/RegisterMasterAccountRequest'
 
   @Component
-  export default class RegisterMasterAccountView extends Vue {
+  export default class PersistMasterAccountView extends Vue {
     @Getter('auth/userWallet') userWallet!: Account
 
     request = new RegisterMasterAccountRequest()
@@ -72,7 +72,7 @@
         // registerRegularAccount: await testInvoke('registerRegularAccount'),
         // approveRegularAccount: await testInvoke('approveRegularAccount'),
         // registerMasterAccount: await doInvoke('registerMasterAccount'),
-         masterAccounts: await testInvoke('masterAccounts'),
+        //  masterAccounts: await testInvoke('masterAccounts'),
         // removeMasterAccount: await testInvoke('removeMasterAccount'),
         // masterAccountStatus: await testInvoke('masterAccountStatus'),
         // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
@@ -82,15 +82,14 @@
       }
 
       // const symbol = hexstring2str(simplipay.symbol.result)
-      const resp = simplipay.masterAccounts
+      // const resp = simplipay.masterAccounts
 
-      console.log(resp)
+      // console.log(resp)
     }
 
     async submit() {
-      const resp = await this.request.doInvoke()
-      console.log(resp)
-      success('system.success.persist')
+      await this.request.doInvoke()
+      successAndPush('system.success.persist', '/master-account')
     }
   }
 </script>

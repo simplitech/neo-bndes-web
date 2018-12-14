@@ -182,7 +182,7 @@ export default {
 
   navbar: {
     brand: 'NEO BNDES',
-    registerMasterAccount: 'Registrar Conta Master',
+    masterAccounts: 'Contas Master',
     operations: 'Operações',
     track: 'Rastreio',
     companies: 'Empresas',
@@ -367,10 +367,15 @@ export default {
         amount: 'Saldo',
       },
     },
+    ListMasterAccount: {
+      title: 'Lista de contas master',
+      columns: {
+      },
+    },
     RegisterMasterAccountRequest: {
       title: 'Registrar Conta Master',
       columns: {
-        newAccount: 'Nova Conta',
+        newAccount: 'Endereço público',
         entityName: 'Nome da entidade',
         entityAddress: 'Endereço da entidade',
         entityPhone: 'Telefone da entidade',

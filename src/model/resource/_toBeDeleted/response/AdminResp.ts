@@ -2,11 +2,11 @@
  * AdminResp
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource, TAG} from '@/simpli'
+import {$, ID, Resource, TAG} from '../../../../simpli'
 import {
   ResponseSerialize,
-} from '@/simpli'
-import Admin from '@/model/resource/Admin'
+} from '../../../../simpli'
+import Admin from '../Admin'
 
 /* TODO: review generated class */
 export default class AdminResp extends Resource {

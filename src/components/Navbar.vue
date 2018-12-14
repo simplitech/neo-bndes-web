@@ -35,8 +35,8 @@
           <div class="slot-1">
             <ul>
               <li>
-                <router-link tag="button" to="/register-master-account">
-                  {{$t('navbar.registerMasterAccount')}}
+                <router-link tag="button" to="/master-account">
+                  {{$t('navbar.masterAccounts')}}
                 </router-link>
               </li>
               <li>

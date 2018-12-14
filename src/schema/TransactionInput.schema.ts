@@ -4,7 +4,7 @@
  */
 import {InputType, Schema} from '@/simpli'
 import {bool} from '@/simpli'
-import TransactionInput from '@/model/resource/TransactionInput'
+import TransactionInput from '@/model/resource/_toBeDeleted/TransactionInput'
 
 /* TODO: review generated schema */
 export default (model: TransactionInput): Schema => ({

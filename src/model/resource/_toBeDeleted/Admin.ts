@@ -2,15 +2,15 @@
  * Admin
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource} from '@/simpli'
+import {$, ID, Resource} from '../../../simpli'
 import {
   ResponseHidden,
   ValidationEmail,
   ValidationMaxLength,
   ValidationPasswordLength,
   ValidationRequired,
-} from '@/simpli'
-import AdminSchema from '@/schema/Admin.schema'
+} from '../../../simpli'
+import AdminSchema from '../../../schema/Admin.schema'
 
 /* TODO: review generated class */
 export default class Admin extends Resource {

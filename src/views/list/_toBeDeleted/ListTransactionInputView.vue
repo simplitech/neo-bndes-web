@@ -3,7 +3,7 @@
     <section class="header">
       <div class="horiz items-center gutter-10">
         <h1 class="m-0">
-          {{$t('classes.Transaction.title')}}
+          {{$t('classes.TransactionInput.title')}}
         </h1>
 
         <adap-searchfield :collection="collection" :placeholder="$t('app.search')"/>
@@ -22,7 +22,7 @@
           </button>
         </await>
 
-        <router-link to="/transaction/new" class="btn primary">
+        <router-link to="/transaction-input/new" class="btn primary">
           {{ $t('app.add') }}
         </router-link>
       </div>
@@ -54,7 +54,7 @@
               <tbody>
               <tr v-for="(item, i) in collection.items" :key="i">
                 <td class="horiz nowrap">
-                  <a @click="pushByName('editTransaction', item.$id)" class="icon icon-pencil"></a>
+                  <a @click="pushByName('editTransactionInput', item.$id)" class="icon icon-pencil"></a>
                 </td>
 
                 <td v-for="(field, j) in item.fieldsToRender" :key="j">
@@ -74,19 +74,19 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Mixins, Vue} from 'vue-property-decorator'
-  import Transaction from '@/model/resource/Transaction'
-  import PagedResp from '@/model/collection/PagedResp'
-  import {$, MixinQueryRouter, pushByName} from '@/simpli'
+  import TransactionInput from '../../../model/resource/_toBeDeleted/TransactionInput'
+  import PagedResp from '../../../model/collection/_toBeDeleted/PagedResp'
+  import {$, MixinQueryRouter, pushByName} from '../../../simpli'
 
   @Component({
     mixins: [MixinQueryRouter],
   })
-  export default class ListTransactionView extends Mixins<MixinQueryRouter>() {
-    collection = new PagedResp(Transaction)
+  export default class ListTransactionInputView extends Mixins<MixinQueryRouter>() {
+    collection = new PagedResp(TransactionInput)
     pushByName = pushByName
 
     async downloadCsv() {
-      const csv = new PagedResp(Transaction, {}, null, null)
+      const csv = new PagedResp(TransactionInput, {}, null, null)
 
       const fetch = async () => await csv.search()
       await $.await.run(fetch, 'downloadCsv')

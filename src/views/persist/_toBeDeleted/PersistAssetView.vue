@@ -28,8 +28,8 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-  import AssetResp from '@/model/resource/response/AssetResp'
-  import {$, successAndPush} from '@/simpli'
+  import AssetResp from '../../../model/resource/_toBeDeleted/response/AssetResp'
+  import {$, successAndPush} from '../../../simpli'
 
   @Component
   export default class PersistAssetView extends Vue {

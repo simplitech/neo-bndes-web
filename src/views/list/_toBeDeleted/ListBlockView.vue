@@ -3,7 +3,7 @@
     <section class="header">
       <div class="horiz items-center gutter-10">
         <h1 class="m-0">
-          {{$t('classes.TransactionInput.title')}}
+          {{$t('classes.Block.title')}}
         </h1>
 
         <adap-searchfield :collection="collection" :placeholder="$t('app.search')"/>
@@ -22,7 +22,7 @@
           </button>
         </await>
 
-        <router-link to="/transaction-input/new" class="btn primary">
+        <router-link to="/block/new" class="btn primary">
           {{ $t('app.add') }}
         </router-link>
       </div>
@@ -54,7 +54,7 @@
               <tbody>
               <tr v-for="(item, i) in collection.items" :key="i">
                 <td class="horiz nowrap">
-                  <a @click="pushByName('editTransactionInput', item.$id)" class="icon icon-pencil"></a>
+                  <a @click="pushByName('editBlock', item.$id)" class="icon icon-pencil"></a>
                 </td>
 
                 <td v-for="(field, j) in item.fieldsToRender" :key="j">
@@ -74,19 +74,19 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Mixins, Vue} from 'vue-property-decorator'
-  import TransactionInput from '@/model/resource/TransactionInput'
-  import PagedResp from '@/model/collection/PagedResp'
-  import {$, MixinQueryRouter, pushByName} from '@/simpli'
+  import Block from '../../../model/resource/_toBeDeleted/Block'
+  import PagedResp from '../../../model/collection/_toBeDeleted/PagedResp'
+  import {$, MixinQueryRouter, pushByName} from '../../../simpli'
 
   @Component({
     mixins: [MixinQueryRouter],
   })
-  export default class ListTransactionInputView extends Mixins<MixinQueryRouter>() {
-    collection = new PagedResp(TransactionInput)
+  export default class ListBlockView extends Mixins<MixinQueryRouter>() {
+    collection = new PagedResp(Block)
     pushByName = pushByName
 
     async downloadCsv() {
-      const csv = new PagedResp(TransactionInput, {}, null, null)
+      const csv = new PagedResp(Block, {}, null, null)
 
       const fetch = async () => await csv.search()
       await $.await.run(fetch, 'downloadCsv')

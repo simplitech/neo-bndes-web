@@ -1,8 +1,8 @@
 import Neon, { wallet, rpc, api } from '@cityofzion/neon-js'
 import { Account } from '@cityofzion/neon-core/lib/wallet'
 import { TransactionOutput } from '@cityofzion/neon-core/lib/tx'
-import { getUserWallet } from '@/simpli'
 import {getAuthAccount} from '@/helpers/vuex/auth.helper'
+import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
@@ -30,7 +30,7 @@ export const addressToScriptHash = (address?: string) =>
 export const hex2number = (hex?: string) =>
   hex && hex.length ? parseInt(hex, 16) : ''
 
-export const testInvoke = async (operation: string, ...args: any[]) => {
+export const testInvoke = async (operation: string, ...args: any[]): Promise<TestInvokeResp> => {
   const script = Neon.create.script({ scriptHash, operation, args })
 
   const resp = await rpc.Query.invokeScript(script).execute(contractPath)
@@ -44,12 +44,14 @@ export const testInvoke = async (operation: string, ...args: any[]) => {
   return {result, gasConsumed}
 }
 
-export const doInvoke = async (operation: string, ...args: any[]) => {
+export const doInvoke = async (operation: string, ...args: any[]): Promise<DoInvokeResp> => {
   const account = getAuthAccount()
   return doInvokeWithAccount(account, operation, ...args)
 }
 
-export const doInvokeWithAccount = async (account: Account, operation: string, ...args: any[]) => {
+export const doInvokeWithAccount =
+  async (account: Account, operation: string, ...args: any[]): Promise<DoInvokeResp> => {
+
   const resp = await testInvoke(operation, ...args)
 
   const intents = []
@@ -57,12 +59,10 @@ export const doInvokeWithAccount = async (account: Account, operation: string, .
   if (parseFloat(resp.gasConsumed) >= 10) {
     intents.push(new TransactionOutput({
       assetId: Neon.CONST.ASSET_ID.GAS,
-      value: resp.gasConsumed,
+      value: Number(resp.gasConsumed),
       scriptHash,
     }))
   }
-
-  console.log(args)
 
   const opResult = await api.doInvoke({
     api: new api.neoscan.instance('PrivateNet'),

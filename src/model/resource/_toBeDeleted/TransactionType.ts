@@ -2,12 +2,12 @@
  * TransactionType
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource, TAG} from '@/simpli'
+import {$, ID, Resource, TAG} from '../../../simpli'
 import {
   ValidationMaxLength,
   ValidationRequired,
-} from '@/simpli'
-import TransactionTypeSchema from '@/schema/TransactionType.schema'
+} from '../../../simpli'
+import TransactionTypeSchema from '../../../schema/TransactionType.schema'
 
 /* TODO: review generated class */
 export default class TransactionType extends Resource {

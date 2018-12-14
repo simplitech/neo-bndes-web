@@ -28,8 +28,8 @@
 
 <script lang="ts">
 import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-import TransactionInputResp from '@/model/resource/response/TransactionInputResp'
-import {$, successAndPush} from '@/simpli'
+import TransactionInputResp from '../../../model/resource/_toBeDeleted/response/TransactionInputResp'
+import {$, successAndPush} from '../../../simpli'
 
 @Component
 export default class PersistTransactionInputView extends Vue {

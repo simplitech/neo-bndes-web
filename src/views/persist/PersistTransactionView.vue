@@ -60,8 +60,7 @@
 
 <script lang="ts">
 import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-import TransactionResp from '@/model/resource/response/TransactionResp'
-import {$, successAndPush, testInvoke, str2hexstring} from '@/simpli'
+import {$, successAndPush, testInvoke, str2hexstring} from '../../simpli'
 
 @Component
 export default class PersistTransactionView extends Vue {

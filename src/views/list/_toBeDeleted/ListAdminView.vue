@@ -3,7 +3,7 @@
     <section class="header">
       <div class="horiz items-center gutter-10">
         <h1 class="m-0">
-          {{$t('classes.Asset.title')}}
+          {{$t('classes.Admin.title')}}
         </h1>
 
         <adap-searchfield :collection="collection" :placeholder="$t('app.search')"/>
@@ -22,7 +22,7 @@
           </button>
         </await>
 
-        <router-link to="/asset/new" class="btn primary">
+        <router-link to="/admin/new" class="btn primary">
           {{ $t('app.add') }}
         </router-link>
       </div>
@@ -54,7 +54,7 @@
               <tbody>
               <tr v-for="(item, i) in collection.items" :key="i">
                 <td class="horiz nowrap">
-                  <a @click="pushByName('editAsset', item.$id)" class="icon icon-pencil"></a>
+                  <a @click="pushByName('editAdmin', item.$id)" class="icon icon-pencil"></a>
                 </td>
 
                 <td v-for="(field, j) in item.fieldsToRender" :key="j">
@@ -74,19 +74,19 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Mixins, Vue} from 'vue-property-decorator'
-  import Asset from '@/model/resource/Asset'
-  import PagedResp from '@/model/collection/PagedResp'
-  import {$, MixinQueryRouter, pushByName} from '@/simpli'
+  import Admin from '../../../model/resource/_toBeDeleted/Admin'
+  import PagedResp from '../../../model/collection/_toBeDeleted/PagedResp'
+  import {$, MixinQueryRouter, pushByName} from '../../../simpli'
 
   @Component({
     mixins: [MixinQueryRouter],
   })
-  export default class ListAssetView extends Mixins<MixinQueryRouter>() {
-    collection = new PagedResp(Asset)
+  export default class ListAdminView extends Mixins<MixinQueryRouter>() {
+    collection = new PagedResp(Admin)
     pushByName = pushByName
 
     async downloadCsv() {
-      const csv = new PagedResp(Asset, {}, null, null)
+      const csv = new PagedResp(Admin, {}, null, null)
 
       const fetch = async () => await csv.search()
       await $.await.run(fetch, 'downloadCsv')

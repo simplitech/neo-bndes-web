@@ -2,15 +2,15 @@
  * TransactionInput
  * @author Simpli© CLI generator
  */
-import {$, ID, Resource} from '@/simpli'
+import {$, ID, Resource} from '../../../simpli'
 import {
   ResponseSerialize,
   ValidationMaxLength,
   ValidationRequired,
-} from '@/simpli'
-import Asset from '@/model/resource/Asset'
-import Transaction from '@/model/resource/Transaction'
-import TransactionInputSchema from '@/schema/TransactionInput.schema'
+} from '../../../simpli'
+import Asset from './Asset'
+import Transaction from './Transaction'
+import TransactionInputSchema from '../../../schema/TransactionInput.schema'
 
 /* TODO: review generated class */
 export default class TransactionInput extends Resource {

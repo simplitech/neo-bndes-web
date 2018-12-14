@@ -2,7 +2,7 @@
  * PagedResp
  * @author Simpli© CLI generator
  */
-import {PageCollection, Resource, ResponseFill} from '@/simpli'
+import {PageCollection, Resource, ResponseFill} from '../../../simpli'
 import {Type} from 'class-transformer'
 
 export default class PagedResp<T extends Resource> extends PageCollection<T> {
