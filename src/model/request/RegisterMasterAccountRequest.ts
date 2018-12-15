@@ -2,8 +2,10 @@
  * AuthRequest
  * @author ftgibran
  */
-import {$, addressToScriptHash, str2hexstring} from '@/simpli'
 import {
+  $,
+  addressToScriptHash,
+  str2hexstring,
   ValidationPhone,
   ValidationEmail,
   ValidationRequired,

@@ -49,7 +49,7 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-  import {$, doInvoke, testInvoke} from '../../simpli'
+  import {$} from '../../simpli'
   import MasterAccountsCollection, {MasterAccountData} from '../../model/collection/MasterAccountsCollection'
 
   @Component

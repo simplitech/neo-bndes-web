@@ -88,7 +88,7 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
   import {Action, Getter} from 'vuex-class'
-  import {doInvoke, hexstring2str, reverseHex, str2hexstring, successAndPush, testInvoke} from '@/simpli'
+  import {hexstring2str, reverseHex, str2hexstring, successAndPush} from '@/simpli'
   import { Account, Wallet } from '@cityofzion/neon-core/lib/wallet'
   import AccountSelector from '@/components/AccountSelector.vue'
 

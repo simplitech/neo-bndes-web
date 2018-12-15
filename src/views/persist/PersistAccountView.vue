@@ -40,23 +40,23 @@
           <h2>{{ $t('view.persistAccount.certificateData') }}</h2>
           <div class="horiz">
             <b class="w-130">{{ $t('view.persistAccount.email') }}</b>
-            <span>{{ email }}</span>
+            <span>{{ subjectAccount.email }}</span>
           </div>
           <div class="horiz">
             <b class="w-130">{{ $t('view.persistAccount.name') }}</b>
-            <span>{{ name }}</span>
+            <span>{{ subjectAccount.name }}</span>
           </div>
           <div class="horiz">
             <b class="w-130">{{ $t('view.persistAccount.document') }}</b>
-            <span>{{ document }}</span>
+            <span>{{ subjectAccount.document }}</span>
           </div>
-          <div class="horiz" v-if="neoAccount">
+          <div class="horiz" v-if="subjectAccount.neoAccount">
             <b class="w-130">{{ $t('view.persistAccount.newAccountName') }}</b>
             <span>{{ accountName }}</span>
           </div>
         </div>
 
-        <div v-if="altNames.length && !neoAccount" class="w-full horiz gutter-30">
+        <div v-if="altNames.length && !subjectAccount.neoAccount" class="w-full horiz gutter-30">
           <form class="verti weight-1 min-w-300 mb-30" @submit.prevent="createAccount">
             <h2>{{ $t('view.persistAccount.newAccount') }}</h2>
 
@@ -110,13 +110,13 @@
           </form>
         </div>
 
-        <div v-if="neoAccount" class="verti">
+        <div v-if="subjectAccount.neoAccount" class="verti">
           <await name="requestApproval">
-            <button @click="$await.run(requestApproval, 'requestApproval')" class="primary" v-if="signature">
+            <button @click="$await.run(requestApproval, 'requestApproval')" class="primary" v-if="subjectAccount.signature">
                 {{ $t('view.persistAccount.requestApproval') }}
             </button>
           </await>
-          <div v-if="!signature">{{ $t('app.wait') }}</div>
+          <div v-if="!subjectAccount.signature">{{ $t('app.wait') }}</div>
         </div>
       </div>
 
@@ -132,7 +132,8 @@
   import {Action} from 'vuex-class'
   import {wallet} from '@cityofzion/neon-js'
   import { Wallet, Account, AccountJSON } from '@cityofzion/neon-core/lib/wallet'
-  import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring, reverseHex } from '../../simpli'
+  import {$, successAndPush, error, success, str2hexstring, reverseHex } from '../../simpli'
+  import RegularAccount from '@/model/resource/RegularAccount'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -147,18 +148,18 @@
     @Action('auth/addAccount') addAccount!: Function
     @Action('auth/exportJson') exportJson!: Function
 
+    subjectAccount = new RegularAccount()
+
     password: string | null = null
     pkcs12Der: string | null = null
     content: forge.pkcs12.Pkcs12Pfx | null = null
 
     friendlyNames: string[] | null = null
-
     selectedFriendlyName: string | null = null
 
     key: forge.pki.rsa.PrivateKey | null = null
     cert: forge.pki.Certificate | null = null
     privatePem: string | null = null
-    publicKey: string | null = null
     altNames: string[] = []
 
     accountName: string | null = null
@@ -167,13 +168,6 @@
 
     encryptedWif: string | null = null
     wif: string | null = null
-    neoAccount: any | null = null
-
-    signature: any | null = null
-
-    email: string | null = null
-    document: string | null = null
-    name: string | null = null
 
     onInputFileChange(e: HTMLInputEvent) {
       if (!e || !e.target || !e.target.files) return
@@ -249,7 +243,7 @@
 
             const publicKeyData = forge.pki.setRsaPublicKey(this.key.n, this.key.e)
             const publicPem = forge.pki.publicKeyToPem(publicKeyData)
-            this.publicKey = publicPem.replace(/\r\n/g, '\n')
+            this.subjectAccount.publicKey = publicPem.replace(/\r\n/g, '\n')
           }
 
           if (kc.cert) {
@@ -260,15 +254,15 @@
               this.recursivelyPopulateAltNames(extension.altNames)
 
               if (this.altNames.length >= 1) {
-                this.email = this.altNames[0]
+                this.subjectAccount.email = this.altNames[0]
               }
 
               if (this.altNames.length >= 3) {
-                this.name = this.altNames[2]
+                this.subjectAccount.name = this.altNames[2]
               }
 
               if (this.altNames.length >= 4) {
-                this.document = this.altNames[3]
+                this.subjectAccount.document = this.altNames[3]
               }
             }
           }
@@ -340,7 +334,8 @@
 
       const address = wallet.getAddressFromScriptHash(
         wallet.getScriptHashFromPublicKey(
-          wallet.getPublicKeyFromPrivateKey(this.wif)))
+          wallet.getPublicKeyFromPrivateKey(
+            wallet.getPrivateKeyFromWIF(this.wif))))
 
       const accJson = {
         address,
@@ -362,11 +357,18 @@
       }
 
       // @ts-ignore
-      this.neoAccount = new Account(accJson)
-      this.neoAccount.decrypt(this.accountPassword)
+      this.subjectAccount.neoAccount = new Account(accJson)
+      if (!this.subjectAccount.neoAccount) {
+        return
+      }
+
+      this.subjectAccount.neoAccount.decrypt(this.accountPassword || '')
 
       if (this.cert && this.key) {
-        this.signature = this.signPkcs7(this.cert, this.key, this.neoAccount.scriptHash)
+        this.subjectAccount.signature = this.signPkcs7(
+          this.cert,
+          this.key || '',
+          this.subjectAccount.neoAccount.scriptHash)
       }
     }
 
@@ -397,26 +399,10 @@
     }
 
     async requestApproval() {
-      if (!this.publicKey || !this.signature) {
-        return
-      }
+      const resp = await this.subjectAccount.persistRegularAccount()
 
-      const isCpf = this.document && this.document.length === 11
-
-      const resp = await doInvokeWithAccount(
-        this.neoAccount,
-        'registerRegularAccount',
-        reverseHex(this.neoAccount.scriptHash),
-        str2hexstring(this.publicKey),
-        str2hexstring(this.signature),
-        isCpf ? 1 : 2,
-        str2hexstring(this.document || ''),
-        str2hexstring(this.name || ''),
-        str2hexstring(this.email || ''),
-        str2hexstring(this.accountName || ''))
-
-      if (resp.response && resp.response.result) {
-        this.addAccount(this.neoAccount)
+      if (resp && resp.response && resp.response.result) {
+        this.addAccount(this.subjectAccount.neoAccount)
         this.exportJson()
       } else {
         error('error.unexpected')

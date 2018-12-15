@@ -28,7 +28,7 @@
       <div class="verti max-w-300">
         <span>{{ $t('view.accountSelector.selectTheAccount') }}</span>
 
-        <select v-model="selectedAcc">
+        <select v-model="selectedAcc" class="min-w-200">
           <option :value="null"></option>
           <option v-for="acc in userWallet.accounts" :value="acc">{{ acc.label || acc.address }}</option>
         </select>

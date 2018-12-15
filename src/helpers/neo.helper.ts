@@ -6,7 +6,7 @@ import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = 'ff03a96ee5ccc2f18d6327e657f9be8fa62d1a94'
+export const scriptHash = '959278be1fdf7f62a42f3aeaee238f5cee82bbcf'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',

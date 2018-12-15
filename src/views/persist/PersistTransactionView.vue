@@ -12,7 +12,7 @@
         <div class="horiz gutter-20">
           <div class="verti weight-2 des-ml-100">
 
-            <input-text type="text" v-model="destinationAddress"
+            <input-text type="text" v-model="recipient.address"
                         :label="$t('view.persistTransaction.destinationAddress')"/>
             <input-text type="text" v-model="transactionValue"
                         :label="$t('view.persistTransaction.transactionValue')"/>
@@ -26,22 +26,22 @@
 
             <div class="infoline horiz py-5 px-15 items-space-between">
               <b>{{ $t('view.persistTransaction.name') }}</b>
-              <div>{{ destinationName }}</div>
+              <div>{{ recipient.name }}</div>
             </div>
 
             <div class="infoline horiz py-5 px-15 items-space-between">
               <b>{{ $t('view.persistTransaction.type') }}</b>
-              <div>{{ destinationType }}</div>
+              <div>{{ recipient.type }}</div>
             </div>
 
             <div class="infoline horiz py-5 px-15 items-space-between">
               <b>{{ $t('view.persistTransaction.document') }}</b>
-              <div>{{ destinationDocument }}</div>
+              <div>{{ recipient.document }}</div>
             </div>
 
             <div class="infoline horiz py-5 px-15 items-space-between">
               <b>{{ $t('view.persistTransaction.publicKey') }}</b>
-              <div>{{ destinationPublicKey }}</div>
+              <div class="truncate max-w-300">{{ recipient.publicKey }}</div>
             </div>
 
           </div>
@@ -60,25 +60,17 @@
 
 <script lang="ts">
 import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-import {$, successAndPush, testInvoke, str2hexstring} from '../../simpli'
+import {$, successAndPush, str2hexstring, addressToScriptHash} from '../../simpli'
+import RegularAccount from '../../model/resource/RegularAccount'
 
 @Component
 export default class PersistTransactionView extends Vue {
-  destinationAddress: string | null = null
+  recipient = new RegularAccount()
   transactionValue: number | null = null
-  destinationName: string | null = null
-  destinationType: string | null = null
-  destinationDocument: string | null = null
-  destinationPublicKey: string | null = null
 
-  @Watch('destinationAddress')
+  @Watch('recipient.address')
   async loadDestinationInfo() {
-    if (!this.destinationAddress || this.destinationAddress.length < 34) {
-      return
-    }
-
-    const resp = await testInvoke('getAccount', str2hexstring(this.destinationAddress))
-    console.log(resp)
+    await this.recipient.getRegularAccount()
   }
 }
 </script>

@@ -14,34 +14,32 @@
           <div class="py-20">
             <div class="container fluid">
 
-              <account-selector>
+              <account-selector autoAuthenticate/>
 
-                <div class="horiz gutter-10">
-                  <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.newAccount')"
-                              v-model="request.newAccount" class="weight-1"/>
-                </div>
+              <div class="horiz gutter-10 mt-30">
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.newAccount')"
+                            v-model="request.newAccount" class="weight-1"/>
+              </div>
 
-                <div class="horiz gutter-10">
-                  <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityName')"
-                              v-model="request.entityName" class="weight-1"/>
-                  <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityAddress')"
-                              v-model="request.entityAddress" class="weight-1"/>
-                </div>
+              <div class="horiz gutter-10">
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityName')"
+                            v-model="request.entityName" class="weight-1"/>
+                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityAddress')"
+                            v-model="request.entityAddress" class="weight-1"/>
+              </div>
 
-                <div class="horiz gutter-10">
-                  <input-text type="phone" :label="$t('classes.RegisterMasterAccountRequest.columns.entityPhone')"
-                              v-model="request.entityPhone" class="weight-1"/>
-                  <input-text type="email" :label="$t('classes.RegisterMasterAccountRequest.columns.entityEmail')"
-                              v-model="request.entityEmail" class="weight-1"/>
-                </div>
+              <div class="horiz gutter-10">
+                <input-text type="phone" :label="$t('classes.RegisterMasterAccountRequest.columns.entityPhone')"
+                            v-model="request.entityPhone" class="weight-1"/>
+                <input-text type="email" :label="$t('classes.RegisterMasterAccountRequest.columns.entityEmail')"
+                            v-model="request.entityEmail" class="weight-1"/>
+              </div>
 
-                <await :name="request.$operation" class="text-center">
-                  <button class="secondary" @click="submit">
-                    {{$t('app.register')}}
-                  </button>
-                </await>
-
-              </account-selector>
+              <await :name="request.$operation" class="text-center">
+                <button class="secondary" @click="submit">
+                  {{$t('app.register')}}
+                </button>
+              </await>
 
             </div>
           </div>
@@ -54,7 +52,7 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
   import {Action, Getter} from 'vuex-class'
-  import {successAndPush, testInvoke, doInvoke} from '../../simpli'
+  import {successAndPush} from '../../simpli'
   import {Account} from '@cityofzion/neon-core/lib/wallet'
   import RegisterMasterAccountRequest from '../../model/request/RegisterMasterAccountRequest'
   import AccountSelector from '@/components/AccountSelector.vue'
