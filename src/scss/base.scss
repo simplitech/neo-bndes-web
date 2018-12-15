@@ -755,3 +755,9 @@ textarea {
     background: $light-background-color;
   }
 }
+
+.errorArea {
+  border-radius: 5px;
+  border: 2px solid $danger-color;
+  background: lighten($danger-color, 50)
+}

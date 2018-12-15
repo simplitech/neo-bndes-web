@@ -192,14 +192,6 @@ export default {
   },
 
   view: {
-    signIn: {
-      title: 'Sign-in',
-      passphrase: 'Passphrase',
-      encryptedWIF: 'Encrypted WIF',
-      signin: 'Sign in',
-      forgotPassword: 'Forgot password',
-    },
-
     resetPassword: {
       title: 'Forgot Password',
       account: 'E-Mail',
@@ -236,6 +228,9 @@ export default {
       passwordDoesntMatch: 'The password fields does not match',
       requestApproval: 'Request approval',
       fillPrivateKey: 'Fill private key',
+      email: 'E-mail',
+      name: 'Name',
+      document: 'Document',
     },
 
     persistTransaction: {
@@ -263,6 +258,12 @@ export default {
       import: 'Import',
       export: 'Export JSON',
       password: 'Fill a password',
+    },
+
+    accountSelector: {
+      selectTheAccount: 'Select the account',
+      fillThePassword: 'Fill the password',
+      authenticate: 'Authenticate',
     },
   },
 

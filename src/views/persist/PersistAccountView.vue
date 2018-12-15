@@ -38,7 +38,22 @@
 
         <div v-if="altNames.length" class="verti mb-50">
           <h2>{{ $t('view.persistAccount.certificateData') }}</h2>
-          <div v-for="an in altNames">{{ an }}</div>
+          <div class="horiz">
+            <b class="w-130">{{ $t('view.persistAccount.email') }}</b>
+            <span>{{ email }}</span>
+          </div>
+          <div class="horiz">
+            <b class="w-130">{{ $t('view.persistAccount.name') }}</b>
+            <span>{{ name }}</span>
+          </div>
+          <div class="horiz">
+            <b class="w-130">{{ $t('view.persistAccount.document') }}</b>
+            <span>{{ document }}</span>
+          </div>
+          <div class="horiz" v-if="neoAccount">
+            <b class="w-130">{{ $t('view.persistAccount.newAccountName') }}</b>
+            <span>{{ accountName }}</span>
+          </div>
         </div>
 
         <div v-if="altNames.length && !neoAccount" class="w-full horiz gutter-30">
@@ -96,40 +111,11 @@
         </div>
 
         <div v-if="neoAccount" class="verti">
-          <h2>{{ $t('view.persistAccount.newAccountName') }}</h2>
-          <div class="text-center mb-50">{{ accountName }}</div>
-
-          <h2>{{ $t('view.persistAccount.blockchainInfo') }}</h2>
-          <div class="horiz">
-            <b class="w-100">{{ $t('view.persistAccount.publicKey') }}</b>
-            <span>{{ neoAccount.publicKey }}</span>
-          </div>
-          <div class="horiz">
-            <b class="w-100">{{ $t('view.persistAccount.encryptedWif') }}</b>
-            <span>{{ encryptedWif }}</span>
-          </div>
-          <div class="horiz">
-            <b class="w-100">{{ $t('view.persistAccount.privateKey') }}</b>
-            <span>{{ neoAccount.privateKey }}</span>
-          </div>
-          <div class="horiz">
-            <b class="w-100">{{ $t('view.persistAccount.address') }}</b>
-            <span>{{ neoAccount.address }}</span>
-          </div>
-          <div class="horiz">
-            <b class="w-100">{{ $t('view.persistAccount.scriptHash') }}</b>
-            <span>{{ neoAccount.scriptHash }}</span>
-          </div>
-          <div class="horiz mb-50">
-            <b class="w-100">Signature</b>
-            <span style="word-wrap:break-word" class="max-w-300">{{ signature }}</span>
-          </div>
-
-          <button @click="$await.run(requestApproval, 'requestApproval')" class="primary" v-if="signature">
-            <await name="requestApproval">
-              {{ $t('view.persistAccount.requestApproval') }}
-            </await>
-          </button>
+          <await name="requestApproval">
+            <button @click="$await.run(requestApproval, 'requestApproval')" class="primary" v-if="signature">
+                {{ $t('view.persistAccount.requestApproval') }}
+            </button>
+          </await>
           <div v-if="!signature">{{ $t('app.wait') }}</div>
         </div>
       </div>
@@ -145,7 +131,8 @@
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
   import {Action} from 'vuex-class'
   import {wallet} from '@cityofzion/neon-js'
-  import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring } from '../../simpli'
+  import { Wallet, Account, AccountJSON } from '@cityofzion/neon-core/lib/wallet'
+  import {$, successAndPush, error, success, doInvokeWithAccount, str2hexstring, reverseHex } from '../../simpli'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -183,6 +170,10 @@
     neoAccount: any | null = null
 
     signature: any | null = null
+
+    email: string | null = null
+    document: string | null = null
+    name: string | null = null
 
     onInputFileChange(e: HTMLInputEvent) {
       if (!e || !e.target || !e.target.files) return
@@ -267,6 +258,18 @@
 
             if (extension) {
               this.recursivelyPopulateAltNames(extension.altNames)
+
+              if (this.altNames.length >= 1) {
+                this.email = this.altNames[0]
+              }
+
+              if (this.altNames.length >= 3) {
+                this.name = this.altNames[2]
+              }
+
+              if (this.altNames.length >= 4) {
+                this.document = this.altNames[3]
+              }
             }
           }
         })
@@ -331,12 +334,36 @@
         return
       }
 
-      this.neoAccount = new wallet.Account(this.wif)
-      this.neoAccount.label = this.accountName
-
       if (!this.encryptedWif) {
         this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword || '')
       }
+
+      const address = wallet.getAddressFromScriptHash(
+        wallet.getScriptHashFromPublicKey(
+          wallet.getPublicKeyFromPrivateKey(this.wif)))
+
+      const accJson = {
+        address,
+        label: this.accountName,
+        isDefault: true,
+        lock: false,
+        key: this.encryptedWif,
+        contract: {
+          script: '',
+          parameters: [
+            {
+              name: 'signature',
+              type: 'Signature',
+            },
+          ],
+          deployed: false,
+        },
+        extra: null,
+      }
+
+      // @ts-ignore
+      this.neoAccount = new Account(accJson)
+      this.neoAccount.decrypt(this.accountPassword)
 
       if (this.cert && this.key) {
         this.signature = this.signPkcs7(this.cert, this.key, this.neoAccount.scriptHash)
@@ -374,8 +401,19 @@
         return
       }
 
-      const resp = await doInvokeWithAccount(this.neoAccount, 'registerRegularAccount',
-        this.neoAccount.scriptHash, str2hexstring(this.publicKey), str2hexstring(this.signature))
+      const isCpf = this.document && this.document.length === 11
+
+      const resp = await doInvokeWithAccount(
+        this.neoAccount,
+        'registerRegularAccount',
+        reverseHex(this.neoAccount.scriptHash),
+        str2hexstring(this.publicKey),
+        str2hexstring(this.signature),
+        isCpf ? 1 : 2,
+        str2hexstring(this.document || ''),
+        str2hexstring(this.name || ''),
+        str2hexstring(this.email || ''),
+        str2hexstring(this.accountName || ''))
 
       if (resp.response && resp.response.result) {
         this.addAccount(this.neoAccount)

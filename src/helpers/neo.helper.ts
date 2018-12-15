@@ -1,7 +1,7 @@
 import Neon, { wallet, rpc, api } from '@cityofzion/neon-js'
 import { Account } from '@cityofzion/neon-core/lib/wallet'
 import { TransactionOutput } from '@cityofzion/neon-core/lib/tx'
-import {getAuthAccount} from '@/helpers/vuex/auth.helper'
+import {lastSelectedAccount} from '@/helpers/vuex/auth.helper'
 import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export const contractPath = 'http://52.14.134.207:30333'
@@ -45,8 +45,7 @@ export const testInvoke = async (operation: string, ...args: any[]): Promise<Tes
 }
 
 export const doInvoke = async (operation: string, ...args: any[]): Promise<DoInvokeResp> => {
-  const account = getAuthAccount()
-  return doInvokeWithAccount(account, operation, ...args)
+  return doInvokeWithAccount(lastSelectedAccount(), operation, ...args)
 }
 
 export const doInvokeWithAccount =
@@ -67,8 +66,6 @@ export const doInvokeWithAccount =
   const opResult = await api.doInvoke({
     api: new api.neoscan.instance('PrivateNet'),
     // @ts-ignore
-    privateKey: account.privateKey,
-    address: account.address,
     account,
     intents,
     script: { scriptHash, operation, args },

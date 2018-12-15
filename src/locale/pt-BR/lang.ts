@@ -192,13 +192,6 @@ export default {
   },
 
   view: {
-    signIn: {
-      title: 'Fazer Login',
-      passphrase: 'Passphrase',
-      encryptedWIF: 'Encrypted WIF',
-      signin: 'Entrar',
-      forgotPassword: 'Esqueci senha',
-    },
 
     resetPassword: {
       title: 'Esqueci senha',
@@ -236,6 +229,9 @@ export default {
       passwordDoesntMatch: 'As duas senhas informadas não são identicas',
       requestApproval: 'Solicitar aprovação',
       fillPrivateKey: 'Preencha a chave privada',
+      email: 'E-mail',
+      name: 'Nome',
+      document: 'Documento',
     },
 
     persistTransaction: {
@@ -263,6 +259,15 @@ export default {
       export: 'Exportar JSON',
       password: 'Preencha uma senha',
       withdraw: 'Resgatar',
+    },
+
+    accountSelector: {
+      selectTheAccount: 'Selecione a conta',
+      fillThePassword: 'Preencha a senha',
+      authenticate: 'Autenticar',
+      walletNotFound: 'Carteira não encontrada',
+      openWallet: 'Abrir carteira',
+      createWallet: 'Criar carteira',
     },
   },
 

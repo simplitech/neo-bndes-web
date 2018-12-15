@@ -8,7 +8,6 @@ import {
   ValidationEmail,
   ValidationRequired,
   ValidationLength,
-  getUserWallet,
 } from '@/simpli'
 import {SmartContract} from '@/model/SmartContract'
 

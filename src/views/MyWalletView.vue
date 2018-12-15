@@ -14,63 +14,67 @@
           <div class="py-10">
             <div class="container fluid">
 
-              <div class="horiz">
-                <router-link to="/account/new" class="weight-1 btn mr-15">
-                  {{$t('view.myWallet.createNewAccount')}}
-                </router-link>
+              <account-selector onlyWallet>
 
-                <button class="weight-1" @click="$await.run(exportJson, 'exportJson')">
-                  <await name="exportJson">
-                    {{$t('view.myWallet.export')}}
-                  </await>
-                </button>
-              </div>
+                <div class="horiz">
+                  <router-link to="/account/new" class="weight-1 btn mr-15">
+                    {{$t('view.myWallet.createNewAccount')}}
+                  </router-link>
 
-              <hr>
+                  <button class="weight-1" @click="$await.run(exportJson, 'exportJson')">
+                    <await name="exportJson">
+                      {{$t('view.myWallet.export')}}
+                    </await>
+                  </button>
+                </div>
 
-              <form @submit.prevent="persistAccount" class="horiz gutter-10 mb-20">
-                <div class="weight-2">
+                <hr>
 
-                  <input-text :label="$t(`classes.Account.columns.accountName`)" v-model="account.accountName"/>
+                <form @submit.prevent="persistAccount" class="horiz gutter-10 mb-20">
+                  <div class="weight-2">
 
-                  <input-text :label="$t(`classes.Account.columns.blockchainAddress`)" disabled v-model="blockchainAddress"/>
+                    <input-text :label="$t(`classes.Account.columns.accountName`)" v-model="account.accountName"/>
 
-                  <div class="elevated">
-                    <div class="p-10">
-                      <div class="display mini">
-                        {{$t(`classes.Account.columns.certificateInfo`)}}
+                    <input-text :label="$t(`classes.Account.columns.blockchainAddress`)" disabled v-model="blockchainAddress"/>
+
+                    <div class="elevated">
+                      <div class="p-10">
+                        <div class="display mini">
+                          {{$t(`classes.Account.columns.certificateInfo`)}}
+                        </div>
+
+                        <pre v-html="certificateInfo"></pre>
                       </div>
+                    </div>
 
-                      <pre v-html="certificateInfo"></pre>
+                    <div class="label success input big">
+                      <div class="label-prefix">
+                        Status Ativação
+                      </div>
+                      <span>
+                      Confirmado
+                    </span>
+                    </div>
+
+                  </div>
+
+                  <div class="weight-1">
+                    <div class="label input big">
+                      <div class="label-prefix">
+                        {{$t(`classes.Account.columns.amount`)}}
+                      </div>
+                      {{amount}} BNDEST
+                    </div>
+
+                    <div class="items-right-center">
+                      <a class="btn">
+                        {{$t('view.myWallet.withdraw')}}
+                      </a>
                     </div>
                   </div>
+                </form>
 
-                  <div class="label success input big">
-                    <div class="label-prefix">
-                      Status Ativação
-                    </div>
-                    <span>
-                    Confirmado
-                  </span>
-                  </div>
-
-                </div>
-
-                <div class="weight-1">
-                  <div class="label input big">
-                    <div class="label-prefix">
-                      {{$t(`classes.Account.columns.amount`)}}
-                    </div>
-                    {{amount}} BNDEST
-                  </div>
-
-                  <div class="items-right-center">
-                    <a class="btn">
-                      {{$t('view.myWallet.withdraw')}}
-                    </a>
-                  </div>
-                </div>
-              </form>
+              </account-selector>
 
             </div>
           </div>
@@ -86,11 +90,13 @@
   import {Action, Getter} from 'vuex-class'
   import {doInvoke, hexstring2str, reverseHex, str2hexstring, successAndPush, testInvoke} from '@/simpli'
   import { Account, Wallet } from '@cityofzion/neon-core/lib/wallet'
+  import AccountSelector from '@/components/AccountSelector.vue'
 
-  @Component
+  @Component({
+    components: { AccountSelector },
+  })
   export default class MyWalletView extends Vue {
     @Getter('auth/isLogged') isLogged!: Boolean
-    @Getter('auth/userWallet') userWallet!: Account
     @Action('auth/exportJson') exportJson!: Function
 
     account = {}
@@ -108,11 +114,5 @@ Vse1XTvNQyy6hBdYVse1XTvNQyy6hBdYVse1XTvNQyy6hBdYVse1XTvNQyy6hBdY
 ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
 -----END PUBLIC KEY-----
 `
-
-    mounted() {
-      if (!this.isLogged) {
-        this.$router.push({path: '/my-wallet/signin'})
-      }
-    }
   }
 </script>

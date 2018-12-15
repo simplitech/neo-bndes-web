@@ -1,12 +1,13 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {AuthState, RootState} from '@/types/store'
-import {$, abort, push, errorAndPush, infoAndPush, info} from '@/simpli'
+import {$, abort, push, errorAndPush, infoAndPush, info, error} from '@/simpli'
 import {wallet} from '@cityofzion/neon-js'
 import { Wallet } from '@cityofzion/neon-core/lib/wallet'
 
 // initial state
 const state: AuthState = {
   userWallet: null,
+  lastSelectedAccount: null,
   eventListener: {
     signIn: [],
     auth: [],
@@ -18,6 +19,7 @@ const state: AuthState = {
 const getters: GetterTree<AuthState, RootState> = {
   isLogged: ({userWallet}) => userWallet != null,
   userWallet: ({userWallet}) => userWallet,
+  lastSelectedAccount: ({lastSelectedAccount}) => lastSelectedAccount,
 }
 
 // actions
@@ -38,10 +40,9 @@ const actions: ActionTree<AuthState, RootState> = {
   },
 
   saveWallet: async ({getters, commit}, userWallet: Wallet) => {
-    commit('SAVE', { userWallet })
+    commit('SAVE', userWallet)
 
     state.eventListener.signIn.forEach((item) => item(getters.userWallet))
-    infoAndPush('system.info.welcome', '/my-wallet')
   },
 
   exportJson: async ({getters}) => {
@@ -66,6 +67,11 @@ const actions: ActionTree<AuthState, RootState> = {
     }
   },
 
+  selectAccount: async ({commit}, { account, password }) => {
+    await account.decrypt(password)
+    commit('SELECT_ACCOUNT', account)
+  },
+
   /**
    * Sign out account
    * @param state
@@ -73,8 +79,8 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param showError
    */
   signOut: ({state, commit}, showError: boolean = false) => {
-    if (showError) errorAndPush('system.error.unauthorized', '/my-account/signin')
-    else push('/my-account/signin')
+    if (showError) error('system.error.unauthorized')
+    else push('/my-account')
 
     commit('FORGET')
     state.eventListener.signOut.forEach((item) => item())
@@ -121,6 +127,11 @@ const mutations: MutationTree<AuthState> = {
   SAVE(state, userWallet) {
     state.userWallet = userWallet
   },
+
+  SELECT_ACCOUNT(state, account) {
+    state.lastSelectedAccount = account
+  },
+
   // Forget mutation
   FORGET(state) {
     state.userWallet = null
