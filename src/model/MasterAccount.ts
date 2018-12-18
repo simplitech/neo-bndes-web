@@ -4,13 +4,16 @@
  */
 import {
   addressToScriptHash,
+  scriptHashToAddress,
   str2hexstring,
   ValidationPhone,
   ValidationEmail,
   ValidationRequired,
   doInvoke,
+  hexstring2str,
   Model,
 } from '@/simpli'
+import {ResponseItem} from '@/types/app'
 
 export default class MasterAccount extends Model {
 
@@ -31,28 +34,14 @@ export default class MasterAccount extends Model {
   @ValidationEmail()
   email = ''
 
-  constructor(address?: string | null, name?: string | null,
-              physicalAddress?: string | null, phone?: string | null, email?: string | null) {
+  constructor(responseItem?: ResponseItem[] | null) {
     super()
-
-    if (address) {
-      this.address = address
-    }
-
-    if (name) {
-      this.name = name
-    }
-
-    if (physicalAddress) {
-      this.physicalAddress = physicalAddress
-    }
-
-    if (phone) {
-      this.phone = phone
-    }
-
-    if (email) {
-      this.email = email
+    if (responseItem) {
+      this.name = hexstring2str(responseItem[0].value)
+      this.email = hexstring2str(responseItem[1].value)
+      this.phone = hexstring2str(responseItem[2].value)
+      this.physicalAddress = hexstring2str(responseItem[3].value)
+      this.address = scriptHashToAddress(responseItem[4].value)
     }
   }
 

@@ -22,16 +22,16 @@
               </div>
 
               <div class="horiz gutter-10">
-                <input-text :label="$t('classes.MasterAccount.columns.entityName')"
+                <input-text :label="$t('classes.MasterAccount.columns.name')"
                             v-model="request.name" class="weight-1"/>
-                <input-text :label="$t('classes.MasterAccount.columns.entityAddress')"
+                <input-text :label="$t('classes.MasterAccount.columns.physicalAddress')"
                             v-model="request.physicalAddress" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text type="phone" :label="$t('classes.MasterAccount.columns.entityPhone')"
+                <input-text type="phone" :label="$t('classes.MasterAccount.columns.phone')"
                             v-model="request.phone" class="weight-1"/>
-                <input-text type="email" :label="$t('classes.MasterAccount.columns.entityEmail')"
+                <input-text type="email" :label="$t('classes.MasterAccount.columns.email')"
                             v-model="request.email" class="weight-1"/>
               </div>
 

@@ -29,10 +29,11 @@
             <table>
               <thead>
               <tr>
-                <th>{{ $t('classes.MasterAccount.columns.entityName') }}</th>
-                <th>{{ $t('classes.MasterAccount.columns.entityAddress') }}</th>
-                <th>{{ $t('classes.MasterAccount.columns.entityPhone') }}</th>
-                <th>{{ $t('classes.MasterAccount.columns.entityEmail') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.name') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.address') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.physicalAddress') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.phone') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.email') }}</th>
               </tr>
               </thead>
 
@@ -40,6 +41,9 @@
               <tr v-for="(masAcc, i) in list.items" :key="i">
                 <td>
                   {{ masAcc.name }}
+                </td>
+                <td>
+                  {{ masAcc.address }}
                 </td>
                 <td>
                   {{ masAcc.physicalAddress }}

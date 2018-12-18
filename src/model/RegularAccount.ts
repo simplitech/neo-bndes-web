@@ -1,7 +1,5 @@
 import { Account } from '@cityofzion/neon-core/lib/wallet'
 import {
-  ValidationRequired,
-  ValidationLength,
   hexstring2str,
   str2hexstring,
   reverseHex,
@@ -9,26 +7,23 @@ import {
   testInvoke,
   doInvoke,
   doInvokeWithAccount,
+  lastSelectedAccount,
 } from '@/simpli'
 import {ResponseItem} from '@/types/app'
 
 export default class RegularAccount {
 
   address = ''
-  label = ''
-
-  document: string | null = null
-  email: string | null = null
   name: string | null = null
+  email: string | null = null
 
+  label = ''
+  document: string | null = null
   publicKey: string | null = null
-
   remarks: string | null = null
   signature: string | null = null
   type: number | null = null
-
   neoAccount: Account | null = null
-
   balance: number | null = null
   status: number | null = null
 
@@ -109,6 +104,23 @@ export default class RegularAccount {
       str2hexstring(this.name || ''),
       str2hexstring(this.email || ''),
       str2hexstring('')) // TODO: send remarks
+  }
+
+  async approve() {
+    if (!this.address) {
+      return
+    }
+
+    const resp = await doInvoke(
+      'approveRegularAccount',
+      addressToScriptHash(this.address),
+      reverseHex(lastSelectedAccount().scriptHash))
+
+    if (resp.response && resp.response.result) {
+      this.status = 1
+    }
+
+    return resp
   }
 
 }

@@ -1,12 +1,12 @@
 import Neon, { wallet, rpc, api } from '@cityofzion/neon-js'
 import { Account } from '@cityofzion/neon-core/lib/wallet'
 import { TransactionOutput } from '@cityofzion/neon-core/lib/tx'
-import {lastSelectedAccount} from '@/helpers/vuex/auth.helper'
+import {lastSelectedAccount, timeout} from '@/simpli'
 import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = '11c9c7d3c655cd6cd365abaf59fbfc9be97e55fe'
+export const scriptHash = '48442e67c5cbe25e2addb222b66d4cd406c43bb4'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
@@ -26,6 +26,9 @@ export const reverseHex = (hex?: string) =>
 
 export const addressToScriptHash = (address?: string) =>
   address && address.length ? reverseHex(wallet.getScriptHashFromAddress(address)) : ''
+
+export const scriptHashToAddress = (scriptHash?: string) =>
+  scriptHash && scriptHash.length ? wallet.getAddressFromScriptHash(reverseHex(scriptHash)) : ''
 
 export const wifToAddress = (wif?: string) => {
   return wif ? wallet.getAddressFromScriptHash(
@@ -73,16 +76,32 @@ export const doInvokeWithAccount =
     }))
   }
 
-  const opResult = await api.doInvoke({
-    api: new api.neoscan.instance('PrivateNet'),
-    // @ts-ignore
-    account,
-    intents,
-    script: { scriptHash, operation, args },
-    gas: 0,
-  })
+  let tries = 0
 
-  return Object.assign(opResult, {
-    testResp: resp,
-  })
+  do {
+
+    try {
+      tries++
+
+      const opResult = await api.doInvoke({
+        api: new api.neoscan.instance('PrivateNet'),
+        // @ts-ignore
+        account,
+        intents,
+        script: {scriptHash, operation, args},
+        gas: 0,
+      })
+
+      return Object.assign(opResult, {
+        testResp: resp,
+      })
+    } catch (e) {
+      if (tries > 1) {
+        throw e
+      }
+      timeout(100)
+    }
+  } while (tries < 2)
+
+  throw new Error('Impossible Error')
 }

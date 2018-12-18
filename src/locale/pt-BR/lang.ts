@@ -263,6 +263,11 @@ export default {
       createWallet: 'Criar carteira',
     },
 
+    account: {
+      title: 'Conta',
+      chooseAnAccountToBeAbleToApprove: 'Escolha uma carteira para poder aprovar',
+    },
+
     myWallet: {
       title: 'Minha Carteira',
       createNewAccount: 'Cadastrar nova conta',
@@ -270,6 +275,7 @@ export default {
       export: 'Exportar JSON',
       password: 'Preencha uma senha',
       withdraw: 'Resgatar',
+      approve: 'Aprovar conta',
     },
 
     accountSelector: {
@@ -397,10 +403,10 @@ export default {
       title: 'Registrar Conta Master',
       columns: {
         address: 'Endereço público',
-        entityName: 'Nome da entidade',
-        entityAddress: 'Endereço da entidade',
-        entityPhone: 'Telefone da entidade',
-        entityEmail: 'E-Mail da entidade',
+        name: 'Nome da entidade',
+        physicalAddress: 'Endereço da entidade',
+        phone: 'Telefone da entidade',
+        email: 'E-Mail da entidade',
       },
     },
   },

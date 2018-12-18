@@ -14,14 +14,9 @@ export default class MasterAccountsCollection {
   async get() {
     const resp = await testInvoke('masterAccounts')
     const result: ResponseItem[] = resp.result || {}
-    const data: ResponseItem[][] = chunk(result, 4)
+    const data: ResponseItem[][] = chunk(result, 5)
 
-    this.items = data.map((item: ResponseItem[]) => new MasterAccount(
-      null,
-      hexstring2str(item[0].value),
-      hexstring2str(item[3].value),
-      hexstring2str(item[2].value),
-      hexstring2str(item[1].value)))
+    this.items = data.map((item: ResponseItem[]) => new MasterAccount(item))
 
     return resp
   }

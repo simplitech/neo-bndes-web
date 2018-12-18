@@ -63,6 +63,10 @@ const actions: ActionTree<AuthState, RootState> = {
   },
 
   doIHaveAMasterAccount: async ({ getters }) => {
+    if (!getters.userWallet) {
+      return false
+    }
+
     const masterAccounts = new MasterAccountsCollection()
     await masterAccounts.get()
 

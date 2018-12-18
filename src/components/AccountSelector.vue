@@ -17,14 +17,14 @@
 
         <div class="verti max-w-300">
           <span>{{$t('view.accountSelector.createWallet')}}</span>
-          <router-link to="/account/new" class="btn primary">
+          <router-link to="/regular-account/new" class="btn primary">
             {{$t('view.accountSelector.createWallet')}}
           </router-link>
         </div>
       </div>
     </div>
 
-    <div v-if="userWallet && !onlyWallet" class="horiz items-left-bottom gutter-15 mb-10">
+    <div v-if="userWallet && !onlyWallet && (!hideAfterAuthenticated || !authenticated)" class="horiz items-left-bottom gutter-15 mb-10">
       <div class="verti max-w-300">
         <label class="control-label">{{ $t('view.accountSelector.selectTheAccount') }}</label>
 
@@ -69,10 +69,12 @@
     @Action('auth/saveWallet') saveWallet!: Function
     @Prop({type: Boolean, default: false}) onlyWallet?: boolean
     @Prop({type: Boolean, default: false}) autoAuthenticate?: boolean
+    @Prop({type: Boolean, default: false}) hideAfterAuthenticated?: boolean
 
     selectedAcc: Account | null = null
     password: string | null = null
     accHasPrivKey = false
+    authenticated = false
 
     mounted() {
       this.emitAuthenticatedIfOnlyWallet()
@@ -82,6 +84,7 @@
     emitAuthenticatedIfOnlyWallet() {
       if (this.userWallet && this.onlyWallet) {
         this.$emit('authenticated')
+        this.authenticated = true
       }
     }
 
@@ -104,6 +107,7 @@
       await this.selectAccount({ account: this.selectedAcc, password: this.password })
       this.updateAccHasPrivKey()
       this.$emit('authenticated')
+      this.authenticated = true
     }
 
     updateAccHasPrivKey() {

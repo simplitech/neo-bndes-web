@@ -10,7 +10,8 @@
 
 import DefaultPanelLayout from '@/views/layouts/DefaultPanelLayout.vue'
 
-import MyWalletView from '@/views/MyWalletView.vue'
+import MyWalletView from '@/views/detail/MyWalletView.vue'
+import DetailAccountView from '@/views/detail/DetailAccountView.vue'
 
 import ListMasterAccountView from '@/views/list/ListMasterAccountView.vue'
 
@@ -29,9 +30,10 @@ export const router = {
       component: DefaultPanelLayout,
       children: [
         {path: '/my-wallet', component: MyWalletView},
+        {path: '/account/:address', component: DetailAccountView, props: true},
         {path: '/master-account', component: ListMasterAccountView},
         {path: '/master-account/new', component: PersistMasterAccountView},
-        {path: '/account/new', component: PersistAccountView},
+        {path: '/regular-account/new', component: PersistAccountView},
         {path: '/transaction/new', component: PersistTransactionView},
         {path: '/mint', component: MintTokensView},
       ],

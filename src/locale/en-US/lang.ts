@@ -263,12 +263,19 @@ export default {
       createWallet: 'Create Wallet',
     },
 
+    account: {
+      title: 'Account',
+      chooseAnAccountToBeAbleToApprove: 'Choose an account to be able to approve',
+    },
+
     myWallet: {
       title: 'My Wallet',
       createNewAccount: 'Create new account',
       import: 'Import',
       export: 'Export JSON',
       password: 'Fill a password',
+      withdraw: 'Withdraw',
+      approve: 'Approve account',
     },
 
     accountSelector: {
@@ -389,10 +396,10 @@ export default {
       title: 'Register Master Account',
       columns: {
         address: 'Public Address',
-        entityName: 'Entity Name',
-        entityAddress: 'Entity Address',
-        entityPhone: 'Entity Phone',
-        entityEmail: 'Entity E-Mail',
+        name: 'Entity Name',
+        physicalAddress: 'Entity Address',
+        phone: 'Entity Phone',
+        email: 'Entity E-Mail',
       },
     },
   },

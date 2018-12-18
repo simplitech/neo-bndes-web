@@ -44,26 +44,6 @@
                   {{$t('navbar.transfer')}}
                 </router-link>
               </li>
-              <li>
-                <button>
-                  {{$t('navbar.operations')}}
-                </button>
-              </li>
-              <li>
-                <button>
-                  {{$t('navbar.track')}}
-                </button>
-              </li>
-              <li>
-                <button>
-                  {{$t('navbar.companies')}}
-                </button>
-              </li>
-              <li>
-                <button>
-                  {{$t('navbar.authorities')}}
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -119,26 +99,6 @@
                   {{$t('navbar.registerMasterAccount')}}
                 </router-link>
               </li>
-              <li>
-                <button>
-                  {{$t('navbar.operations')}}
-                </button>
-              </li>
-              <li>
-                <button>
-                  {{$t('navbar.track')}}
-                </button>
-              </li>
-              <li>
-                <button>
-                  {{$t('navbar.companies')}}
-                </button>
-              </li>
-              <li>
-                <button>
-                  {{$t('navbar.authorities')}}
-                </button>
-              </li>
             </ul>
 
           </div>
@@ -146,9 +106,10 @@
           <div class="slot-2">
             <ul>
               <li>
-                <button>
+                <router-link class="btn" to="/my-wallet">
+                  <i class="icon icon-wallet"></i>
                   {{$t('navbar.myWallet')}}
-                </button>
+                </router-link>
               </li>
             </ul>
           </div>

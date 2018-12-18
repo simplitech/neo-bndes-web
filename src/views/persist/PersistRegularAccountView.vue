@@ -401,6 +401,8 @@
     async requestApproval() {
       const resp = await this.subjectAccount.persist()
 
+      console.log('PersistRegularAccountView: 404')
+
       if (resp && resp.response && resp.response.result) {
         this.addAccount(this.subjectAccount.neoAccount)
         this.exportJson()
