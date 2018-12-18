@@ -1,48 +1,32 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {AuthState, RootState} from '@/types/store'
-import {$, abort, push, errorAndPush, infoAndPush, info, error} from '@/simpli'
+import {push, infoAndPush, error} from '@/simpli'
 import {wallet} from '@cityofzion/neon-js'
-import { Wallet } from '@cityofzion/neon-core/lib/wallet'
+import { Wallet, Account } from '@cityofzion/neon-core/lib/wallet'
+import MasterAccountsCollection from '@/model/collection/MasterAccountsCollection'
 
-// initial state
 const state: AuthState = {
   userWallet: null,
   lastSelectedAccount: null,
-  eventListener: {
-    signIn: [],
-    auth: [],
-    signOut: [],
-  },
 }
 
-// getters
 const getters: GetterTree<AuthState, RootState> = {
   isLogged: ({userWallet}) => userWallet != null,
   userWallet: ({userWallet}) => userWallet,
   lastSelectedAccount: ({lastSelectedAccount}) => lastSelectedAccount,
 }
 
-// actions
 const actions: ActionTree<AuthState, RootState> = {
-  /**
-   * Sign in account
-   * @param getters
-   * @param dispatch
-   * @param request
-   */
   addAccount: async ({getters, commit}, account: Account) => {
     const userWallet = getters.userWallet || new Wallet()
     userWallet.addAccount(account)
     commit('SAVE', userWallet)
 
-    state.eventListener.signIn.forEach((item) => item(getters.userWallet))
     infoAndPush('system.info.welcome', '/my-wallet')
   },
 
   saveWallet: async ({getters, commit}, userWallet: Wallet) => {
     commit('SAVE', userWallet)
-
-    state.eventListener.signIn.forEach((item) => item(getters.userWallet))
   },
 
   exportJson: async ({getters}) => {
@@ -68,61 +52,32 @@ const actions: ActionTree<AuthState, RootState> = {
   },
 
   selectAccount: async ({commit}, { account, password }) => {
-    await account.decrypt(password)
-    commit('SELECT_ACCOUNT', account)
+    try {
+      if (password) {
+        await account.decrypt(password)
+      }
+      commit('SELECT_ACCOUNT', account)
+    } catch (e) {
+      error(e.message)
+    }
   },
 
-  /**
-   * Sign out account
-   * @param state
-   * @param commit
-   * @param showError
-   */
+  doIHaveAMasterAccount: async ({ getters }) => {
+    const masterAccounts = new MasterAccountsCollection()
+    await masterAccounts.get()
+
+    return getters.userWallet.accounts.some((acc: Account) =>
+      masterAccounts.items.some((ma) => ma.address === acc.address))
+  },
+
   signOut: ({state, commit}, showError: boolean = false) => {
     if (showError) error('system.error.unauthorized')
     else push('/my-account')
 
     commit('FORGET')
-    state.eventListener.signOut.forEach((item) => item())
   },
-
-  /**
-   * On SignIn Event
-   * @param dispatch
-   * @param callback
-   */
-  onSignIn: ({dispatch}, callback) => dispatch('addEventListener', {name: 'signIn', callback}),
-
-  /**
-   * On Auth Event
-   * @param dispatch
-   * @param callback
-   */
-  onAuth: ({dispatch}, callback) => dispatch('addEventListener', {name: 'auth', callback}),
-
-  /**
-   * On SignOut Event
-   * @param dispatch
-   * @param callback
-   */
-  onSignOut: ({dispatch}, callback) => dispatch('addEventListener', {name: 'signOut', callback}),
-
-  /**
-   * Add event listener
-   * @param commit
-   * @param payload {name, callback}
-   */
-  addEventListener: ({commit}, payload) => commit('ADD_EVENT_LISTENER', payload),
-
-  /**
-   * Remove event listener
-   * @param commit
-   * @param payload
-   */
-  removeEventListener: ({commit}, payload) => commit('REMOVE_EVENT_LISTENER', payload),
 }
 
-// mutations
 const mutations: MutationTree<AuthState> = {
   SAVE(state, userWallet) {
     state.userWallet = userWallet
@@ -132,24 +87,9 @@ const mutations: MutationTree<AuthState> = {
     state.lastSelectedAccount = account
   },
 
-  // Forget mutation
   FORGET(state) {
     state.userWallet = null
-  },
-
-  // Add Event Listener mutation
-  ADD_EVENT_LISTENER(state, {name, callback}) {
-    state.eventListener[name].push(callback)
-  },
-
-  // Remove Event Listener mutation
-  REMOVE_EVENT_LISTENER(state, {name, callback}) {
-    if (callback) {
-      const index = state.eventListener[name].findIndex((item) => item === callback)
-      state.eventListener[name].splice(index, 1)
-    } else {
-      state.eventListener[name] = []
-    }
+    state.lastSelectedAccount = null
   },
 }
 

@@ -180,6 +180,17 @@ export default {
     505: 'Http Version Not Supported',
   },
 
+  approvalStatus: {
+    '-1': 'Not found',
+    '0': 'Waiting approval',
+    '1': 'Approved',
+  },
+
+  accountType: {
+    1: 'E-CPF',
+    2: 'E-CNPJ',
+  },
+
   navbar: {
     brand: 'NEO BNDES',
     masterAccounts: 'Master Accounts',
@@ -264,6 +275,10 @@ export default {
       selectTheAccount: 'Select the account',
       fillThePassword: 'Fill the password',
       authenticate: 'Authenticate',
+    },
+
+    mint: {
+      title: 'Mint tokens',
     },
   },
 
@@ -362,6 +377,7 @@ export default {
         wif: 'WIF',
         neoAccount: 'NEO Account',
         encryptedWif: 'Encrypted WIF',
+        status: 'Approval Status',
       },
     },
     ListMasterAccount: {
@@ -369,10 +385,10 @@ export default {
       columns: {
       },
     },
-    RegisterMasterAccountRequest: {
+    MasterAccount: {
       title: 'Register Master Account',
       columns: {
-        newAccount: 'Public Address',
+        address: 'Public Address',
         entityName: 'Entity Name',
         entityAddress: 'Entity Address',
         entityPhone: 'Entity Phone',

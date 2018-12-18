@@ -2,7 +2,7 @@
   <div class="verti">
     <section class="header mb-20 py-10">
       <h1 class="container">
-        {{ $t('classes.Transaction.title') }}
+        {{ $t('view.mint.title') }}
       </h1>
     </section>
 
@@ -59,28 +59,28 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-import {$, successAndPush, str2hexstring, addressToScriptHash} from '../../simpli'
-import RegularAccount from '@/model/RegularAccount'
-import AccountSelector from '@/components/AccountSelector.vue'
-import Transaction from '@/model/Transaction'
+  import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
+  import {$, successAndPush, str2hexstring, addressToScriptHash} from '../../simpli'
+  import RegularAccount from '@/model/RegularAccount'
+  import AccountSelector from '@/components/AccountSelector.vue'
+  import Transaction from '@/model/Transaction'
 
-@Component({
-  components: { AccountSelector },
-})
-export default class PersistTransactionView extends Vue {
-  transaction = new Transaction()
+  @Component({
+    components: { AccountSelector },
+  })
+  export default class MintTokensView extends Vue {
+    transaction = new Transaction()
 
-  @Watch('transaction.recipient.address')
-  async loadDestinationInfo() {
-    await this.transaction.recipient.get()
-  }
+    @Watch('transaction.recipient.address')
+    async loadDestinationInfo() {
+      await this.transaction.recipient.get()
+    }
 
-  async persist() {
-    const resp = await this.transaction.transferAmount()
-    if (resp && resp.response && resp.response.result) {
-      successAndPush('system.success.persist', '/my-account')
+    async persist() {
+      const resp = await this.transaction.mintTokens()
+      if (resp && resp.response && resp.response.result) {
+        successAndPush('system.success.persist', '/my-account')
+      }
     }
   }
-}
 </script>

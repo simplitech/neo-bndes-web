@@ -15,8 +15,9 @@ import MyWalletView from '@/views/MyWalletView.vue'
 import ListMasterAccountView from '@/views/list/ListMasterAccountView.vue'
 
 import PersistMasterAccountView from '@/views/persist/PersistMasterAccountView.vue'
-import PersistAccountView from '@/views/persist/PersistAccountView.vue'
+import PersistAccountView from '@/views/persist/PersistRegularAccountView.vue'
 import PersistTransactionView from '@/views/persist/PersistTransactionView.vue'
+import MintTokensView from '@/views/persist/MintTokensView.vue'
 
 /**
  * VUE Router Configuration
@@ -28,13 +29,11 @@ export const router = {
       component: DefaultPanelLayout,
       children: [
         {path: '/my-wallet', component: MyWalletView},
-
         {path: '/master-account', component: ListMasterAccountView},
         {path: '/master-account/new', component: PersistMasterAccountView},
-
         {path: '/account/new', component: PersistAccountView},
-
         {path: '/transaction/new', component: PersistTransactionView},
+        {path: '/mint', component: MintTokensView},
       ],
     },
     {path: '*', redirect: '/my-wallet'},

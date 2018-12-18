@@ -6,7 +6,7 @@ import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = '959278be1fdf7f62a42f3aeaee238f5cee82bbcf'
+export const scriptHash = '11c9c7d3c655cd6cd365abaf59fbfc9be97e55fe'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
@@ -27,10 +27,20 @@ export const reverseHex = (hex?: string) =>
 export const addressToScriptHash = (address?: string) =>
   address && address.length ? reverseHex(wallet.getScriptHashFromAddress(address)) : ''
 
+export const wifToAddress = (wif?: string) => {
+  return wif ? wallet.getAddressFromScriptHash(
+    wallet.getScriptHashFromPublicKey(
+      wallet.getPublicKeyFromPrivateKey(
+        wallet.getPrivateKeyFromWIF(wif)))) : ''
+}
+
 export const hex2number = (hex?: string) =>
   hex && hex.length ? parseInt(hex, 16) : ''
 
 export const testInvoke = async (operation: string, ...args: any[]): Promise<TestInvokeResp> => {
+  console.log(`invoke ${operation} args:`)
+  console.log(args)
+
   const script = Neon.create.script({ scriptHash, operation, args })
 
   const resp = await rpc.Query.invokeScript(script).execute(contractPath)

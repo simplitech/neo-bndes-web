@@ -3,7 +3,7 @@
     <section class="header mb-20 py-10">
       <div class="container horiz gutter-10 items-center">
         <h1 class="weight-1 m-0">
-          {{$t('classes.RegisterMasterAccountRequest.title')}}
+          {{$t('classes.MasterAccount.title')}}
         </h1>
       </div>
     </section>
@@ -17,22 +17,22 @@
               <account-selector autoAuthenticate/>
 
               <div class="horiz gutter-10 mt-30">
-                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.newAccount')"
-                            v-model="request.newAccount" class="weight-1"/>
+                <input-text :label="$t('classes.MasterAccount.columns.address')"
+                            v-model="request.address" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityName')"
-                            v-model="request.entityName" class="weight-1"/>
-                <input-text :label="$t('classes.RegisterMasterAccountRequest.columns.entityAddress')"
-                            v-model="request.entityAddress" class="weight-1"/>
+                <input-text :label="$t('classes.MasterAccount.columns.entityName')"
+                            v-model="request.name" class="weight-1"/>
+                <input-text :label="$t('classes.MasterAccount.columns.entityAddress')"
+                            v-model="request.physicalAddress" class="weight-1"/>
               </div>
 
               <div class="horiz gutter-10">
-                <input-text type="phone" :label="$t('classes.RegisterMasterAccountRequest.columns.entityPhone')"
-                            v-model="request.entityPhone" class="weight-1"/>
-                <input-text type="email" :label="$t('classes.RegisterMasterAccountRequest.columns.entityEmail')"
-                            v-model="request.entityEmail" class="weight-1"/>
+                <input-text type="phone" :label="$t('classes.MasterAccount.columns.entityPhone')"
+                            v-model="request.phone" class="weight-1"/>
+                <input-text type="email" :label="$t('classes.MasterAccount.columns.entityEmail')"
+                            v-model="request.email" class="weight-1"/>
               </div>
 
               <await :name="request.$operation" class="text-center">
@@ -51,45 +51,18 @@
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
-  import {Action, Getter} from 'vuex-class'
   import {successAndPush} from '../../simpli'
-  import {Account} from '@cityofzion/neon-core/lib/wallet'
-  import RegisterMasterAccountRequest from '../../model/request/RegisterMasterAccountRequest'
+  import MasterAccount from '../../model/MasterAccount'
   import AccountSelector from '@/components/AccountSelector.vue'
 
   @Component({
     components: { AccountSelector },
   })
   export default class PersistMasterAccountView extends Vue {
-    request = new RegisterMasterAccountRequest()
-
-    async mounted() {
-      const simplipay = {
-        // symbol: await testInvoke('symbol'),
-        // name: await testInvoke('name'),
-        // decimals: await testInvoke('decimals'),
-        // account: await testInvoke('getAccount', str2hexstring(userWallet.scriptHash)),
-        // accountStatus: await testInvoke('getAccountStatus'),
-        // registerRegularAccount: await testInvoke('registerRegularAccount'),
-        // approveRegularAccount: await testInvoke('approveRegularAccount'),
-        // registerMasterAccount: await doInvoke('registerMasterAccount'),
-        //  masterAccounts: await testInvoke('masterAccounts'),
-        // removeMasterAccount: await testInvoke('removeMasterAccount'),
-        // masterAccountStatus: await testInvoke('masterAccountStatus'),
-        // requiredAuthorizations: await testInvoke('requiredAuthorizations'),
-        // mintTokens: await testInvoke('mintTokens'),
-        // getBalance: await doInvoke('getBalance'),
-        // transfer: await testInvoke('transfer'),
-      }
-
-      // const symbol = hexstring2str(simplipay.symbol.result)
-      // const resp = simplipay.masterAccounts
-
-      // console.log(resp)
-    }
+    request = new MasterAccount()
 
     async submit() {
-      await this.request.doInvoke()
+      await this.request.persist()
       successAndPush('system.success.persist', '/master-account')
     }
   }

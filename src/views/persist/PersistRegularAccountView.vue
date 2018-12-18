@@ -132,8 +132,8 @@
   import {Action} from 'vuex-class'
   import {wallet} from '@cityofzion/neon-js'
   import { Wallet, Account, AccountJSON } from '@cityofzion/neon-core/lib/wallet'
-  import {$, successAndPush, error, success, str2hexstring, reverseHex } from '../../simpli'
-  import RegularAccount from '@/model/resource/RegularAccount'
+  import {$, successAndPush, error, success, str2hexstring, reverseHex, wifToAddress } from '../../simpli'
+  import RegularAccount from '@/model/RegularAccount'
 
   interface HTMLInputEvent extends Event {
     target: HTMLInputElement & EventTarget
@@ -144,7 +144,7 @@
   }
 
   @Component
-  export default class PersistAccountView extends Vue {
+  export default class PersistRegularAccountView extends Vue {
     @Action('auth/addAccount') addAccount!: Function
     @Action('auth/exportJson') exportJson!: Function
 
@@ -399,7 +399,7 @@
     }
 
     async requestApproval() {
-      const resp = await this.subjectAccount.persistRegularAccount()
+      const resp = await this.subjectAccount.persist()
 
       if (resp && resp.response && resp.response.result) {
         this.addAccount(this.subjectAccount.neoAccount)

@@ -26,18 +26,19 @@
 
     <div v-if="userWallet && !onlyWallet" class="horiz items-left-bottom gutter-15 mb-10">
       <div class="verti max-w-300">
-        <span>{{ $t('view.accountSelector.selectTheAccount') }}</span>
+        <label class="control-label">{{ $t('view.accountSelector.selectTheAccount') }}</label>
 
-        <select v-model="selectedAcc" class="min-w-200">
+        <select v-model="selectedAcc" @change="selectChange" class="min-w-200 form-control">
           <option :value="null"></option>
           <option v-for="acc in userWallet.accounts" :value="acc">{{ acc.label || acc.address }}</option>
         </select>
       </div>
 
       <div class="verti max-w-300" v-if="selectedAcc && !accHasPrivKey">
-        <span>{{ $t('view.accountSelector.fillThePassword') }}</span>
+        <label class="control-label">{{ $t('view.accountSelector.fillThePassword') }}</label>
 
-        <input type="password" v-model="password" @blur="passBlur" @keyup.enter="$await.run(authenticate, 'authenticate')"/>
+        <input class="form-control" type="password"
+               v-model="password" @blur="passBlur" @keyup.enter="$await.run(authenticate, 'authenticate')"/>
       </div>
 
       <div>
@@ -73,14 +74,23 @@
     password: string | null = null
     accHasPrivKey = false
 
-    @Watch('selectedAcc')
-    updateAccHasPrivKey() {
-      try {
-        if (this.selectedAcc) {
-          this.accHasPrivKey = this.selectedAcc.privateKey != null
+    mounted() {
+      this.emitAuthenticatedIfOnlyWallet()
+    }
+
+    @Watch('userWallet')
+    emitAuthenticatedIfOnlyWallet() {
+      if (this.userWallet && this.onlyWallet) {
+        this.$emit('authenticated')
+      }
+    }
+
+    selectChange() {
+      if (this.autoAuthenticate) {
+        this.updateAccHasPrivKey()
+        if (this.accHasPrivKey) {
+          this.$await.run(this.authenticate, 'authenticate')
         }
-      } catch (e) {
-        // ignore
       }
     }
 
@@ -93,6 +103,17 @@
     async authenticate() {
       await this.selectAccount({ account: this.selectedAcc, password: this.password })
       this.updateAccHasPrivKey()
+      this.$emit('authenticated')
+    }
+
+    updateAccHasPrivKey() {
+      try {
+        if (this.selectedAcc) {
+          this.accHasPrivKey = this.selectedAcc.privateKey != null
+        }
+      } catch (e) {
+        // ignore
+      }
     }
 
     onInputFileChange(e: HTMLInputEvent) {

@@ -6,8 +6,12 @@
           {{$t('classes.ListMasterAccount.title')}}
         </h1>
 
+        <router-link tag="button" to="/mint" class="contrast">
+          {{$t('view.mint.title')}}
+        </router-link>
+
         <router-link tag="button" to="/master-account/new" class="contrast">
-          {{$t('classes.RegisterMasterAccountRequest.title')}}
+          {{$t('classes.MasterAccount.title')}}
         </router-link>
       </div>
     </section>
@@ -25,16 +29,26 @@
             <table>
               <thead>
               <tr>
-                <th v-for="(item, i) in header" :key="i">
-                  {{item}}
-                </th>
+                <th>{{ $t('classes.MasterAccount.columns.entityName') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.entityAddress') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.entityPhone') }}</th>
+                <th>{{ $t('classes.MasterAccount.columns.entityEmail') }}</th>
               </tr>
               </thead>
 
               <tbody>
-              <tr v-for="(row, i) in list.items" :key="i">
-                <td v-for="(column, j) in row" :key="j">
-                  {{column}}
+              <tr v-for="(masAcc, i) in list.items" :key="i">
+                <td>
+                  {{ masAcc.name }}
+                </td>
+                <td>
+                  {{ masAcc.physicalAddress }}
+                </td>
+                <td>
+                {{ masAcc.phone }}
+                </td>
+                <td>
+                {{ masAcc.email }}
                 </td>
               </tr>
               </tbody>
@@ -49,22 +63,16 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
-  import {$} from '../../simpli'
-  import MasterAccountsCollection, {MasterAccountData} from '../../model/collection/MasterAccountsCollection'
+  import {$} from '@/simpli'
+  import MasterAccountsCollection from '@/model/collection/MasterAccountsCollection'
+  import MasterAccount from '@/model/MasterAccount'
 
   @Component
   export default class ListMasterAccountView extends Vue {
-    header: MasterAccountData = {
-      entityName: $.t('classes.RegisterMasterAccountRequest.columns.entityName'),
-      entityAddress: $.t('classes.RegisterMasterAccountRequest.columns.entityAddress'),
-      entityPhone: $.t('classes.RegisterMasterAccountRequest.columns.entityPhone'),
-      entityEmail: $.t('classes.RegisterMasterAccountRequest.columns.entityEmail'),
-    }
-
     list = new MasterAccountsCollection()
 
     async mounted() {
-      await this.list.testInvoke()
+      await this.$await.run(() => this.list.get(), 'masterAccounts')
     }
   }
 </script>

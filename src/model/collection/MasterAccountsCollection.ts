@@ -3,38 +3,25 @@
  * @author ftgibran
  */
 import {chunk} from 'lodash'
-import {$, hexstring2str} from '@/simpli'
-import {SmartContract} from '@/model/SmartContract'
+import {$, hexstring2str, testInvoke} from '@/simpli'
 import {ResponseItem} from '@/types/app'
+import MasterAccount from '@/model/MasterAccount'
 
-export interface MasterAccountData {
-  entityName: string,
-  entityAddress: string,
-  entityPhone: string,
-  entityEmail: string,
-}
+export default class MasterAccountsCollection {
 
-export default class MasterAccountsCollection extends SmartContract {
+  items: MasterAccount[] = []
 
-  $operation: string = 'masterAccounts'
-
-  get $params() {
-    return []
-  }
-
-  items: MasterAccountData[] = []
-
-  async testInvoke() {
-    const resp = await super.testInvoke()
+  async get() {
+    const resp = await testInvoke('masterAccounts')
     const result: ResponseItem[] = resp.result || {}
     const data: ResponseItem[][] = chunk(result, 4)
 
-    this.items = data.map((item: ResponseItem[]) => ({
-      entityName: hexstring2str(item[0].value),
-      entityAddress: hexstring2str(item[3].value),
-      entityPhone: hexstring2str(item[2].value),
-      entityEmail: hexstring2str(item[1].value),
-    }))
+    this.items = data.map((item: ResponseItem[]) => new MasterAccount(
+      null,
+      hexstring2str(item[0].value),
+      hexstring2str(item[3].value),
+      hexstring2str(item[2].value),
+      hexstring2str(item[1].value)))
 
     return resp
   }

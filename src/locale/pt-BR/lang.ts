@@ -180,6 +180,17 @@ export default {
     505: 'Http Version Not Supported',
   },
 
+  approvalStatus: {
+    '-1': 'Não encontrada',
+    '0': 'Aguardando aprovação',
+    '1': 'Aprovado',
+  },
+
+  accountType: {
+    1: 'E-CPF',
+    2: 'E-CNPJ',
+  },
+
   navbar: {
     brand: 'NEO BNDES',
     masterAccounts: 'Contas Master',
@@ -268,6 +279,10 @@ export default {
       walletNotFound: 'Carteira não encontrada',
       openWallet: 'Abrir carteira',
       createWallet: 'Criar carteira',
+    },
+
+    mint: {
+      title: 'Criar tokens',
     },
   },
 
@@ -370,6 +385,7 @@ export default {
         blockchainAddress: 'Endereço Blockchain',
         certificateInfo: 'Informações do Certificado',
         amount: 'Saldo',
+        status: 'Status Aprovação',
       },
     },
     ListMasterAccount: {
@@ -377,10 +393,10 @@ export default {
       columns: {
       },
     },
-    RegisterMasterAccountRequest: {
+    MasterAccount: {
       title: 'Registrar Conta Master',
       columns: {
-        newAccount: 'Endereço público',
+        address: 'Endereço público',
         entityName: 'Nome da entidade',
         entityAddress: 'Endereço da entidade',
         entityPhone: 'Telefone da entidade',

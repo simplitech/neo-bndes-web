@@ -8,79 +8,87 @@
       </div>
     </section>
 
-    <section class="mb-20">
-      <div class="container">
-        <div class="elevated">
-          <div class="py-10">
-            <div class="container fluid">
+    <section class="mb-20 container">
+        <div class="container fluid">
 
-              <account-selector onlyWallet>
+          <account-selector onlyWallet @authenticated="$await.run(loadAccounts, 'loadAccounts')">
 
-                <div class="horiz">
-                  <router-link to="/account/new" class="weight-1 btn mr-15">
-                    {{$t('view.myWallet.createNewAccount')}}
-                  </router-link>
+            <div class="horiz mb-30">
+              <router-link to="/account/new" class="weight-1 btn mr-15 success">
+                {{ $t('view.myWallet.createNewAccount') }}
+              </router-link>
 
-                  <button class="weight-1" @click="$await.run(exportJson, 'exportJson')">
-                    <await name="exportJson">
-                      {{$t('view.myWallet.export')}}
-                    </await>
-                  </button>
+              <button class="weight-1 primary" @click="$await.run(exportJson, 'exportJson')">
+                <await name="exportJson">
+                  {{ $t('view.myWallet.export') }}
+                </await>
+              </button>
+            </div>
+
+            <await name="loadAccounts">
+              <div v-for="acc in accounts" class="verti mb-20">
+                <div class="horiz gutter-10 mb-5 items-left-center">
+                  <div class="verti fs-regular" v-if="acc.status !== -1">
+                    <span class="control-label">{{ $t('classes.Account.columns.accountName') }}</span>
+                    <b>{{ acc.label }}</b>
+                  </div>
+                  <div class="weight-1 verti fs-regular">
+                    <span class="control-label">{{ $t('classes.Account.columns.blockchainAddress') }}</span>
+                    <b>{{ acc.address }}</b>
+                  </div>
+                  <div class="label input" :class="{ success: acc.status === 1, danger: acc.status === -1 }">
+                    <div class="label-prefix">
+                      {{ $t('classes.Account.columns.status') }}
+                    </div>
+                    <span>
+                      {{ $t(`approvalStatus.${acc.status}`) }}
+                    </span>
+                  </div>
+                  <div class="label input" v-if="acc.status === 1">
+                    <div class="label-prefix">
+                      {{$t('classes.Account.columns.amount')}}
+                    </div>
+                    {{amount}} BNDEST
+                  </div>
+
+                  <div class="items-right-center" v-if="acc.status === 1">
+                    <a class="btn">
+                      {{$t('view.myWallet.withdraw')}}
+                    </a>
+                  </div>
                 </div>
 
-                <hr>
+                <div v-if="acc.signature" class="elevated horiz items-space-between">
+                  <div class="verti mx-10">
 
-                <form @submit.prevent="persistAccount" class="horiz gutter-10 mb-20">
-                  <div class="weight-2">
+                    <b class="fs-huge p-15">
+                      {{ $t('classes.Account.columns.certificateInfo') }}
+                    </b>
 
-                    <input-text :label="$t(`classes.Account.columns.accountName`)" v-model="account.accountName"/>
-
-                    <input-text :label="$t(`classes.Account.columns.blockchainAddress`)" disabled v-model="blockchainAddress"/>
-
-                    <div class="elevated">
-                      <div class="p-10">
-                        <div class="display mini">
-                          {{$t(`classes.Account.columns.certificateInfo`)}}
-                        </div>
-
-                        <pre v-html="certificateInfo"></pre>
-                      </div>
+                    <div class="infoline horiz py-5 px-15 items-space-between">
+                      <b>{{ $t('view.persistTransaction.name') }}</b>
+                      <div>{{ acc.name }}</div>
                     </div>
 
-                    <div class="label success input big">
-                      <div class="label-prefix">
-                        Status Ativação
-                      </div>
-                      <span>
-                      Confirmado
-                    </span>
+                    <div class="infoline horiz py-5 px-15 items-space-between">
+                      <b>{{ $t('view.persistTransaction.type') }}</b>
+                      <div>{{ $t(`accountType.${acc.type}`) }}</div>
                     </div>
 
-                  </div>
-
-                  <div class="weight-1">
-                    <div class="label input big">
-                      <div class="label-prefix">
-                        {{$t(`classes.Account.columns.amount`)}}
-                      </div>
-                      {{amount}} BNDEST
-                    </div>
-
-                    <div class="items-right-center">
-                      <a class="btn">
-                        {{$t('view.myWallet.withdraw')}}
-                      </a>
+                    <div class="infoline horiz py-5 px-15 items-space-between">
+                      <b>{{ $t('view.persistTransaction.document') }}</b>
+                      <div>{{ acc.document }}</div>
                     </div>
                   </div>
-                </form>
 
-              </account-selector>
+                  <pre class="mr-10 max-h-150 truncate-word" v-html="acc.signature"></pre>
+                </div>
+              </div>
+            </await>
 
-            </div>
-          </div>
+          </account-selector>
+
         </div>
-
-      </div>
     </section>
   </div>
 </template>
@@ -91,28 +99,31 @@
   import {hexstring2str, reverseHex, str2hexstring, successAndPush} from '@/simpli'
   import { Account, Wallet } from '@cityofzion/neon-core/lib/wallet'
   import AccountSelector from '@/components/AccountSelector.vue'
+  import RegularAccount from '@/model/RegularAccount'
 
   @Component({
     components: { AccountSelector },
   })
   export default class MyWalletView extends Vue {
-    @Getter('auth/isLogged') isLogged!: Boolean
+    @Getter('auth/userWallet') userWallet?: Wallet
     @Action('auth/exportJson') exportJson!: Function
 
-    account = {}
+    accounts: RegularAccount[] = []
 
-    amount = 1000
-    blockchainAddress = 'WtXh3ryloPmU0WhfwWDIHm0mF4oM4EMF'
-    certificateInfo = `Tipo: CPF Digital
-Nome: DUNHA DA SILVA
-Documento: 111.222.333-44
-Chave Pública:
------BEGIN PUBLIC KEY-----
-O93AN1Fbdt35y7oKO93AN1Fbdt35y7oKO93AN1Fbdt35y7oKO93AN1Fbdt35y7oK
-yHQv9p2LGvRvs8tsyHQv9p2LGvRvs8tsyHQv9p2LGvRvs8tsyHQv9p2LGvRvs8ts
-Vse1XTvNQyy6hBdYVse1XTvNQyy6hBdYVse1XTvNQyy6hBdYVse1XTvNQyy6hBdY
-ArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGDArZSqbKJmjPqxnGD
------END PUBLIC KEY-----
-`
+    async loadAccounts() {
+      this.accounts = []
+
+      if (!this.userWallet || !this.userWallet.accounts) {
+        return
+      }
+
+      for (const acc of this.userWallet.accounts) {
+        const reg = new RegularAccount(acc.address, acc.label)
+        await reg.get()
+        await reg.getBalance()
+        await reg.getStatus()
+        this.accounts.push(reg)
+      }
+    }
   }
 </script>

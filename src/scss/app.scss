@@ -3,7 +3,7 @@
 /********************** VENDOR **************************/
 @import "~normalize-scss/sass/normalize";
 @import "~simple-line-icons/scss/simple-line-icons";
-@import "~linelay/build";
+@import "~linelay/defaultBuild";
 @import "~simpli-web-sdk/scss/main";
 @import "~simpli-web-sdk/scss/utils";
 /********************************************************/
@@ -58,7 +58,6 @@
   @extend .pal-black-10.box-shadow.deep-15;
 
   border-radius: $radius-base;
-  padding: 0;
   border-left: 4px solid $primary-color;
   border-right: 4px solid $primary-color;
 
