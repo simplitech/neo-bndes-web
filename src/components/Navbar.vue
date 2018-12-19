@@ -44,6 +44,11 @@
                   {{$t('navbar.transfer')}}
                 </router-link>
               </li>
+              <li>
+                <router-link tag="button" to="/charts">
+                  {{$t('navbar.charts')}}
+                </router-link>
+              </li>
             </ul>
           </div>
 

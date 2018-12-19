@@ -19,7 +19,7 @@ export const hexstring2str = (hexstring?: string) =>
   hexstring && hexstring.length ? Neon.u.hexstring2str(hexstring) : ''
 
 export const int2hex = (int?: number) =>
-  int ? Neon.u.int2hex(int) : 0
+  int ? Neon.u.int2hex(int) : '00'
 
 export const str2hexstring = (str?: string) =>
   str && str.length ? Neon.u.str2hexstring(str) : ''

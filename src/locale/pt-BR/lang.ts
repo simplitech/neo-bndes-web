@@ -100,6 +100,7 @@ export default {
     version: 'Versão',
     onlyIfWantChangePassword: 'Preencha este campo somente se quiser alterar a senha',
     wait: 'Aguarde...',
+    filter: 'Filtrar',
   },
 
   dateFormat: {
@@ -200,6 +201,7 @@ export default {
     authorities: 'Autoridades',
     myWallet: 'Minha Carteira',
     transfer: 'Transferir',
+    charts: 'Gráficos',
   },
 
   view: {
@@ -291,6 +293,12 @@ export default {
     mint: {
       title: 'Criar tokens',
     },
+
+    charts: {
+      title: 'Gráficos',
+      start: 'Início',
+      end: 'Fim',
+    },
   },
 
   persist: {
@@ -332,17 +340,16 @@ export default {
       },
     },
     Transaction: {
-      title: 'Transferir',
+      title: 'Transação',
       columns: {
-        block: 'Block',
-        transactionType: 'Transaction Type',
-        idTransactionPk: 'Id Transaction Pk',
+        block: 'Bloco',
         hash: 'Hash',
-        from: 'From',
-        idTypeFk: 'Id Type Fk',
-        idBlockFk: 'Id Block Fk',
         amount: 'Valor',
         addressOfMasterMint: 'Master mint address',
+        sender: 'Remetente',
+        recipient: 'Destinatário',
+        change: 'Troco',
+        changeTransaction: 'Transação do Troco',
       },
     },
     Block: {

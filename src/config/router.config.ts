@@ -19,6 +19,7 @@ import PersistMasterAccountView from '@/views/persist/PersistMasterAccountView.v
 import PersistAccountView from '@/views/persist/PersistRegularAccountView.vue'
 import PersistTransactionView from '@/views/persist/PersistTransactionView.vue'
 import MintTokensView from '@/views/persist/MintTokensView.vue'
+import ChartsView from '@/views/detail/ChartsView.vue'
 
 /**
  * VUE Router Configuration
@@ -36,6 +37,7 @@ export const router = {
         {path: '/regular-account/new', component: PersistAccountView},
         {path: '/transaction/new', component: PersistTransactionView},
         {path: '/mint', component: MintTokensView},
+        {path: '/charts', component: ChartsView},
       ],
     },
     {path: '*', redirect: '/my-wallet'},

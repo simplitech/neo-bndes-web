@@ -89,7 +89,7 @@ export default class RegularAccount {
     const result: ResponseItem[] = resp.result || {}
     const data: ResponseItem[][] = chunk(result, 5)
 
-    this.unspentTransactions = data.map((item: ResponseItem[]) => new Transaction(item))
+    this.unspentTransactions = data.map((item: ResponseItem[]) => Transaction.buildUnspent(item))
 
     return resp
   }

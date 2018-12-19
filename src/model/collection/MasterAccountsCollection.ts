@@ -1,6 +1,6 @@
 /**
  * AuthRequest
- * @author ftgibran
+ * @author gil
  */
 import {chunk} from 'lodash'
 import {$, hexstring2str, testInvoke} from '@/simpli'

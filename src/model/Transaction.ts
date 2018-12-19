@@ -11,31 +11,51 @@ import {ResponseItem} from '@/types/app'
 
 export default class Transaction {
 
-  hash = ''
-  amount: number | null = null
-  recipient = new RegularAccount()
-  block: number | null = null
-  addressOfMasterMint = ''
-  previousTransactions: Transaction[] = []
+  static buildUnspent(responseItem?: ResponseItem[]) {
+    const t = new Transaction()
 
-  constructor(responseItem?: ResponseItem[] | null) {
     if (responseItem) {
-      this.hash = responseItem[0].value
-      this.amount = parseInt(reverseHex(responseItem[1].value), 16)
-      this.block = parseInt(responseItem[2].value, 10)
-      this.addressOfMasterMint = scriptHashToAddress(responseItem[3].value)
+      t.hash = responseItem[0].value
+      t.amount = parseInt(reverseHex(responseItem[1].value), 16)
+      t.block = parseInt(responseItem[2].value, 10)
+      t.addressOfMasterMint = scriptHashToAddress(responseItem[3].value)
+
       const previousTstr = responseItem[4].value
       const previousThashes = previousTstr.match(/.{1,64}/g)
 
       if (previousThashes) {
-        this.previousTransactions = previousThashes.map((hash) => {
+        t.previousTransactions = previousThashes.map((hash) => {
           const pt = new Transaction()
           pt.hash = hash
           return pt
         })
       }
     }
+
+    return t
   }
+
+  static buildFromHistory(map: any) {
+    const t = new Transaction()
+
+    t.hash = map.transactionHash
+    t.sender = new RegularAccount(scriptHashToAddress(map.sender))
+    t.recipient = new RegularAccount(scriptHashToAddress(map.recipient))
+    t.changeTransaction = new Transaction()
+    t.changeTransaction.hash = map.changeTransactionHash
+    t.changeTransaction.amount = map.change
+
+    return t
+  }
+
+  hash = ''
+  amount: number | null = null
+  sender = new RegularAccount()
+  recipient = new RegularAccount()
+  block: number | null = null
+  addressOfMasterMint = ''
+  previousTransactions: Transaction[] = []
+  changeTransaction: Transaction | null = null
 
   async transferAmount() {
     if (!this.recipient || !this.amount) {

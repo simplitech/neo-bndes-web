@@ -100,6 +100,7 @@ export default {
     version: 'Version',
     onlyIfWantChangePassword: 'Fill this field only if you want to change the password',
     wait: 'Wait...',
+    filter: 'Filter',
   },
 
   dateFormat: {
@@ -200,6 +201,7 @@ export default {
     authorities: 'Authorities',
     myWallet: 'My Wallet',
     transfer: 'Transfer',
+    charts: 'Charts',
   },
 
   view: {
@@ -288,6 +290,12 @@ export default {
     mint: {
       title: 'Mint tokens',
     },
+
+    charts: {
+      title: 'Charts',
+      start: 'Start',
+      end: 'End',
+    },
   },
 
   persist: {
@@ -333,12 +341,13 @@ export default {
       title: 'Transfer',
       columns: {
         block: 'Block',
-        transactionType: 'Transaction Type',
-        idTransactionPk: 'Id Transaction Pk',
         hash: 'Hash',
-        from: 'From',
-        idTypeFk: 'Id Type Fk',
-        idBlockFk: 'Id Block Fk',
+        amount: 'Amount',
+        addressOfMasterMint: 'Master mint address',
+        sender: 'Sender',
+        recipient: 'Recipient',
+        change: 'Change',
+        changeTransaction: 'Change transaction',
       },
     },
     Block: {
