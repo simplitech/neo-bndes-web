@@ -154,6 +154,7 @@
 
     mounted() {
       window.setInterval(this.loadInfo, 5000)
+      window.setInterval(this.updateSecondsSinceLastBlock, 500)
     }
 
     @Watch('blockcount')
@@ -161,8 +162,10 @@
       this.lastBlockUpdate = moment()
     }
 
-    get secondsSinceLastBlock() {
-      return moment().diff(this.lastBlockUpdate, 's')
+    updateSecondsSinceLastBlock() {
+      if (this.lastBlockUpdate) {
+        this.secondsSinceLastBlock = moment().diff(this.lastBlockUpdate, 's')
+      }
     }
 
     async loadInfo() {
