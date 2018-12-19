@@ -332,10 +332,17 @@
         this.encryptedWif = await wallet.encrypt(this.wif, this.accountPassword || '')
       }
 
+      let privKey
+      try {
+        privKey = wallet.getPrivateKeyFromWIF(this.wif)
+      } catch (e) {
+        privKey = this.wif
+      }
+
       const address = wallet.getAddressFromScriptHash(
         wallet.getScriptHashFromPublicKey(
           wallet.getPublicKeyFromPrivateKey(
-            wallet.getPrivateKeyFromWIF(this.wif))))
+            privKey)))
 
       const accJson = {
         address,

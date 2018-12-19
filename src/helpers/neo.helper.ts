@@ -13,6 +13,8 @@ export const privateNet = new rpc.Network({
   extra: {neoscan},
 })
 
+export const rpcClient = new rpc.RPCClient(contractPath)
+
 Neon.add.network(privateNet)
 
 export const hexstring2str = (hexstring?: string) =>
@@ -42,6 +44,10 @@ export const wifToAddress = (wif?: string) => {
 
 export const hex2number = (hex?: string) =>
   hex && hex.length ? parseInt(hex, 16) : ''
+
+export const getBlockCount = async () => {
+  return await rpcClient.getBlockCount()
+}
 
 export const testInvoke = async (operation: string, ...args: any[]): Promise<TestInvokeResp> => {
   console.log(`invoke ${operation} args:`)

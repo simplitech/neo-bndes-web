@@ -7,14 +7,14 @@
             <div class="label-prefix">
               Bloco Atual
             </div>
-            203242
+            {{ blockcount }}
           </div>
 
           <div class="label secondary">
             <div class="label-prefix">
               Última atualização
             </div>
-            há 12 segundos
+            há {{ secondsSinceLastBlock }} segundos
           </div>
 
           <div class="label secondary">
@@ -138,7 +138,9 @@
 
 <script lang="ts">
   import {Component, Prop, Watch, Vue} from 'vue-property-decorator'
+  import moment from 'moment'
   import {Action, Getter} from 'vuex-class'
+  import { getBlockCount } from '@/simpli'
 
   @Component
   export default class Navbar extends Vue {
@@ -146,6 +148,26 @@
     @Getter('auth/isLogged') isLogged!: boolean
 
     sidebar = false
+    blockcount = 0
+    lastBlockUpdate: moment.Moment | null = null
+    secondsSinceLastBlock = 0
+
+    mounted() {
+      window.setInterval(this.loadInfo, 5000)
+    }
+
+    @Watch('blockcount')
+    onBlockCount() {
+      this.lastBlockUpdate = moment()
+    }
+
+    get secondsSinceLastBlock() {
+      return moment().diff(this.lastBlockUpdate, 's')
+    }
+
+    async loadInfo() {
+      this.blockcount = await getBlockCount()
+    }
 
     hideSidebar() {
       this.sidebar = false
