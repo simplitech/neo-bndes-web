@@ -266,6 +266,7 @@ export default {
     account: {
       title: 'Account',
       chooseAnAccountToBeAbleToApprove: 'Choose an account to be able to approve',
+      unspentTransactions: 'Unspent Transactions',
     },
 
     myWallet: {
@@ -279,7 +280,7 @@ export default {
     },
 
     accountSelector: {
-      selectTheAccount: 'Select the account',
+      selectTheAccount: 'Select your account',
       fillThePassword: 'Fill the password',
       authenticate: 'Authenticate',
     },
@@ -315,6 +316,7 @@ export default {
       title: 'Transaction Input',
       columns: {
         asset: 'Asset',
+        block: 'Bloco',
         transaction1: 'Transaction 1',
         transaction2: 'Transaction 2',
         idTransactionInputPk: 'Id Transaction Input Pk',
@@ -324,6 +326,7 @@ export default {
         previousIdTransactionFk: 'Previous Id Transaction Fk',
         idTransactionFk: 'Id Transaction Fk',
         idAssetFk: 'Id Asset Fk',
+        addressOfMasterMint: 'Master mint address',
       },
     },
     Transaction: {

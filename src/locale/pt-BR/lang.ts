@@ -266,6 +266,7 @@ export default {
     account: {
       title: 'Conta',
       chooseAnAccountToBeAbleToApprove: 'Escolha uma carteira para poder aprovar',
+      unspentTransactions: 'Transações não consumidas',
     },
 
     myWallet: {
@@ -279,7 +280,7 @@ export default {
     },
 
     accountSelector: {
-      selectTheAccount: 'Selecione a conta',
+      selectTheAccount: 'Selecione sua conta',
       fillThePassword: 'Preencha a senha',
       authenticate: 'Autenticar',
       walletNotFound: 'Carteira não encontrada',
@@ -340,6 +341,8 @@ export default {
         from: 'From',
         idTypeFk: 'Id Type Fk',
         idBlockFk: 'Id Block Fk',
+        amount: 'Valor',
+        addressOfMasterMint: 'Master mint address',
       },
     },
     Block: {

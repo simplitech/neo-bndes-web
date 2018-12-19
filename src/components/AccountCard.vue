@@ -7,15 +7,15 @@
       </div>
       <div class="weight-1 verti fs-regular">
         <span class="control-label">{{ $t('classes.Account.columns.blockchainAddress') }}</span>
-        <b>{{ acc.address }}</b>
+        <router-link :to="`/account/${acc.address}`" class="f-bold">{{ acc.address }}</router-link>
       </div>
       <div class="label input" :class="{ success: acc.status === 1, danger: acc.status === -1 }">
         <div class="label-prefix">
           {{ $t('classes.Account.columns.status') }}
         </div>
-        <span>
-                      {{ $t(`approvalStatus.${acc.status}`) }}
-                    </span>
+        <span v-if="acc.status">
+          {{ $t(`approvalStatus.${acc.status}`) }}
+        </span>
       </div>
       <div class="label input" v-if="acc.status === 1">
         <div class="label-prefix">
@@ -40,8 +40,8 @@
       <account-selector @authenticated="$await.run(approve, 'approve')"/>
     </div>
 
-    <div v-if="acc.signature" class="elevated horiz items-space-between">
-      <div class="verti mx-10">
+    <div v-if="acc.name" class="elevated horiz items-space-between">
+      <div class="verti mx-10 mb-20">
 
         <b class="fs-huge p-15">
           {{ $t('classes.Account.columns.certificateInfo') }}
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <pre class="mr-10 max-h-150 truncate-word" v-html="acc.signature"></pre>
+      <pre v-if="acc.signature" v-html="acc.signature" class="mr-10 max-h-150 truncate-word"></pre>
     </div>
   </div>
 </template>
@@ -99,7 +99,8 @@
       if (!this.acc) return
 
       await this.acc.get()
-      await this.acc.getBalance()
+      await this.acc.getSignature()
+      await this.acc.getUnspentTransactions()
       await this.acc.getStatus()
     }
 

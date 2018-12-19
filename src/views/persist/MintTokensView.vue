@@ -16,7 +16,7 @@
 
             <input-text type="text" v-model="transaction.recipient.address"
                         :label="$t('view.persistTransaction.destinationAddress')"/>
-            <input-text type="text" v-model="transaction.amount"
+            <input-text type="number" v-model="transaction.amount"
                         :label="$t('view.persistTransaction.transactionValue')"/>
 
           </div>

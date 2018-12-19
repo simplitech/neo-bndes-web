@@ -6,7 +6,7 @@ import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
 export const contractPath = 'http://52.14.134.207:30333'
 export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = '48442e67c5cbe25e2addb222b66d4cd406c43bb4'
+export const scriptHash = '7149de972bd0797bb26effab8676bd7744072e64'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
@@ -17,6 +17,9 @@ Neon.add.network(privateNet)
 
 export const hexstring2str = (hexstring?: string) =>
   hexstring && hexstring.length ? Neon.u.hexstring2str(hexstring) : ''
+
+export const int2hex = (int?: number) =>
+  int ? Neon.u.int2hex(int) : 0
 
 export const str2hexstring = (str?: string) =>
   str && str.length ? Neon.u.str2hexstring(str) : ''

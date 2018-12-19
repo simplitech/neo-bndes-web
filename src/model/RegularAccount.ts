@@ -9,7 +9,9 @@ import {
   doInvokeWithAccount,
   lastSelectedAccount,
 } from '@/simpli'
+import {chunk} from 'lodash'
 import {ResponseItem} from '@/types/app'
+import Transaction from '@/model/Transaction'
 
 export default class RegularAccount {
 
@@ -24,8 +26,13 @@ export default class RegularAccount {
   signature: string | null = null
   type: number | null = null
   neoAccount: Account | null = null
-  balance: number | null = null
   status: number | null = null
+
+  unspentTransactions: Transaction[] = []
+
+  get balance() {
+    return this.unspentTransactions.reduce((sum, t) => sum + (t && t.amount ? t.amount : 0), 0)
+  }
 
   constructor(address?: string, label?: string) {
     if (address) {
@@ -55,24 +62,34 @@ export default class RegularAccount {
       this.name = hexstring2str(result[2].value)
       this.publicKey = hexstring2str(result[3].value)
       this.remarks = hexstring2str(result[4].value)
-      this.signature = hexstring2str(result[5].value)
       this.type = parseInt(result[6].value, 10)
     }
 
     return resp
   }
 
-  async getBalance() {
+  async getSignature() {
+    if (!this.address || this.address.length !== 34) {
+      return
+    }
+
+    const resp = await testInvoke('getAccountSignature', addressToScriptHash(this.address))
+    this.signature = hexstring2str(resp.result)
+
+    return resp
+  }
+
+  async getUnspentTransactions() {
     if (!this.address || this.address.length !== 34) {
       return
     }
 
     const resp = await testInvoke('getBalance', addressToScriptHash(this.address))
-    console.log('getBalance resp:')
-    console.log(resp)
-    // TODO regular account, get balance
-    // const result: ResponseItem[] = resp.result || {}
-    // this.balance = parseFloat(result[0].value, 10)
+
+    const result: ResponseItem[] = resp.result || {}
+    const data: ResponseItem[][] = chunk(result, 5)
+
+    this.unspentTransactions = data.map((item: ResponseItem[]) => new Transaction(item))
 
     return resp
   }
