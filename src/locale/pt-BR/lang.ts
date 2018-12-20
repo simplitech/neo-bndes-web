@@ -298,6 +298,11 @@ export default {
       title: 'Gráficos',
       start: 'Início',
       end: 'Fim',
+      amountSum: 'Soma dos valores das transações',
+      transactionsCount: 'Quantidade de transações',
+      mintTokensCount: 'Quantidade de tokens emitidos',
+      regularAccountsCount: 'Quantidade de contas regulares cadastradas',
+      approvedAccountsCount: 'Quantidade de contas aprovadas',
     },
   },
 

@@ -33,28 +33,24 @@
 
         <div class="horiz items-space-around mb-40">
           <div class="verti w-450 h-400 mb-20 elevated p-10">
-            <h2>Nome do Gráfico</h2>
-            <line-chart :data="[['Jan', 4], ['Feb', 2], ['Mar', 10], ['Apr', 5], ['May', 3]]"/>
+            <h2>{{ $t('view.charts.amountSum') }}</h2>
+            <line-chart :data="transactionStats.amountSumChartData"/>
           </div>
           <div class="verti w-450 h-400 mb-20 elevated p-10">
-            <h2>Nome do Gráfico</h2>
-            <line-chart :data="[['Jan', 4], ['Feb', 2], ['Mar', 10], ['Apr', 5], ['May', 3]]"/>
+            <h2>{{ $t('view.charts.transactionsCount') }}</h2>
+            <line-chart :data="transactionStats.transactionsCountChartData"/>
           </div>
           <div class="verti w-450 h-400 mb-20 elevated p-10">
-            <h2>Nome do Gráfico</h2>
-            <line-chart :data="[['Jan', 4], ['Feb', 2], ['Mar', 10], ['Apr', 5], ['May', 3]]"/>
+            <h2>{{ $t('view.charts.mintTokensCount') }}</h2>
+            <line-chart :data="transactionStats.mintTokensCountChartData"/>
           </div>
           <div class="verti w-450 h-400 mb-20 elevated p-10">
-            <h2>Nome do Gráfico</h2>
-            <line-chart :data="[['Jan', 4], ['Feb', 2], ['Mar', 10], ['Apr', 5], ['May', 3]]"/>
+            <h2>{{ $t('view.charts.regularAccountsCount') }}</h2>
+            <line-chart :data="transactionStats.regularAccountsCountChartData"/>
           </div>
           <div class="verti w-450 h-400 mb-20 elevated p-10">
-            <h2>Nome do Gráfico</h2>
-            <line-chart :data="[['Jan', 4], ['Feb', 2], ['Mar', 10], ['Apr', 5], ['May', 3]]"/>
-          </div>
-          <div class="verti w-450 h-400 mb-20 elevated p-10">
-            <h2>Nome do Gráfico</h2>
-            <line-chart :data="[['Jan', 4], ['Feb', 2], ['Mar', 10], ['Apr', 5], ['May', 3]]"/>
+            <h2>{{ $t('view.charts.approvedAccountsCount') }}</h2>
+            <line-chart :data="transactionStats.approvedAccountsCountChartData"/>
           </div>
         </div>
 
@@ -89,11 +85,13 @@
   import {Component, Vue} from 'vue-property-decorator'
   import moment from 'moment'
   import TransactionsCollection from '@/model/collection/TransactionsCollection'
+  import TransactionStatsCollection from '@/model/collection/TransactionStatsCollection'
 
   @Component({})
   export default class ChartsView extends Vue {
 
     transactions = new TransactionsCollection()
+    transactionStats = new TransactionStatsCollection()
     startDt: string | null = null
     endDt: string | null = null
 
@@ -103,6 +101,7 @@
 
     async loadContent() {
       await this.transactions.get(this.startDt, this.endDt)
+      await this.transactionStats.get(this.startDt, this.endDt)
     }
 
     get startStr() {

@@ -295,6 +295,11 @@ export default {
       title: 'Charts',
       start: 'Start',
       end: 'End',
+      amountSum: 'Transaction amount sum',
+      transactionsCount: 'Transactions count',
+      mintTokensCount: 'Mint tokens count',
+      regularAccountsCount: 'Regular accounts count',
+      approvedAccountsCount: 'Approved accounts count',
     },
   },
 

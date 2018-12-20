@@ -21,7 +21,7 @@ export default class TransactionsCollection {
       params.endDate = endDate
     }
 
-    const resp: any = await $.http.get(apiFullURL('/Admin/TransferHistory'), { params })
+    const resp: any = await $.http.get(apiFullURL('/Indexer/Transaction'), { params })
 
     if (resp.ok && resp.body != null) {
       this.list = resp.body.list.map((transMap: any) => Transaction.buildFromHistory(transMap))
