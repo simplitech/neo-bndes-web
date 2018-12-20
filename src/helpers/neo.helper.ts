@@ -4,9 +4,11 @@ import { TransactionOutput } from '@cityofzion/neon-core/lib/tx'
 import {lastSelectedAccount, timeout} from '@/simpli'
 import {DoInvokeResp, TestInvokeResp} from '@/types/app'
 
-export const contractPath = 'http://52.14.134.207:30333'
-export const neoscan = 'http://52.14.134.207:4000/api/main_net'
-export const scriptHash = '7149de972bd0797bb26effab8676bd7744072e64'
+const domain = 'http://chain.simpli.com.br'
+
+export const contractPath = `${domain}:30333`
+export const neoscan = `${domain}:4000/api/main_net`
+export const scriptHash = '1cea2c4ce906b922661180368b9dc356b32b4264'
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
