@@ -15,6 +15,9 @@ import {
 } from '@/simpli'
 import {ResponseItem} from '@/types/app'
 
+/**
+ * Master Account is the account used to approve requests from the Regular Account
+ */
 export default class MasterAccount extends Model {
 
   @ValidationRequired()

@@ -17,6 +17,14 @@ const getters: GetterTree<AuthState, RootState> = {
 }
 
 const actions: ActionTree<AuthState, RootState> = {
+
+  /**
+   * add the account to the store
+   * @param {any} getters
+   * @param {any} commit
+   * @param {Account} account
+   * @returns {Promise<void>}
+   */
   addAccount: async ({getters, commit}, account: Account) => {
     const userWallet = getters.userWallet || new Wallet()
     userWallet.addAccount(account)
@@ -25,10 +33,22 @@ const actions: ActionTree<AuthState, RootState> = {
     infoAndPush('system.info.welcome', '/my-wallet')
   },
 
+  /**
+   * save a wallet in the store
+   * @param {any} getters
+   * @param {any} commit
+   * @param {Wallet} userWallet
+   * @returns {Promise<void>}
+   */
   saveWallet: async ({getters, commit}, userWallet: Wallet) => {
     commit('SAVE', userWallet)
   },
 
+  /**
+   * export the wallet as a json file and download it via browser
+   * @param {any} getters
+   * @returns {Promise<void>}
+   */
   exportJson: async ({getters}) => {
     const content = JSON.stringify(getters.userWallet.export())
     const filename = 'wallet.json'
@@ -51,6 +71,13 @@ const actions: ActionTree<AuthState, RootState> = {
     }
   },
 
+  /**
+   * changes the selected account
+   * @param {any} commit
+   * @param {any} account
+   * @param {any} password
+   * @returns {Promise<void>}
+   */
   selectAccount: async ({commit}, { account, password }) => {
     try {
       if (password) {
@@ -62,6 +89,11 @@ const actions: ActionTree<AuthState, RootState> = {
     }
   },
 
+  /**
+   * check if the logged user is master
+   * @param {any} getters
+   * @returns {Promise<any>}
+   */
   doIHaveAMasterAccount: async ({ getters }) => {
     if (!getters.userWallet) {
       return false

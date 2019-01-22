@@ -4,6 +4,10 @@
  */
 import TransactionStats from '@/model/TransactionStats'
 import {$, apiFullURL} from '@/simpli'
+
+/**
+ * Is the chart content, retrieved by the indexer (offchain)
+ */
 export default class TransactionsCollection {
 
   list: TransactionStats[] = []

@@ -148,27 +148,35 @@
     @Action('auth/addAccount') addAccount!: Function
     @Action('auth/exportJson') exportJson!: Function
 
+    // this is the new user account, with all it's information that will be saved on the smart contract.
+    // It's not the Neo 'Account' entity
     subjectAccount = new RegularAccount()
 
     password: string | null = null
-    pkcs12Der: string | null = null
-    content: forge.pkcs12.Pkcs12Pfx | null = null
+    pkcs12Der: string | null = null // p12 file content encrypted
+    content: forge.pkcs12.Pkcs12Pfx | null = null // p12 file content decrypted with user's password
 
+    // friendly names found in the certificate,
+    // stored for the user to choose which one he wants to use
     friendlyNames: string[] | null = null
     selectedFriendlyName: string | null = null
 
-    key: forge.pki.rsa.PrivateKey | null = null
-    cert: forge.pki.Certificate | null = null
-    privatePem: string | null = null
-    altNames: string[] = []
+    key: forge.pki.rsa.PrivateKey | null = null // rsa privatekey extracted from selected friendly name
+    cert: forge.pki.Certificate | null = null // cert extracted from selected friendly name
+    privatePem: string | null = null // privatekey in another format
+    altNames: string[] = [] // information about the user contained on the certificate, very strange format
 
-    accountName: string | null = null
-    accountPassword: string | null = null
-    repeatAccountPassword: string | null = null
+    accountName: string | null = null // form input
+    accountPassword: string | null = null // form input
+    repeatAccountPassword: string | null = null // form input
 
-    encryptedWif: string | null = null
-    wif: string | null = null
+    encryptedWif: string | null = null // neo encrypted wif (private information)
+    wif: string | null = null // neo wif (private information)
 
+    /**
+     * handle the input file event
+     * @param {HTMLInputEvent} e
+     */
     onInputFileChange(e: HTMLInputEvent) {
       if (!e || !e.target || !e.target.files) return
 
@@ -181,6 +189,11 @@
       tempReader.readAsArrayBuffer(e.target.files[0])
     }
 
+    /**
+     * reads the input file
+     * @param {ArrayBuffer} buffer
+     * @returns {string}
+     */
     arrayBufferToString(buffer: ArrayBuffer) {
       let binary = ''
       const bytes = new Uint8Array(buffer)
@@ -192,6 +205,9 @@
       return binary
     }
 
+    /**
+     * reads the file and password from the form and process it
+     */
     loadFileAndPassword() {
       if (!this.pkcs12Der) {
         error('view.persistAccount.selectTheFile')
@@ -225,6 +241,10 @@
       }
     }
 
+    /**
+     * when the user select a friendly name (or if the certficate file contains only one)
+     * load all information from it
+     */
     @Watch('selectedFriendlyName')
     loadCert() {
       if (this.selectedFriendlyName && this.content) {
@@ -271,6 +291,10 @@
       }
     }
 
+    /**
+     * read the altnames recursively
+     * @param {any[]} altNamesPureValues
+     */
     recursivelyPopulateAltNames(altNamesPureValues: any[]) {
       altNamesPureValues.forEach((an) => {
         if (an.value instanceof Array) {
@@ -281,6 +305,10 @@
       })
     }
 
+    /**
+     * when the user ask to create an account with the form and certificate information
+     * @returns {Promise.<void>}
+     */
     async createAccount() {
       this.wif = wallet.generatePrivateKey()
 
@@ -297,6 +325,10 @@
       await this.importWif()
     }
 
+    /**
+     * when the user ask to import the encrypted key from the form and use certificate information
+     * @returns {Promise.<void>}
+     */
     async importEncryptedWif() {
       if (!this.encryptedWif || !this.encryptedWif.length) {
         error('view.persistAccount.fillPrivateKey')
@@ -322,6 +354,10 @@
       await this.importWif()
     }
 
+    /**
+     * final step to create or import account
+     * @returns {Promise.<void>}
+     */
     async importWif() {
       if (!this.wif || !this.wif.length) {
         error('view.persistAccount.fillPrivateKey')
@@ -379,6 +415,13 @@
       }
     }
 
+    /**
+     * sign the content using Pkcs7
+     * @param {forge.pki.Certificate} certOrCertPem
+     * @param {forge.pki.PrivateKey} privateKeyAssociatedWithCert
+     * @param {string} content
+     * @returns {string}
+     */
     signPkcs7(
       certOrCertPem: forge.pki.Certificate,
       privateKeyAssociatedWithCert: forge.pki.PrivateKey,
@@ -405,10 +448,12 @@
       return pem
     }
 
+    /**
+     * send the information to the smartcontract
+     * @returns {Promise.<void>}
+     */
     async requestApproval() {
       const resp = await this.subjectAccount.persist()
-
-      console.log('PersistRegularAccountView: 404')
 
       if (resp && resp.response && resp.response.result) {
         this.addAccount(this.subjectAccount.neoAccount)

@@ -1,3 +1,6 @@
+/**
+ * Is a singular point in the charts of TransactionStatsCollection (retreived by the indexer)
+ */
 export default class TransactionStats {
 
   static build(map: any) {

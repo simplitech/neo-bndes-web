@@ -8,7 +8,7 @@ const domain = 'http://chain.simpli.com.br'
 
 export const contractPath = `${domain}:30333`
 export const neoscan = `${domain}:4000/api/main_net`
-export const scriptHash = '1cea2c4ce906b922661180368b9dc356b32b4264'
+export const scriptHash = '1cea2c4ce906b922661180368b9dc356b32b4264' // smartcontract identifier
 
 export const privateNet = new rpc.Network({
   name: 'PrivateNet',
@@ -51,6 +51,14 @@ export const getBlockCount = async () => {
   return await rpcClient.getBlockCount()
 }
 
+/**
+ * this method is named like this because it is used to test a invocation of a smartcontract method.
+ * but in reality it is mostly used to read public informations from a smartcontract without saving anything or checking
+ * user authentity.
+ * @param {string} operation
+ * @param args
+ * @returns {Promise<TestInvokeResp>}
+ */
 export const testInvoke = async (operation: string, ...args: any[]): Promise<TestInvokeResp> => {
   console.log(`invoke ${operation} args:`)
   console.log(args)
@@ -68,6 +76,13 @@ export const testInvoke = async (operation: string, ...args: any[]): Promise<Tes
   return {result, gasConsumed}
 }
 
+/**
+ * this method makes an invocation to a smartcontract method, but it can't read any response, for this you
+ * will need to listen the notifications sent by the smartcontract
+ * @param {string} operation
+ * @param args
+ * @returns {Promise<DoInvokeResp>}
+ */
 export const doInvoke = async (operation: string, ...args: any[]): Promise<DoInvokeResp> => {
   return doInvokeWithAccount(lastSelectedAccount(), operation, ...args)
 }

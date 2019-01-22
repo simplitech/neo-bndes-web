@@ -67,8 +67,14 @@
     @Getter('auth/userWallet') userWallet?: Wallet
     @Action('auth/selectAccount') selectAccount!: Function
     @Action('auth/saveWallet') saveWallet!: Function
+
+    // defines that this component will be used only to select the wallet, not the account
     @Prop({type: Boolean, default: false}) onlyWallet?: boolean
+
+    // defines that the component will not show the button to authenticate, will wait for the user input change
     @Prop({type: Boolean, default: false}) autoAuthenticate?: boolean
+
+    // defines that the component will hide itself after complete the authentication
     @Prop({type: Boolean, default: false}) hideAfterAuthenticated?: boolean
 
     selectedAcc: Account | null = null
@@ -80,6 +86,9 @@
       this.emitAuthenticatedIfOnlyWallet()
     }
 
+    /**
+     * emits the 'authenticated' event if we already have an authenticated wallet and the prop `onlyWallet` is true
+     */
     @Watch('userWallet')
     emitAuthenticatedIfOnlyWallet() {
       if (this.userWallet && this.onlyWallet) {
@@ -88,6 +97,9 @@
       }
     }
 
+    /**
+     * tries to authenticate when the select changes
+     */
     selectChange() {
       if (this.autoAuthenticate) {
         this.updateAccHasPrivKey()
@@ -97,12 +109,19 @@
       }
     }
 
+    /**
+     * tries to authenticate when password field focus is released
+     */
     passBlur() {
       if (this.autoAuthenticate) {
         this.$await.run(this.authenticate, 'authenticate')
       }
     }
 
+    /**
+     * select the account in the vuex store and finish the authentication
+     * @returns {Promise.<void>}
+     */
     async authenticate() {
       await this.selectAccount({ account: this.selectedAcc, password: this.password })
       this.updateAccHasPrivKey()
@@ -110,6 +129,9 @@
       this.authenticated = true
     }
 
+    /**
+     * saves if the wallet has a valid privatekey
+     */
     updateAccHasPrivKey() {
       try {
         if (this.selectedAcc) {
@@ -120,6 +142,10 @@
       }
     }
 
+    /**
+     * handle the file input to create a wallet
+     * @param {HTMLInputEvent} e
+     */
     onInputFileChange(e: HTMLInputEvent) {
       if (!e || !e.target || !e.target.files) return
 
@@ -134,6 +160,11 @@
       tempReader.readAsArrayBuffer(e.target.files[0])
     }
 
+    /**
+     * process the file
+     * @param {ArrayBuffer} buffer
+     * @returns {string}
+     */
     arrayBufferToString(buffer: ArrayBuffer) {
       let binary = ''
       const bytes = new Uint8Array(buffer)

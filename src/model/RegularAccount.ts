@@ -13,6 +13,9 @@ import {chunk} from 'lodash'
 import {ResponseItem} from '@/types/app'
 import Transaction from '@/model/Transaction'
 
+/**
+ * Is the user account registered on the smartcontract
+ */
 export default class RegularAccount {
 
   address = ''
@@ -30,10 +33,6 @@ export default class RegularAccount {
 
   unspentTransactions: Transaction[] = []
 
-  get balance() {
-    return this.unspentTransactions.reduce((sum, t) => sum + (t && t.amount ? t.amount : 0), 0)
-  }
-
   constructor(address?: string, label?: string) {
     if (address) {
       this.address = address
@@ -42,6 +41,10 @@ export default class RegularAccount {
     if (label) {
       this.label = label
     }
+  }
+
+  get balance() {
+    return this.unspentTransactions.reduce((sum, t) => sum + (t && t.amount ? t.amount : 0), 0)
   }
 
   get documentIsCpf() {

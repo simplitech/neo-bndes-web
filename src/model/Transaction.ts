@@ -9,6 +9,9 @@ import {
 import RegularAccount from '@/model/RegularAccount'
 import {ResponseItem} from '@/types/app'
 
+/**
+ * Is the transaction registered in the smartcontract
+ */
 export default class Transaction {
 
   static buildUnspent(responseItem?: ResponseItem[]) {

@@ -9,7 +9,6 @@ import Vue from 'vue'
 
 import './registerServiceWorker'
 import 'font-awesome/css/font-awesome.css'
-import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'chart.js'
 
 import VueMeta from 'vue-meta'

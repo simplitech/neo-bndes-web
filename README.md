@@ -1,30 +1,58 @@
-<p align="center">
-  <img alt="Simpli Logo" src="https://raw.githubusercontent.com/simplitech/simpli-cli/master/docs/img/logo.png" width="256" height="256">
-  <br>
-  <a href="https://www.npmjs.com/package/@simpli/cli"><img src="https://img.shields.io/npm/v/@simpli/cli.svg"></a>
-  <a href="https://www.npmjs.com/package/@simpli/cli"><img src="https://img.shields.io/npm/dt/@simpli/cli.svg"></a>
-  <a href="https://www.npmjs.com/package/@simpli/cli"><img src="https://img.shields.io/npm/l/@simpli/cli.svg"></a>
-</p>
+# NEO BNDES Web
 
-# Simpli CLI Client Project
+## Project setup
 
-Go to your project directory root and run:
-
+### Install Dependencies
 ```sh
-$ npm run serve
+npm i
 ```
-to enter on `development mode`. Or run:
+
+### Run on development mode
 ```sh
-$ npm run build
+npm run serve
 ```
-to build for `production mode`.
 
-When you enter on `dev`, you may see this screen at `localhost:8181`:
+### Build for production
+```sh
+npm run build
+```
 
-![Client Running](https://raw.githubusercontent.com/simplitech/simpli-cli/master/docs/img/client-img3.png)
-> The default login from generated `data.sql` located in server project is `test@test.com` and the password is `tester`
+## Project Dependencies
 
-#### _Important_
-> The password column of your login table must be encrypted by `double SHA-256`. E.g.: The password `123456` should be `49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c` in the password column.
+### Logic and processing
+- `@cityofzion/neon-js` - Javascript libraries that allow the applications to interact with NEO blockchain
+- `node-forge` - cryptography tools
 
----
+### Frontend and rendering utilities
+- `chart.js` - Charts using the `<canvas>`
+- `chartkick` - Chartjs utility to create charts with one line
+- `font-awesome` - iconic SVG, font, and CSS toolkit
+- `linelay` - A CSS port of LinearLayout. Multidirectional grid that saves more space for mobile devices.
+- `normalize-scss` - a collection of HTML element and attribute rulesets to normalize styles across all browsers
+- `simple-line-icons` - Simple and Minimal Line Icons
+- `simpli-web-sdk` - Simpli's SDK with a lot of utilities to work with Vue
+- `vue` - framework for building UI
+- `vue-chartjs` - chartjs for vue
+- `vue-chartkick` - chartkick for vue
+- `vue-meta` - Manage page meta info
+- `vue-moment` - Handy Moment.js filters for your Vue
+- `vue-property-decorator` - Decorators for Vue classes
+- `vue-spinner` - Loading spinners
+- `vuex` - Centralized State Management
+- `vuex-class` - Binding helpers for vuex
+
+## Project file structure
+
+![filestructure](filestructure.png)
+
+## FAQ
+
+### How to read a p12 file and associate the user signature with a NEO account?
+Check `PersistRegularAccountView.vue` file
+
+### How to make requests to NEO blockchain?
+Check `neo.helper.ts` file and `model` folder
+
+### How account selectionworks?
+Check `AccountSelector.vue` and `auth.ts`
+
