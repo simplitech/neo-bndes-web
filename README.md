@@ -9,6 +9,9 @@ Operations supported by the browser (javascript):
 - Smart Contract Interaction;
 - Signing a payload using a x509 certificate (in our example, we use e-cpf - a brazilian document)
 
+Related projects:
+- [Notification indexer](https://github.com/simplitech/neo-nep-utxo-indexer)
+- [Smart Contract example)(https://github.com/simplitech/neo-sc-bndes-example)
 
 ## Project setup
 
