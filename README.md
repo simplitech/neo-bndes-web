@@ -11,7 +11,7 @@ Operations supported by the browser (javascript):
 
 Related projects:
 - [Notification indexer](https://github.com/simplitech/neo-nep-utxo-indexer)
-- [Smart Contract example](https://github.com/simplitech/neo-sc-bndes-example)
+- [Smart contract example](https://github.com/simplitech/neo-sc-bndes-example)
 
 ## Project setup
 
