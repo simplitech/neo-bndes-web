@@ -1,4 +1,14 @@
 # NEO BNDES Web
+This is a sample project of Smart Contract interaction using neon-js.
+It uses javascript (node-forge) to create a signature from a x509 certificate.
+
+Operations supported by the browser (javascript):
+- Create/Import NEO account;
+- Create/Open Wallet;
+- Usage charts (using offchain API provided by the indexer)
+- Smart Contract Interaction;
+- Signing a payload using a x509 certificate (in our example, we use e-cpf - a brazilian document)
+
 
 ## Project setup
 
